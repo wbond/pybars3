@@ -1,0 +1,10 @@
+./eggs/*
+./.installed.cfg
+./develop-eggs
+./bin
+./pybars.egg-info
+./parts
+./eggs
+./download-cache
+./dist
+./MANIFEST

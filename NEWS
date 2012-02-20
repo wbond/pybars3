@@ -1,0 +1,12 @@
+pybars NEWS
++++++++++++
+
+Changes and improvements to pybars, grouped by release.
+
+NEXT
+----
+
+* Initial release, passes acceptance tests from handlebars.js, except for
+  deliberately skipped features (.data hashes and stringParams).
+  (Robert Collins)
+
