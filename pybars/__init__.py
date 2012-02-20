@@ -22,11 +22,11 @@ documentation.
 Translating the engine to python required slightly different calling
 conventions to the JS version:
 
-* block helpers take (this, options, *args, **kwargs)
+* block helpers take (``this``, ``options``, ``*args``, ``**kwargs``)
 
-* other helpers take (this, *args, **kwargs)
+* other helpers take (``this``, ``*args``, ``**kwargs``)
 
-* closures in the context take (this, *args, **kwargs)
+* closures in the context take (``this``, ``*args``, ``**kwargs``)
 
 A template like '{{foo bar quux=1}}' will pass bar as a positional argument and
 quux as a keyword argument. Keyword arguments have to be non-reserved words in
