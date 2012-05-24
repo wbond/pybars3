@@ -1,22 +1,22 @@
 # Copyright (C) 2011 by Yehuda Katz
-# 
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be included in
 # all copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 # AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-# THE SOFTWARE.  
+# THE SOFTWARE.
 
 """A port of the acceptance test for handlebars.js."""
 
@@ -26,21 +26,22 @@ from testtools.matchers import Equals
 import pybars
 from pybars import (
     Compiler,
-    helpers,
     strlist,
     )
 from pybars.tests.test__compiler import render
 
 
 class RendersItself:
+
     def __str__(self):
         return "RendersItself()"
+
     def match(self, source):
         return Equals(source).match(render(source, {}))
 
 
 class TestAcceptance(TestCase):
-    
+
     def test_basic_context(self):
         self.assertEqual(
             "Goodbye\ncruel\nworld!",
@@ -132,7 +133,7 @@ class TestAcceptance(TestCase):
                 {'@alan': {'expression': 'beautiful'}}))
 
     def skipped_upstream_not_ported_bad_idea_nested_paths(self):
-         pass
+        pass
 #        test("--- TODO --- bad idea nested paths", function() {
 #            return;
 #            var hash     = {goodbyes: [{text: "goodbye"}, {text: "Goodbye"}, {text: "GOODBYE"}], world: "world"};
@@ -155,8 +156,8 @@ class TestAcceptance(TestCase):
             render(u"{{person/name}}", {'person': {}}))
 
     def test_this_keyword_in_paths_simple(self):
-        source = u"{{#goodbyes}}{{this}}{{/goodbyes}}";
-        context = {'goodbyes': ["goodbye", "Goodbye", "GOODBYE"]};
+        source = u"{{#goodbyes}}{{this}}{{/goodbyes}}"
+        context = {'goodbyes': ["goodbye", "Goodbye", "GOODBYE"]}
         self.assertEqual("goodbyeGoodbyeGOODBYE", render(source, context))
 
     def test_this_keyword_in_paths_complex(self):
@@ -192,7 +193,7 @@ class TestAcceptance(TestCase):
         context = {
             'goodbyes': [
                 {'text': "goodbye"}, {'text': "Goodbye"}, {'text': "GOODBYE"}],
-            'world': "world"};
+            'world': "world"}
         self.assertEqual("cruel world!", render(source, context))
         self.assertEqual("cruel world!",
             render(source, {'goodbyes': [], 'world': "world"}))
@@ -202,10 +203,10 @@ class TestAcceptance(TestCase):
         pass
 
     def test_block_with_complex_lookup(self):
-         source = u"{{#goodbyes}}{{text}} cruel {{../name}}! {{/goodbyes}}"
-         context = {'name': "Alan", 'goodbyes': [
+        source = u"{{#goodbyes}}{{text}} cruel {{../name}}! {{/goodbyes}}"
+        context = {'name': "Alan", 'goodbyes': [
             {'text': "goodbye"}, {'text': "Goodbye"}, {'text': "GOODBYE"}]}
-         self.assertEqual(
+        self.assertEqual(
             "goodbye cruel Alan! Goodbye cruel Alan! GOODBYE cruel Alan! ",
             render(source, context))
 
@@ -243,14 +244,14 @@ class TestAcceptance(TestCase):
         context = {
             'prefix': '/root', 'goodbyes': [{'text': "Goodbye", 'url': "goodbye"}]}
         def link(this, options, prefix):
-            return u"<a href='" + unicode(prefix) + u"/" + this['url'] + u"'>" + unicode(options['fn'](this)) + u"</a>";
+            return u"<a href='" + unicode(prefix) + u"/" + this['url'] + u"'>" + unicode(options['fn'](this)) + u"</a>"
         self.assertEqual(u"<a href='/root/goodbye'>Goodbye</a>",
             render(template, context, helpers={'link': link}))
 
     def test_block_with_deep_nested_complex_lookup(self):
         template = u"{{#outer}}Goodbye "\
             u"{{#inner}}cruel {{../../omg}}{{/inner}}{{/outer}}"
-        context = {'omg': "OMG!", 'outer':[{'inner': [{'text': "goodbye" }]}]}
+        context = {'omg': "OMG!", 'outer': [{'inner': [{'text': "goodbye"}]}]}
         self.assertEqual(u"Goodbye cruel OMG!", render(template, context))
 
     def test_block_helper(self):
@@ -271,9 +272,9 @@ class TestAcceptance(TestCase):
             u"{{#link}}{{name}}{{/link}}</li>{{/people}}</ul>"
         def link(this, options):
             return strlist(('<a href="/people/', unicode(this['id']), '">', options['fn'](this), '</a>'))
-        context = { "people": [
-            { "name": "Alan", "id": 1 },
-            { "name": "Yehuda", "id": 2 }
+        context = {"people": [
+            {"name": "Alan", "id": 1},
+            {"name": "Yehuda", "id": 2}
             ]}
         result = "<ul><li><a href=\"/people/1\">Alan</a></li>"\
             "<li><a href=\"/people/2\">Yehuda</a></li></ul>"
@@ -337,7 +338,7 @@ class TestAcceptance(TestCase):
                 return out
             else:
                 return "<p>" + unicode(options['inverse'](this)) + "</p>"
-        context = {'people': [{'name': "Alan"}, {'name': "Yehuda"}]};
+        context = {'people': [{'name': "Alan"}, {'name': "Yehuda"}]}
         empty = {'people': []}
         rootMessage = {'people': [], 'message': "Nobody's here"}
         src1 = u"{{#list people}}{{name}}{{^}}<em>Nobody's here</em>{{/list}}"
@@ -377,7 +378,7 @@ class TestAcceptance(TestCase):
     def test_the_helpers_hash_is_available_is_nested_contexts(self):
         self.assertEqual("helper",
             render(u"{{#outer}}{{#inner}}{{helper}}{{/inner}}{{/outer}}",
-                {'outer': {'inner': {'unused':[]}}},
+                {'outer': {'inner': {'unused': []}}},
                 helpers={'helper': 'helper'}))
 
     def test_basic_partials(self):
@@ -507,7 +508,7 @@ class TestAcceptance(TestCase):
 
     def test_Unknown_helper_in_knownHelpers_only_mode_should_be_passed_as_undefined(self):
         source = u"{{{typeof hello}}}"
-        self.assertEqual("<type 'NoneType'>", 
+        self.assertEqual("<type 'NoneType'>",
             render(source, {}, helpers=dict(
                 typeof=lambda this, arg: unicode(type(arg)), hello=lambda this: "foo"),
             knownHelpers=set(['typeof']), knownHelpersOnly=True))
@@ -538,7 +539,7 @@ class TestAcceptance(TestCase):
         # compatibility which allows all block stuff to be overridden via
         # blockHelperMissing
         source = u"{{#truthy}}yep{{/truthy}}"
-        self.assertEqual("yep", render(source, {'truthy': lambda this:True}))
+        self.assertEqual("yep", render(source, {'truthy': lambda this: True}))
 
     def test_with(self):
         source = u"{{#with person}}{{first}} {{last}}{{/with}}"
@@ -563,18 +564,18 @@ class TestAcceptance(TestCase):
     def test_if_with_function_argument(self):
         source = u"{{#if goodbye}}GOODBYE {{/if}}cruel {{world}}!"
         self.assertEqual(u"GOODBYE cruel world!",
-            render(source, {'goodbye': lambda this:True, 'world': "world"}))
+            render(source, {'goodbye': lambda this: True, 'world': "world"}))
         self.assertEqual(u"GOODBYE cruel world!",
             render(source,
                 {'goodbye': lambda this: this['world'], 'world': "world"}))
         self.assertEqual(u"cruel world!",
-            render(source, {'goodbye': lambda this:False, 'world': "world"}))
+            render(source, {'goodbye': lambda this: False, 'world': "world"}))
         self.assertEqual(u"cruel world!",
-            render(source, {'goodbye': lambda this:None, 'world': "world"}))
+            render(source, {'goodbye': lambda this: None, 'world': "world"}))
 
     def test_each(self):
         source = u"{{#each goodbyes}}{{text}}! {{/each}}cruel {{world}}!"
-        context = {'goodbyes': 
+        context = {'goodbyes':
             [{'text': "goodbye"}, {'text': "Goodbye"}, {'text': "GOODBYE"}],
             'world': "world"}
         self.assertEqual("goodbye! Goodbye! GOODBYE! cruel world!",
@@ -583,8 +584,8 @@ class TestAcceptance(TestCase):
             render(source, {'goodbyes': [], 'world': "world"}))
 
     def test_log(self):
-        source =  u"{{log blah}}"
-        context = { 'blah': "whee" }
+        source = u"{{log blah}}"
+        context = {'blah': "whee"}
         log = []
         self.patch(pybars, 'log', log.append)
         self.assertEqual("", render(source, context))
@@ -653,7 +654,7 @@ class TestAcceptance(TestCase):
     def test_helpers_can_take_an_optional_hash_with_booleans(self):
         def goodbye(this, cruel, world, _print):
             if _print is True:
-                return "GOODBYE " + cruel + " " + world;
+                return "GOODBYE " + cruel + " " + world
             elif _print is False:
                 return "NOT PRINTING"
             else:
@@ -724,7 +725,7 @@ class TestAcceptance(TestCase):
 
     def test_GH_158__Using_array_index_twice_breaks_the_template(self):
         source = u"{{arr.[0]}}, {{arr.[1]}}"
-        context = { "arr": [1, 2] }
+        context = {"arr": [1, 2]}
         self.assertEqual("1, 2", render(source, context))
 
     def test_bug_reported_by__fat_where_lambdas_weren_t_being_properly_resolved(self):
