@@ -113,4 +113,4 @@ from pybars._compiler import (
     )
 
 
-log = lambda value:None
+log = lambda value: None

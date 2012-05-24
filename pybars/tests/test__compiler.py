@@ -19,6 +19,7 @@ from testtools import TestCase
 
 from pybars import Compiler
 
+
 def render(source, context, helpers=None, partials=None, knownHelpers=None,
     knownHelpersOnly=False):
     compiler = Compiler()
@@ -34,9 +35,10 @@ def render(source, context, helpers=None, partials=None, knownHelpers=None,
 
 
 class TestCompiler(TestCase):
-    
+
     def test_import(self):
-        from pybars import Compiler
+        import pybars
+        pybars.Compiler
 
     def test_smoke(self):
         compiler = Compiler()
@@ -48,7 +50,7 @@ class TestCompiler(TestCase):
                 result.append('</li>')
             result.append('</ul>')
             return result
-        source = u"{{#list people}}{{firstName}} {{lastName}}{{/list}}" 
+        source = u"{{#list people}}{{firstName}} {{lastName}}{{/list}}"
         template = compiler.compile(source)
         context = {
             'people': [
@@ -80,4 +82,3 @@ class TestCompiler(TestCase):
             'title': u"All about <p> Tags",
             'body': u"<p>This is a post about &lt;p&gt; tags</p>",
             }))
-
