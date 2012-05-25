@@ -130,7 +130,7 @@ class strlist(list):
         elif type(thing) == str:
             # Ugh. Kill this in 3.
             self.append(unicode(thing))
-        else: 
+        else:
             # Recursively expand to a flat list; may deserve a C accelerator at
             # some point.
             for element in thing:
@@ -138,12 +138,12 @@ class strlist(list):
 
 
 _map = {
-    '&':'&amp;',
-    '"':'&quot;',
-    '\'':'&#x27;',
-    '`':'&#x60;',
-    '<':'&lt;',
-    '>':'&gt;',
+    '&': '&amp;',
+    '"': '&quot;',
+    "'": '&#x27;',
+    '`': '&#x60;',
+    '<': '&lt;',
+    '>': '&gt;',
     }
 def substitute(match, _map=_map):
     return _map[match.group(0)]
@@ -339,7 +339,7 @@ class CodeBuilder:
         return u", ".join(params) + ")"
 
     def find_lookup(self, path, path_type, call):
-        if path and path_type == "simple": # simple names can reference helpers.
+        if path and path_type == "simple":  # simple names can reference helpers.
             # TODO: compile this whole expression in the grammar; for now,
             # fugly but only a compile time overhead.
             # XXX: just rm.
@@ -425,23 +425,24 @@ class CodeBuilder:
 # TODO: move to a better home
 global_helpers = {}
 
+
 class Compiler:
     """A handlebars template compiler.
-    
+
     The compiler is not threadsafe: you need one per thread because of the
     state in CodeBuilder.
     """
 
     _handlebars = OMeta.makeGrammar(handlebars_grammar, {}, 'handlebars')
     _builder = CodeBuilder()
-    _compiler = OMeta.makeGrammar(compile_grammar, {'builder':_builder})
+    _compiler = OMeta.makeGrammar(compile_grammar, {'builder': _builder})
 
     def __init__(self):
         self._helpers = {}
 
     def compile(self, source):
         """Compile source to a ready to run template.
-        
+
         :param source: The template to compile - should be a unicode string.
         :return: A template ready to run.
         """
