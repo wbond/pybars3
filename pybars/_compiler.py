@@ -60,6 +60,7 @@ expression ::= <start> '{' <expression_inner>:e '}' => ('expand', ) + e
 escapedexpression ::= <start> <expression_inner>:e => ('escapedexpand', ) + e
 block_inner ::= <spaces> <symbol>:s <arguments>:args <spaces> <finish>
     => (u''.join(s), args)
+alt_inner ::= <spaces> ('^' | 'e' 'l' 's' 'e') <spaces> <finish>
 partial ::= <start> '>' <block_inner>:i => ('partial',) + i
 path ::= ~('/') <pathseg>+:segments => ('path', segments)
 kwliteral ::= <symbol>:s '=' (<literal>|<path>):v => ('kwparam', s, v)
@@ -71,7 +72,7 @@ false ::= 'f' 'a' 'l' 's' 'e' => False
 true ::= 't' 'r' 'u' 'e' => True
 notquote ::= <escapedquote> | (~('"') <anything>)
 escapedquote ::= '\\' '"' => '\\"'
-symbol ::= '['? (<letterOrDigit>|'-'|'@')+:symbol ']'? => u''.join(symbol)
+symbol ::=  ~<alt_inner> '['? (<letterOrDigit>|'-'|'@')+:symbol ']'? => u''.join(symbol)
 pathseg ::= <symbol>
     | '/' => u''
     | ('.' '.' '/') => u'__parent'
@@ -82,7 +83,7 @@ blockrule ::= <start> '#' <block_inner>:i
       <template>:t <alttemplate>:alt_t <symbolfinish i[0]> => ('block',) + i + (t, alt_t)
     | <start> '^' <block_inner>:i
       <template>:t <symbolfinish i[0]> => ('invertedblock',) + i + (t,)
-alttemplate ::= (<start>'^'<finish> <template>)?:alt_t => alt_t or []
+alttemplate ::= (<start> <alt_inner> <template>)?:alt_t => alt_t or []
 """
 
 # this grammar compiles the template to python

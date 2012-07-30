@@ -343,6 +343,7 @@ class TestAcceptance(TestCase):
         rootMessage = {'people': [], 'message': "Nobody's here"}
         src1 = u"{{#list people}}{{name}}{{^}}<em>Nobody's here</em>{{/list}}"
         src2 = u"{{#list people}}Hello{{^}}{{message}}{{/list}}"
+        src3 = u"{{#list people}}{{name}}{{else}}<em>Nobody's here</em>{{/list}}"
         helpers = {'list': list}
         # inverse not executed by helper:
         self.assertEqual("<ul><li>Alan</li><li>Yehuda</li></ul>",
@@ -354,6 +355,11 @@ class TestAcceptance(TestCase):
         # helpers.
         self.assertEqual("<p>Nobody&#x27;s here</p>",
             render(src2, rootMessage, helpers=helpers))
+        # inverse can also be denoted by 'else':
+        self.assertEqual("<ul><li>Alan</li><li>Yehuda</li></ul>",
+            render(src3, context, helpers))
+        self.assertEqual("<p><em>Nobody's here</em></p>",
+            render(src3, empty, helpers))
 
     def test_providing_a_helpers_hash(self):
         self.assertEqual("Goodbye cruel world!",
