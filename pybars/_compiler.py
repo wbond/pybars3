@@ -205,6 +205,8 @@ def _if(this, options, context):
         context = context(this)
     if context:
         return options['fn'](this)
+    else:
+        return options['inverse'](this)
 
 
 def _log(this, context):
