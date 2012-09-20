@@ -567,6 +567,11 @@ class TestAcceptance(TestCase):
         self.assertEqual(u"cruel world!",
             render(source, {'goodbye': [], 'world': "world"}))
 
+    def test_if_else(self):
+        source = u"{{#if goodbye}}GOODBYE{{else}}Hello{{/if}} cruel {{world}}!"
+        self.assertEqual(u"Hello cruel world!",
+            render(source, {'goodbye': False, 'world': "world"}))
+
     def test_if_with_function_argument(self):
         source = u"{{#if goodbye}}GOODBYE {{/if}}cruel {{world}}!"
         self.assertEqual(u"GOODBYE cruel world!",

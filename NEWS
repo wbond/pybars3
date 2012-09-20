@@ -6,6 +6,12 @@ Changes and improvements to pybars, grouped by release.
 NEXT
 ----
 
+0.0.3
+-----
+
+* Support for '{{else}}' in the 'if' blockhelper.
+  (David Smith, Robert Collins, lp:1053534)
+
 0.0.2
 -----
 
