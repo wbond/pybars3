@@ -23,7 +23,7 @@ description = file(
         os.path.join(os.path.dirname(__file__), 'README'), 'rb').read()
 
 setup(name="pybars",
-      version="0.0.3",
+      version="0.0.4",
       description=\
               "handlebars.js templating for Python.",
       long_description=description,
