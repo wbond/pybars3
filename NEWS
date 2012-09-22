@@ -6,6 +6,9 @@ Changes and improvements to pybars, grouped by release.
 NEXT
 ----
 
+* Fix Compiler.register_helper to actually register the helper
+  such that it will be used. (James Westby, lp:1054550)
+
 0.0.3
 -----
 

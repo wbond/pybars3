@@ -101,14 +101,12 @@ __version__ = (0, 0, 4, 'beta', 0)
 
 __all__ = [
     'Compiler',
-    'helpers',
     'log',
     'strlist',
     ]
 
 from pybars._compiler import (
     Compiler,
-    global_helpers as helpers,
     strlist,
     )
 

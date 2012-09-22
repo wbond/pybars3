@@ -245,7 +245,9 @@ _pybars_ = {
         'log': _log,
         'unless': _unless,
         'with': _with,
-    }
+    },
+    'global_helpers': {
+    },
 }
 
 class CodeBuilder:
@@ -267,6 +269,7 @@ class CodeBuilder:
         self._result.grow(u"    result = strlist()\n")
         self._result.grow(u"    if helpers is None: helpers = {}\n")
         self._result.grow(u"    helpers.update(pybars['helpers'])\n")
+        self._result.grow(u"    helpers.update(pybars['global_helpers'])\n")
         self._result.grow(u"    if partials is None: partials = {}\n")
         # Expose used functions and helpers to the template.
         self._locals['strlist'] = strlist
@@ -425,10 +428,6 @@ class CodeBuilder:
         self._invoke_template("inner", "scope")
 
 
-# TODO: move to a better home
-global_helpers = {}
-
-
 class Compiler:
     """A handlebars template compiler.
 
@@ -469,7 +468,7 @@ class Compiler:
             block content for a single item).
         :return: None
         """
-        global_helpers[helper_name] = helper_callback
+        _pybars_['global_helpers'][helper_name] = helper_callback
 
 #orig = Compiler._handlebars.rule_blockrule
 #def thunk(*args, **kwargs):
