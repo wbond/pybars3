@@ -233,8 +233,15 @@ def _blockHelperMissing(this, options, context):
     return options['fn'](callwith)
 
 
+def _helperMissing(scope, name, *args):
+    if not args:
+        return None
+    raise Exception(u"Could not find property %s" % (name,))
+
+
 def _with(this, options, context):
     return options['fn'](context)
+
 
 # scope for the compiled code to reuse globals
 _pybars_ = {
@@ -242,6 +249,7 @@ _pybars_ = {
         'blockHelperMissing': _blockHelperMissing,
         'each': _each,
         'if': _if,
+        'helperMissing': _helperMissing,
         'log': _log,
         'unless': _unless,
         'with': _with,
@@ -265,8 +273,9 @@ class CodeBuilder:
         # when profiling.
         self._result.grow(u"def render(context, helpers=None, partials=None):\n")
         self._result.grow(u"    result = strlist()\n")
-        self._result.grow(u"    if helpers is None: helpers = {}\n")
-        self._result.grow(u"    helpers.update(pybars['helpers'])\n")
+        self._result.grow(u"    _helpers = dict(pybars['helpers'])\n")
+        self._result.grow(u"    if helpers is not None: _helpers.update(helpers)\n")
+        self._result.grow(u"    helpers = _helpers\n")
         self._result.grow(u"    if partials is None: partials = {}\n")
         # Expose used functions and helpers to the template.
         self._locals['strlist'] = strlist

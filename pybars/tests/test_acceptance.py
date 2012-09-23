@@ -547,6 +547,14 @@ class TestAcceptance(TestCase):
         source = u"{{#truthy}}yep{{/truthy}}"
         self.assertEqual("yep", render(source, {'truthy': lambda this: True}))
 
+    def test_default_helperMissing_no_params(self):
+        source = u"a{{missing}}b"
+        self.assertEqual("ab", render(source, {}))
+
+    def test_default_helperMissing_with_param(self):
+        source = u"a{{missing something}}b"
+        self.assertRaises(Exception, render, source, {})
+
     def test_with(self):
         source = u"{{#with person}}{{first}} {{last}}{{/with}}"
         self.assertEqual("Alan Johnson",
