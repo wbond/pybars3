@@ -246,9 +246,8 @@ _pybars_ = {
         'unless': _unless,
         'with': _with,
     },
-    'global_helpers': {
-    },
 }
+
 
 class CodeBuilder:
     """Builds code for a template."""
@@ -269,7 +268,6 @@ class CodeBuilder:
         self._result.grow(u"    result = strlist()\n")
         self._result.grow(u"    if helpers is None: helpers = {}\n")
         self._result.grow(u"    helpers.update(pybars['helpers'])\n")
-        self._result.grow(u"    helpers.update(pybars['global_helpers'])\n")
         self._result.grow(u"    if partials is None: partials = {}\n")
         # Expose used functions and helpers to the template.
         self._locals['strlist'] = strlist
@@ -456,19 +454,6 @@ class Compiler:
         code = self._compiler(tree).apply('compile')[0]
         # print code
         return code
-
-    def register_helper(self, helper_name, helper_callback):
-        """Register a block helper.
-
-        :param helper_name: The name of the helper.
-        :param helper_callback: A callback to call when the helper is used.
-            This should accept two parameters - items (the context sub-value
-            specified by the block rule in the template) and options (which has
-            template logic in it such as the render callback to render the
-            block content for a single item).
-        :return: None
-        """
-        _pybars_['global_helpers'][helper_name] = helper_callback
 
 #orig = Compiler._handlebars.rule_blockrule
 #def thunk(*args, **kwargs):

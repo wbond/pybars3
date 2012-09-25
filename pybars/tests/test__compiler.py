@@ -82,17 +82,3 @@ class TestCompiler(TestCase):
             'title': u"All about <p> Tags",
             'body': u"<p>This is a post about &lt;p&gt; tags</p>",
             }))
-
-    def test_register_helper(self):
-        compiler = Compiler()
-        def duplicate(this, thing):
-            result = u'%s %s' % (str(thing), str(thing))
-            return result
-        compiler.register_helper('duplicate', duplicate)
-        source = u"{{duplicate name}}"
-        template = compiler.compile(source)
-        context = {
-            'name': 'Robert',
-           }
-        rendered = template(context)
-        self.assertEqual(u"Robert Robert", unicode(rendered))
