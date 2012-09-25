@@ -10,10 +10,9 @@ NEXT
   This gives default behaviour the same as handlebars.js, though it can still
   be overridden. (Robert Collins, lp:1040096)
 
-* Remove Compiler.register_helper, in favour of passing
-  helpers when rendering templates (register_helper never
-  worked, so this shouldn't break any code.)
-  (James Westby, lp:1054550)
+* Remove Compiler.register_helper (and pybars.helpers), in favour of passing
+  helpers when rendering templates (register_helper never worked, so this
+  shouldn't break any code.) (James Westby, lp:1054550)
 
 0.0.3
 -----
