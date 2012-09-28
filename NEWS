@@ -6,6 +6,9 @@ Changes and improvements to pybars, grouped by release.
 NEXT
 ----
 
+0.0.4
+-----
+
 * A default `helperMissing` helper is now present in the global set of helpers.
   This gives default behaviour the same as handlebars.js, though it can still
   be overridden. (Robert Collins, lp:1040096)
