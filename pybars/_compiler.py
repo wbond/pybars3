@@ -30,15 +30,14 @@ import re
 import pybars
 from pymeta.grammar import OMeta
 from pybars.frompymeta import moduleFromSource
+
+# This allows the code to run on Python 2 and 3 by
+# creating a consistent reference for the appropriate
+# string class
 try:
-    unicode
     str_class = unicode
 except NameError:
     # Python 3 support
-    def unicode(string=''):
-        if isinstance(string, list):
-            string = u"".join(string)
-        return str(string)
     str_class = str
 
 import collections
@@ -134,6 +133,10 @@ compile_grammar = compile_grammar.format(str_class=str_class.__name__)
 class strlist(list):
     """A quasi-list to let the template code avoid special casing."""
 
+    # Added for Python 3
+    def __str__(self):
+        return ''.join(self)
+
     def __unicode__(self):
         return u''.join(self)
 
@@ -141,9 +144,12 @@ class strlist(list):
         """Make the list longer, appending for unicode, extending otherwise."""
         if type(thing) == str_class:
             self.append(thing)
+
+        # This will only ever match in Python 2 since str_class is str in
+        # Python 3.
         elif type(thing) == str:
-            # Python 2 only
             self.append(unicode(thing))
+
         else:
             # Recursively expand to a flat list; may deserve a C accelerator at
             # some point.
@@ -187,9 +193,11 @@ class Scope:
         return default
     __getitem__ = get
 
+    # Added for Python 3
     def __str__(self):
         return str(self.context)
 
+    # Only called in Python 2
     def __unicode__(self):
         return unicode(self.context)
 
@@ -305,7 +313,7 @@ class CodeBuilder:
     def finish(self):
         self._result.grow(u"    return result\n")
         lines, ns = self.stack.pop(-1)
-        source = unicode(lines)
+        source = str_class(u"".join(lines))
         self._result = self.stack and self.stack[-1][0]
         self._locals = self.stack and self.stack[-1][1]
         fn = moduleFromSource(source, 'render', globalsDict=ns, registerModule=True)

@@ -24,13 +24,10 @@ from testtools import TestCase
 from testtools.matchers import Equals
 
 try:
-    unicode
+    str_class = unicode
 except NameError:
     # Python 3 support
-    def unicode(string=''):
-        if isinstance(string, list):
-            string = u"".join(string)
-        return str(string)
+    str_class = str
 
 import sys
 
@@ -255,7 +252,7 @@ class TestAcceptance(TestCase):
         context = {
             'prefix': '/root', 'goodbyes': [{'text': "Goodbye", 'url': "goodbye"}]}
         def link(this, options, prefix):
-            return u"<a href='" + unicode(prefix) + u"/" + this['url'] + u"'>" + unicode(options['fn'](this)) + u"</a>"
+            return u"<a href='" + str_class(prefix) + u"/" + this['url'] + u"'>" + str_class(options['fn'](this)) + u"</a>"
         self.assertEqual(u"<a href='/root/goodbye'>Goodbye</a>",
             render(template, context, helpers={'link': link}))
 
@@ -282,7 +279,7 @@ class TestAcceptance(TestCase):
         template = u"<ul>{{#people}}<li>"\
             u"{{#link}}{{name}}{{/link}}</li>{{/people}}</ul>"
         def link(this, options):
-            return strlist(('<a href="/people/', unicode(this['id']), '">', options['fn'](this), '</a>'))
+            return strlist(('<a href="/people/', str_class(this['id']), '">', options['fn'](this), '</a>'))
         context = {"people": [
             {"name": "Alan", "id": 1},
             {"name": "Yehuda", "id": 2}
@@ -301,14 +298,14 @@ class TestAcceptance(TestCase):
         context = {'yehuda': {'name': "Yehuda"}}
         expected = u"<form><p>Yehuda</p></form>"
         def form(this, options, context):
-            return "<form>" + unicode(options['fn'](context)) + '</form>'
+            return "<form>" + str_class(options['fn'](context)) + '</form>'
         helpers = {'form': form}
         self.assertEqual(expected, render(template, context, helpers=helpers))
 
     def test_block_helper_passing_a_complex_path_context(self):
         source = u"{{#form yehuda/cat}}<p>{{name}}</p>{{/form}}"
         def form(this, options, context):
-            return u"<form>" + unicode(options['fn'](context)) + u"</form>"
+            return u"<form>" + str_class(options['fn'](context)) + u"</form>"
         context = {'yehuda': {'name': "Yehuda", 'cat': {'name': "Harold"}}}
         self.assertEqual("<form><p>Harold</p></form>",
             render(source, context, helpers={'form': form}))
@@ -319,9 +316,9 @@ class TestAcceptance(TestCase):
         def link(this, options):
             return (
                 "<a href='" + this['name'] + "'>" +
-                unicode(options['fn'](this)) + "</a>")
+                str_class(options['fn'](this)) + "</a>")
         def form(this, options, context):
-            return "<form>" + unicode(options['fn'](context)) + "</form>"
+            return "<form>" + str_class(options['fn'](context)) + "</form>"
         self.assertEqual(
             "<form><p>Yehuda</p><a href='Yehuda'>Hello</a></form>",
             render(source, {'yehuda': {'name': "Yehuda"}}, helpers={
@@ -343,12 +340,12 @@ class TestAcceptance(TestCase):
                 out = "<ul>"
                 for thing in context:
                     out += "<li>"
-                    out += unicode(options['fn'](thing))
+                    out += str_class(options['fn'](thing))
                     out += "</li>"
                 out += "</ul>"
                 return out
             else:
-                return "<p>" + unicode(options['inverse'](this)) + "</p>"
+                return "<p>" + str_class(options['inverse'](this)) + "</p>"
         context = {'people': [{'name': "Alan"}, {'name': "Yehuda"}]}
         empty = {'people': []}
         rootMessage = {'people': [], 'message': "Nobody's here"}
@@ -458,8 +455,8 @@ class TestAcceptance(TestCase):
             self.assertEqual(True, bool1)
             self.assertEqual(False, bool2)
             self.assertEqual(12, times)
-            return ("Hello " + param + " " + unicode(times) + " times: " +
-                unicode(bool1) + " " + unicode(bool2))
+            return ("Hello " + param + " " + str_class(times) + " times: " +
+                str_class(bool1) + " " + str_class(bool2))
         helpers = dict(hello=hello)
         self.assertEqual("Message: Hello world 12 times: True False",
             render(source, {}, helpers=helpers))
@@ -506,7 +503,7 @@ class TestAcceptance(TestCase):
         reference = "testing 1, 2, 3"
         instance = strlist([reference])
         self.assertIsInstance(instance, strlist)
-        self.assertEqual(unicode(reference), unicode(instance))
+        self.assertEqual(str_class(reference), str_class(instance))
 
     def test_if_a_context_is_not_found_helperMissing_is_used(self):
         def link_to(this, helpername, context):
@@ -527,7 +524,7 @@ class TestAcceptance(TestCase):
         source = u"{{{typeof hello}}}"
         self.assertEqual("<type 'NoneType'>" if sys.version_info < (3,) else "<class 'NoneType'>",
             render(source, {}, helpers=dict(
-                typeof=lambda this, arg: unicode(type(arg)), hello=lambda this: "foo"),
+                typeof=lambda this, arg: str_class(type(arg)), hello=lambda this: "foo"),
             knownHelpers=set(['typeof']), knownHelpersOnly=True))
 
     def test_Builtin_helpers_available_in_knownHelpers_only_mode(self):
@@ -700,7 +697,7 @@ class TestAcceptance(TestCase):
     def test_block_helpers_can_take_an_optional_hash(self):
         source = u'{{#goodbye cruel="CRUEL" times=12}}world{{/goodbye}}'
         def goodbye(this, options, times, cruel):
-            return "GOODBYE " + cruel + " " + unicode(options['fn'](this)) + " " + str(times) + " TIMES"
+            return "GOODBYE " + cruel + " " + str_class(options['fn'](this)) + " " + str(times) + " TIMES"
         helpers = {'goodbye': goodbye}
         self.assertEqual("GOODBYE CRUEL world 12 TIMES",
             render(source, {}, helpers=helpers))
@@ -708,7 +705,7 @@ class TestAcceptance(TestCase):
     def test_block_helpers_can_take_an_optional_hash_with_booleans(self):
         def goodbye(this, options, cruel, _print):
             if _print is True:
-                return "GOODBYE " + cruel + " " + unicode(options['fn'](this))
+                return "GOODBYE " + cruel + " " + str_class(options['fn'](this))
             elif _print is False:
                 return "NOT PRINTING"
             else:

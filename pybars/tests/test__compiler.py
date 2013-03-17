@@ -16,13 +16,10 @@
 """Tests for the pybars compiler."""
 
 try:
-    unicode
+    str_class = unicode
 except NameError:
     # Python 3 support
-    def unicode(string=''):
-        if isinstance(string, list):
-            string = u"".join(string)
-        return str(string)
+    str_class = str
 
 from testtools import TestCase
 
@@ -40,7 +37,7 @@ def render(source, context, helpers=None, partials=None, knownHelpers=None,
     else:
         real_partials = dict((key, compiler.compile(value))
             for key, value in list(partials.items()))
-    return unicode(template(context, helpers=helpers, partials=real_partials))
+    return str_class(template(context, helpers=helpers, partials=real_partials))
 
 
 class TestCompiler(TestCase):
@@ -71,7 +68,7 @@ class TestCompiler(TestCase):
         self.assertEqual(
             u"<ul><li>Yehuda Katz</li><li>Carl Lerche</li>"\
             "<li>Alan Johnson</li></ul>",
-            unicode(rendered))
+            str_class(rendered))
 
     def test_escapes(self):
         self.assertEqual(u"""\
