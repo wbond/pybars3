@@ -31,7 +31,80 @@ See https://bugs.launchpad.net/bugs/928486
 from itertools import count
 import linecache
 import sys
+import os
+import tokenize
 from types import ModuleType as module
+
+if sys.version_info >= (3,):
+    def updatecache(filename, module_globals=None):
+        """Update a cache entry and return its list of lines.
+        If something's wrong, print a message, discard the cache entry,
+        and return an empty list."""
+
+        if filename in linecache.cache:
+            del linecache.cache[filename]
+        if not filename or (filename.startswith('<') and filename.endswith('>')):
+            return []
+
+        fullname = filename
+        try:
+            stat = os.stat(fullname)
+        except OSError:
+            basename = filename
+
+            # Try for a __loader__, if available
+            if module_globals and '__loader__' in module_globals:
+                name = module_globals.get('__name__')
+                loader = module_globals['__loader__']
+                get_source = getattr(loader, 'get_source', None)
+
+                if name and get_source:
+                    try:
+                        data = get_source(name)
+                    except (ImportError, IOError):
+                        pass
+                    else:
+                        if data is None:
+                            # No luck, the PEP302 loader cannot find the source
+                            # for this module.
+                            return []
+                        linecache.cache[filename] = (
+                            len(data), None,
+                            ["%s\n" % line for line in data.splitlines()], fullname
+                        )
+                        return linecache.cache[filename][2]
+
+            # Try looking through the module search path, which is only useful
+            # when handling a relative filename.
+            if os.path.isabs(filename):
+                return []
+
+            for dirname in sys.path:
+                try:
+                    fullname = os.path.join(dirname, basename)
+                except (TypeError, AttributeError):
+                    # Not sufficiently string-like to do anything useful with.
+                    continue
+                try:
+                    stat = os.stat(fullname)
+                    break
+                except os.error:
+                    pass
+            else:
+                return []
+        try:
+            with tokenize.open(fullname) as fp:
+                lines = fp.readlines()
+        except IOError:
+            return []
+        if lines and not lines[-1].endswith('\n'):
+            lines[-1] += '\n'
+        size, mtime = stat.st_size, stat.st_mtime
+        linecache.cache[filename] = size, mtime, lines, fullname
+        return lines
+
+    linecache.updatecache = updatecache
+
 
 class GeneratedCodeLoader(object):
     """

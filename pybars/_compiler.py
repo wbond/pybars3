@@ -30,6 +30,18 @@ import re
 import pybars
 from pymeta.grammar import OMeta
 from pybars.frompymeta import moduleFromSource
+try:
+    unicode
+    str_class = unicode
+except NameError:
+    # Python 3 support
+    def unicode(string=''):
+        if isinstance(string, list):
+            string = u"".join(string)
+        return str(string)
+    str_class = str
+
+import collections
 
 # preserve reference to the builtin compile.
 _compile = compile
@@ -107,8 +119,8 @@ partial ::= ["partial" <anything>:symbol [<arg>*:arguments]] => builder.add_part
 path ::= [ "path" [<pathseg>:segment]] => ("simple", segment)
  | [ "path" [<pathseg>+:segments] ] => ("complex", u'resolve(context, "'  + u'","'.join(segments) + u'")' )
 simplearg ::= [ "path" [<pathseg>+:segments] ] => u'resolve(context, "'  + u'","'.join(segments) + u'")'
-    | [ "literalparam" <anything>:value ] => unicode(value)
-arg ::= [ "kwparam" <anything>:symbol <simplearg>:a ] => unicode(symbol) + '=' + a
+    | [ "literalparam" <anything>:value ] => {str_class}(value)
+arg ::= [ "kwparam" <anything>:symbol <simplearg>:a ] => {str_class}(symbol) + '=' + a
     | <simplearg>
 pathseg ::= "/" => ''
     | "." => ''
@@ -116,6 +128,7 @@ pathseg ::= "/" => ''
     | "this" => ''
 pathseg ::= <anything>:symbol => u''.join(symbol)
 """
+compile_grammar = compile_grammar.format(str_class=str_class.__name__)
 
 
 class strlist(list):
@@ -126,10 +139,10 @@ class strlist(list):
 
     def grow(self, thing):
         """Make the list longer, appending for unicode, extending otherwise."""
-        if type(thing) == unicode:
+        if type(thing) == str_class:
             self.append(thing)
         elif type(thing) == str:
-            # Ugh. Kill this in 3.
+            # Python 2 only
             self.append(unicode(thing))
         else:
             # Recursively expand to a flat list; may deserve a C accelerator at
@@ -174,6 +187,9 @@ class Scope:
         return default
     __getitem__ = get
 
+    def __str__(self):
+        return str(self.context)
+
     def __unicode__(self):
         return unicode(self.context)
 
@@ -201,7 +217,7 @@ def _each(this, options, context):
 
 
 def _if(this, options, context):
-    if callable(context):
+    if isinstance(context, collections.Callable):
         context = context(this)
     if context:
         return options['fn'](this)
@@ -220,7 +236,7 @@ def _unless(this, options, context):
 
 def _blockHelperMissing(this, options, context):
     # print this, context
-    if callable(context):
+    if isinstance(context, collections.Callable):
         context = context(this)
     if context != u"" and not context:
         return options['inverse'](this)
@@ -348,7 +364,7 @@ class CodeBuilder:
         return arg
 
     def arguments_to_call(self, arguments):
-        params = map(self._lookup_arg, arguments)
+        params = list(map(self._lookup_arg, arguments))
         return u", ".join(params) + ")"
 
     def find_lookup(self, path, path_type, call):
@@ -384,21 +400,23 @@ class CodeBuilder:
                 )
         self._result.grow(u"    if value is None: value = ''\n")
 
-    def add_escaped_expand(self, (path_type, path), arguments):
+    def add_escaped_expand(self, path_type_path, arguments):
+        (path_type, path) = path_type_path
         call = self.arguments_to_call(arguments)
         self.find_lookup(path, path_type, call)
         self._result.grow([
-            u"    if type(value) is not strlist:\n"
-            u"        value = escape(unicode(value))\n"
+            u"    if type(value) is not strlist:\n",
+            u"        value = escape(%s(value))\n" % str_class.__name__,
             u"    result.grow(value)\n"
             ])
 
-    def add_expand(self, (path_type, path), arguments):
+    def add_expand(self, path_type_path, arguments):
+        (path_type, path) = path_type_path
         call = self.arguments_to_call(arguments)
         self.find_lookup(path, path_type, call)
         self._result.grow([
-            u"    if type(value) is not strlist:\n"
-            u"        value = unicode(value)\n"
+            u"    if type(value) is not strlist:\n",
+            u"        value = %s(value)\n" % str_class.__name__,
             u"    result.grow(value)\n"
             ])
 
@@ -455,7 +473,7 @@ class Compiler:
         :param source: The template to compile - should be a unicode string.
         :return: A template ready to run.
         """
-        assert isinstance(source, unicode)
+        assert isinstance(source, str_class)
         tree = self._handlebars(source).apply('template')[0]
         # print source
         # print '-->'

@@ -15,6 +15,15 @@
 
 """Tests for the pybars compiler."""
 
+try:
+    unicode
+except NameError:
+    # Python 3 support
+    def unicode(string=''):
+        if isinstance(string, list):
+            string = u"".join(string)
+        return str(string)
+
 from testtools import TestCase
 
 from pybars import Compiler
@@ -30,7 +39,7 @@ def render(source, context, helpers=None, partials=None, knownHelpers=None,
         real_partials = None
     else:
         real_partials = dict((key, compiler.compile(value))
-            for key, value in partials.items())
+            for key, value in list(partials.items()))
     return unicode(template(context, helpers=helpers, partials=real_partials))
 
 

@@ -23,6 +23,17 @@
 from testtools import TestCase
 from testtools.matchers import Equals
 
+try:
+    unicode
+except NameError:
+    # Python 3 support
+    def unicode(string=''):
+        if isinstance(string, list):
+            string = u"".join(string)
+        return str(string)
+
+import sys
+
 import pybars
 from pybars import (
     Compiler,
@@ -514,7 +525,7 @@ class TestAcceptance(TestCase):
 
     def test_Unknown_helper_in_knownHelpers_only_mode_should_be_passed_as_undefined(self):
         source = u"{{{typeof hello}}}"
-        self.assertEqual("<type 'NoneType'>",
+        self.assertEqual("<type 'NoneType'>" if sys.version_info < (3,) else "<class 'NoneType'>",
             render(source, {}, helpers=dict(
                 typeof=lambda this, arg: unicode(type(arg)), hello=lambda this: "foo"),
             knownHelpers=set(['typeof']), knownHelpersOnly=True))
