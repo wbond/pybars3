@@ -19,7 +19,7 @@
 from distutils.core import setup
 import os.path
 
-description = file(
+description = open(
         os.path.join(os.path.dirname(__file__), 'README'), 'rb').read()
 
 setup(name="pybars",
