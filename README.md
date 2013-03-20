@@ -79,23 +79,23 @@ Python. For instance, `print` as a keyword argument will fail.
 
 ## Implementation Notes
 
-Templates with literal boolean arguments like '{{foo true}}' will have the
-argument mapped to Python's True or False as appropriate.
+Templates with literal boolean arguments like `{{foo true}}` will have the
+argument mapped to Python's `True` or `False` as appropriate.
 
 For efficiency, rather that passing strings round, pybars passes a subclass of
-list ('liststr') which has a __unicode__ implementation that returns
-u"".join(self). Template helpers can return any of list, tuple, unicode or
-liststr instances. liststr exists to avoid quadratic overheads in string
+list (`liststr`) which has a `__unicode__` implementation that returns
+`u"".join(self)`. Template helpers can return any of `list`, `tuple`, `unicode` or
+`liststr` instances. `liststr` exists to avoid quadratic overheads in string
 processing during template rendering. Helpers that are in inner loops *should*
-return list or liststr for the same reason.
+return `list` or `liststr` for the same reason.
 
-**NOTE** The liststr takes the position of SafeString in the js implementation:
-when returning a liststr it will not be escaped, even in a regular {{}}
+**NOTE** The `liststr` takes the position of SafeString in the js implementation:
+when returning a liststr it will not be escaped, even in a regular `{{}}`
 expansion.
 
-The 'data' facility from the JS implementation has not been ported at this
+The `data` facility from the JS implementation has not been ported at this
 point, if there is demand for it it would be quite easy to add. Similarly
-the stringParams feature has not been ported - quote anything you wish to force
+the `stringParams` feature has not been ported - quote anything you wish to force
 to a string in a helper call.
 
 ## Dependencies
