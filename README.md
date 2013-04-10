@@ -83,15 +83,33 @@ Templates with literal boolean arguments like `{{foo true}}` will have the
 argument mapped to Python's `True` or `False` as appropriate.
 
 For efficiency, rather that passing strings round, pybars passes a subclass of
-list (`liststr`) which has a `__unicode__` implementation that returns
+list (`strlist`) which has a `__unicode__` implementation that returns
 `u"".join(self)`. Template helpers can return any of `list`, `tuple`, `unicode` or
-`liststr` instances. `liststr` exists to avoid quadratic overheads in string
+`strlist` instances. `strlist` exists to avoid quadratic overheads in string
 processing during template rendering. Helpers that are in inner loops *should*
-return `list` or `liststr` for the same reason.
+return `list` or `strlist` for the same reason.
 
-**NOTE** The `liststr` takes the position of SafeString in the js implementation:
-when returning a liststr it will not be escaped, even in a regular `{{}}`
+**NOTE** The `strlist` takes the position of SafeString in the js implementation:
+when returning a strlist it will not be escaped, even in a regular `{{}}`
 expansion.
+
+```python
+import pybars
+
+compiler = Compiler()
+
+# Compile the template
+source = u"{{bold "Will"}}"
+template = compiler.compile(source)
+
+def _bold(this, options, item):
+    return pybars.strlist(['<strong>', item, '</strong>'])
+helpers = {'bold': _bold}
+
+output = template({}, helpers=helpers)
+
+print(output)
+```
 
 The `data` facility from the JS implementation has not been ported at this
 point, if there is demand for it it would be quite easy to add. Similarly
