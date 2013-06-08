@@ -96,18 +96,16 @@ expansion.
 ```python
 import pybars
 
-compiler = Compiler()
+source = u"{{bold name}}"
 
-# Compile the template
-source = u"{{bold "Will"}}"
+compiler = pybars.Compiler()
 template = compiler.compile(source)
 
-def _bold(this, options, item):
-    return pybars.strlist(['<strong>', item, '</strong>'])
+def _bold(this, name):
+    return pybars.strlist(['<strong>', name, '</strong>'])
 helpers = {'bold': _bold}
 
-output = template({}, helpers=helpers)
-
+output = template({'name': 'Will'}, helpers=helpers)
 print(output)
 ```
 
