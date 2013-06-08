@@ -14,13 +14,13 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # GNU Lesser General Public License version 3 (see the file LICENSE).
-  
+
 
 from distutils.core import setup
 import os.path
 
 description = open(
-        os.path.join(os.path.dirname(__file__), 'README'), 'r').read()
+        os.path.join(os.path.dirname(__file__), 'README.md'), 'r').read()
 
 setup(name="pybars",
       version="0.0.5",
