@@ -82,9 +82,11 @@ boolean ::= <false>|<true>
 false ::= 'f' 'a' 'l' 's' 'e' => False
 true ::= 't' 'r' 'u' 'e' => True
 notquote ::= <escapedquote> | (~('"') <anything>)
+notclosebracket ::= (~(']') <anything>)
 escapedquote ::= '\\' '"' => '\\"'
 symbol ::=  ~<alt_inner> '['? (<letterOrDigit>|'-'|'@')+:symbol ']'? => u''.join(symbol)
-pathseg ::= <symbol>
+pathseg ::= '[' <notclosebracket>+:symbol ']' => u''.join(symbol)
+    | <symbol>
     | '/' => u''
     | ('.' '.' '/') => u'__parent'
     | '.' => u''

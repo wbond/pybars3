@@ -88,3 +88,8 @@ class TestCompiler(TestCase):
             'title': u"All about <p> Tags",
             'body': u"<p>This is a post about &lt;p&gt; tags</p>",
             }))
+
+    def test_segment_literal_notation(self):
+        self.assertEqual(u"""hello""",
+            render(u"""{{foo.[bar baz]}}""",
+                {'foo': {'bar baz': 'hello' }}))
