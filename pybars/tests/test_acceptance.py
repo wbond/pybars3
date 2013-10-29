@@ -600,6 +600,12 @@ class TestAcceptance(TestCase):
         self.assertEqual(u"cruel world!",
             render(source, {'goodbye': lambda this: None, 'world': "world"}))
 
+    def test_list_context(self):
+        source = u"{{#each .}}{{#each .}}{{text}}! {{/each}}cruel world!{{/each}}"
+        context = [[{'text': "goodbye"}, {'text': "Goodbye"}, {'text': "GOODBYE"}]]
+        self.assertEqual("goodbye! Goodbye! GOODBYE! cruel world!",
+            render(source, context))
+
     def test_each(self):
         source = u"{{#each goodbyes}}{{text}}! {{/each}}cruel {{world}}!"
         context = {'goodbyes':

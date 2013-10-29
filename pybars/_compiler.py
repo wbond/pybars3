@@ -193,10 +193,11 @@ class Scope:
             return self.key
         if name == 'this':
             return self.context
-        result = self.context.get(name, self)
-        if result is not self:
-            return result
-        return default
+
+        try:
+            return self.context[name]
+        except KeyError:
+            return default
     __getitem__ = get
 
     # Added for Python 3
