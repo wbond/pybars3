@@ -224,16 +224,14 @@ def resolve(context, *segments):
 
 def _each(this, options, context):
     result = strlist()
-    i = 0
-    for local_context in context:
-        kwargs = {}
-        if isinstance(context, list):
-            kwargs['index'] = i
-        if isinstance(context, dict):
-            kwargs['key'] = local_context
-        scope = Scope(local_context, this, **kwargs)
-        result.grow(options['fn'](scope))
-        i += 1
+    if isinstance(context, dict):
+        for key, local_context in context.items():
+            scope = Scope(local_context, this, key=key)
+            result.grow(options['fn'](scope))
+    else:
+        for index, local_context in enumerate(context):
+            scope = Scope(local_context, this, index=index)
+            result.grow(options['fn'](scope))
     return result
 
 

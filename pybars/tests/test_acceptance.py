@@ -610,6 +610,41 @@ class TestAcceptance(TestCase):
         self.assertEqual("cruel world!",
             render(source, {'goodbyes': [], 'world': "world"}))
 
+    def test_each_with_object_and_key(self):
+        source = u"{{#each goodbyes}}{{@key}}. {{text}}! {{/each}}cruel {{world}}!"
+        context = {
+            'goodbyes': {
+                "<b>#1</b>": {'text': "goodbye"},
+                2: {'text': "GOODBYE"}
+            }, 'world': "world"};
+        self.assertIn(
+            render(source, context),
+
+            # Depending on iteration order, one will come before the other.
+            (
+                "&lt;b&gt;#1&lt;/b&gt;. goodbye! 2. GOODBYE! cruel world!",
+                "2. GOODBYE! &lt;b&gt;#1&lt;/b&gt;. goodbye! cruel world!"
+            )
+        )
+
+    def test_each_with_index(self):
+        source = u"{{#each goodbyes}}{{@index}}. {{text}}! {{/each}}cruel {{world}}!"
+        context = {
+            'goodbyes': [{'text': "goodbye"}, {'text': "Goodbye"}, {'text': "GOODBYE"}],
+            'world': "world"}
+        self.assertEqual(
+            "0. goodbye! 1. Goodbye! 2. GOODBYE! cruel world!",
+            render(source, context))
+
+    def test_each_with_nested_index(self):
+        source = u"{{#each goodbyes}}{{@index}}. {{text}}! {{#each ../goodbyes}}{{@index}} {{/each}}After {{@index}} {{/each}}{{@index}}cruel {{world}}!"
+        context = {
+            'goodbyes': [{'text': "goodbye"}, {'text': "Goodbye"}, {'text': "GOODBYE"}],
+            'world': "world"}
+        self.assertEqual(
+            "0. goodbye! 0 1 2 After 0 1. Goodbye! 0 1 2 After 1 2. GOODBYE! 0 1 2 After 2 cruel world!",
+            render(source, context))
+
     def test_log(self):
         source = u"{{log blah}}"
         context = {'blah': "whee"}
