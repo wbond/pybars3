@@ -223,16 +223,39 @@ def resolve(context, *segments):
     return context
 
 
+def is_iterable(obj):
+    try:
+        iter(obj)
+    except TypeError:
+        return False
+    else:
+        return True
+
+def is_dictlike(obj):
+    # Check for the presence of items
+    if not hasattr(obj, 'items'):
+        return False
+
+    # Check whether items is iterable
+    # NOTE: In Python 2, this generates a list that never gets used;
+    #       wasteful. Address later, maybe with six.
+    return is_iterable(obj.items())
+
 def _each(this, options, context):
+    if not context:
+        return options['inverse'](this)
+
     result = strlist()
-    if isinstance(context, dict):
+    if is_dictlike(context):
         for key, local_context in context.items():
             scope = Scope(local_context, this, key=key)
             result.grow(options['fn'](scope))
-    else:
+    elif is_iterable(context):
         for index, local_context in enumerate(context):
             scope = Scope(local_context, this, index=index)
             result.grow(options['fn'](scope))
+    else:
+        return options['inverse'](this)
     return result
 
 
