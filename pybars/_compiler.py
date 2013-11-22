@@ -74,15 +74,17 @@ block_inner ::= <spaces> <symbol>:s <arguments>:args <spaces> <finish>
 alt_inner ::= <spaces> ('^' | 'e' 'l' 's' 'e') <spaces> <finish>
 partial ::= <start> '>' <block_inner>:i => ('partial',) + i
 path ::= ~('/') <pathseg>+:segments => ('path', segments)
-kwliteral ::= <symbol>:s '=' (<literal>|<path>):v => ('kwparam', s, v)
+kwliteral ::= <safesymbol>:s '=' (<literal>|<path>):v => ('kwparam', s, v)
 literal ::= (<string>|<integer>|<boolean>):thing => ('literalparam', thing)
 string ::= '"' <notquote>*:ls '"' => u'"' + u''.join(ls) + u'"'
 integer ::= <digit>+:ds => int(''.join(ds))
 boolean ::= <false>|<true>
 false ::= 'f' 'a' 'l' 's' 'e' => False
 true ::= 't' 'r' 'u' 'e' => True
-notquote ::= <escapedquote> | (~('"') <anything>)
+notquote ::= <escapedquote> | (~('\\' | '"' | '\n' | '\r') <anything>)
 escapedquote ::= '\\' '"' => '\\"'
+    | '\\' '\\' => '\\\\'
+safesymbol ::=  ~<alt_inner> '['? (<letter>|'_'):start (<letterOrDigit>|'_')+:symbol ']'? => start + u''.join(symbol)
 symbol ::=  ~<alt_inner> '['? (<letterOrDigit>|'-'|'@')+:symbol ']'? => u''.join(symbol)
 pathseg ::= <symbol>
     | '/' => u''
