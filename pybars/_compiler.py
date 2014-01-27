@@ -225,12 +225,13 @@ def resolve(context, *segments):
 def _each(this, options, context):
     result = strlist()
     i = 0
-    for local_context in context:
+    for local_context in iter(context):
         kwargs = {}
         if isinstance(context, list):
             kwargs['index'] = i
         if isinstance(context, dict):
             kwargs['key'] = local_context
+            local_context = context.get(local_context)
         scope = Scope(local_context, this, **kwargs)
         result.grow(options['fn'](scope))
         i += 1
