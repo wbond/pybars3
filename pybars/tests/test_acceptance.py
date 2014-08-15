@@ -627,6 +627,21 @@ class TestAcceptance(TestCase):
         self.assertEqual("cruel world!",
             render(source, {'goodbyes': [], 'world': "world"}))
 
+    def test_each_of_None(self):
+        self.assertEqual(u"Goodbye cruel world!",
+            render(u"Goodbye {{^each things}}cruel{{/each}} world!",
+                {'things': None}))
+
+    def test_each_of_empty_list(self):
+        self.assertEqual(u"Goodbye cruel world!",
+            render(u"Goodbye {{#each things}}happy {{^}}cruel {{/each}}world!",
+                {'things': []}))
+
+    def test_each_of_truthy_non_iterable_object(self):
+        self.assertEqual(u"Goodbye cruel world!",
+            render(u"Goodbye {{#each things}}happy {{^}}cruel {{/each}}world!",
+                {'things': True}))
+
     def test_each_with_object_and_key(self):
         source = u"{{#each goodbyes}}{{@key}}. {{text}}! {{/each}}cruel {{world}}!"
         context = {
