@@ -178,11 +178,13 @@ sentinel = object()
 
 class Scope:
 
-    def __init__(self, context, parent, index=None, key=None):
+    def __init__(self, context, parent, index=None, key=None, first=None, last=None):
         self.context = context
         self.parent = parent
         self.index = index
         self.key = key
+        self.first = first
+        self.last = last
 
     def get(self, name, default=None):
         if name == '__parent':
@@ -191,6 +193,10 @@ class Scope:
             return self.index
         if name == '@key' and self.key is not None:
             return self.key
+        if name == '@first' and self.first is not None:
+            return self.first
+        if name == '@last' and self.last is not None:
+            return self.last
         if name == 'this':
             return self.context
         result = self.context.get(name, self)
@@ -225,12 +231,19 @@ def resolve(context, *segments):
 def _each(this, options, context):
     result = strlist()
     i = 0
+    if isinstance(context, list) or isinstance(context, dict):
+        context_length = len(context)
+    else:
+        context_length = None
     for local_context in context:
         kwargs = {}
         if isinstance(context, list):
             kwargs['index'] = i
-        if isinstance(context, dict):
+        elif isinstance(context, dict):
             kwargs['key'] = local_context
+        kwargs['first'] = (i==0)
+        if context_length is not None:
+            kwargs['last'] = (i==(context_length-1))
         scope = Scope(local_context, this, **kwargs)
         result.grow(options['fn'](scope))
         i += 1
