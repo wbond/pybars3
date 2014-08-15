@@ -199,6 +199,8 @@ class Scope:
             return self.last
         if name == 'this':
             return self.context
+        if isinstance(name, str) and hasattr(self.context, name):
+            return getattr(self.context, name)
 
         try:
             return self.context[name]

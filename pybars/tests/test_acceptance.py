@@ -606,6 +606,17 @@ class TestAcceptance(TestCase):
         self.assertEqual("goodbye! Goodbye! GOODBYE! cruel world!",
             render(source, context))
 
+    def test_context_with_attrs(self):
+        class TestContext():
+            @property
+            def text(self):
+                return 'Goodbye'
+
+        source = u"{{#each .}}{{text}}! {{/each}}cruel world!"
+        context = [TestContext()]
+        self.assertEqual("Goodbye! cruel world!",
+            render(source, context))
+
     def test_each(self):
         source = u"{{#each goodbyes}}{{text}}! {{/each}}cruel {{world}}!"
         context = {'goodbyes':
