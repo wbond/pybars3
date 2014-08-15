@@ -241,6 +241,7 @@ def _each(this, options, context):
             kwargs['index'] = i
         elif isinstance(context, dict):
             kwargs['key'] = local_context
+            local_context = context.get(local_context)
         kwargs['first'] = (i==0)
         if context_length is not None:
             kwargs['last'] = (i==(context_length-1))
