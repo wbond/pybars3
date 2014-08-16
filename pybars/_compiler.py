@@ -208,6 +208,9 @@ class Scope:
             return default
     __getitem__ = get
 
+    def __len__(self):
+        return len(self.context)
+
     # Added for Python 3
     def __str__(self):
         return str(self.context)
@@ -233,24 +236,39 @@ def resolve(context, *segments):
 
 def _each(this, options, context):
     result = strlist()
-    i = 0
-    if isinstance(context, list) or isinstance(context, dict):
-        context_length = len(context)
-    else:
-        context_length = None
-    for local_context in context:
-        kwargs = {}
-        if isinstance(context, list):
-            kwargs['index'] = i
-        elif isinstance(context, dict):
-            kwargs['key'] = local_context
-            local_context = context.get(local_context)
-        kwargs['first'] = (i==0)
-        if context_length is not None:
-            kwargs['last'] = (i==(context_length-1))
-        scope = Scope(local_context, this, **kwargs)
+
+    # All sequences in python have a length
+    try:
+        last_index = len(context) - 1
+
+        # If there are no items, we want to trigger the else clause
+        if last_index < 0:
+            raise IndexError()
+
+    except (TypeError, IndexError) as e:
+        return options['inverse'](this)
+
+    # We use the presence of a keys method to determine if the
+    # key attribute should be passed to the block handler
+    has_keys = hasattr(context, 'keys')
+
+    index = 0
+    for value in context:
+        kwargs = {
+            'index': index,
+            'first': index == 0,
+            'last': index == last_index
+        }
+
+        if has_keys:
+            kwargs['key'] = value
+            value = context[value]
+
+        scope = Scope(value, this, **kwargs)
         result.grow(options['fn'](scope))
-        i += 1
+
+        index += 1
+
     return result
 
 
