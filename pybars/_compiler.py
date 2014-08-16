@@ -174,6 +174,17 @@ def escape(something, _escape_re=_escape_re, substitute=substitute):
     return _escape_re.sub(substitute, something)
 
 
+def pick(context, name, default=None):
+    if isinstance(name, str) and hasattr(context, name):
+        return getattr(context, name)
+    if hasattr(context, 'get'):
+        return context.get(name)
+    try:
+        return context[name]
+    except (KeyError, TypeError):
+        return default
+
+
 sentinel = object()
 
 class Scope:
@@ -199,13 +210,7 @@ class Scope:
             return self.last
         if name == 'this':
             return self.context
-        if isinstance(name, str) and hasattr(self.context, name):
-            return getattr(self.context, name)
-
-        try:
-            return self.context[name]
-        except KeyError:
-            return default
+        return pick(self.context, name, default)
     __getitem__ = get
 
     def __len__(self):
@@ -230,7 +235,7 @@ def resolve(context, *segments):
             offset = int(segment)
             context = context[offset]
         else:
-            context = context.get(segment)
+            context = pick(context, segment)
     return context
 
 
