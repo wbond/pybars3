@@ -234,6 +234,8 @@ def resolve(context, *segments):
         if type(context) in (list, tuple):
             offset = int(segment)
             context = context[offset]
+        elif isinstance(context, Scope):
+            context = context.get(segment)
         else:
             context = pick(context, segment)
     return context
