@@ -218,6 +218,14 @@ class TestAcceptance(TestCase):
             "goodbye cruel Alan! Goodbye cruel Alan! GOODBYE cruel Alan! ",
             render(source, context))
 
+    def test_parent_lookup(self):
+        source = u"{{#goodbyes}}{{text}} cruel {{@_parent.name}}! {{/goodbyes}}"
+        context = {'name': "Alan", 'goodbyes': [
+            {'text': "goodbye"}, {'text': "Goodbye"}, {'text': "GOODBYE"}]}
+        self.assertEqual(
+            "goodbye cruel Alan! Goodbye cruel Alan! GOODBYE cruel Alan! ",
+            render(source, context))
+
     def test_helper_with_complex_lookup(self):
         template = u"{{#goodbyes}}{{{link ../prefix}}}{{/goodbyes}}"
         context = {

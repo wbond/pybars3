@@ -86,7 +86,7 @@ escapedquote ::= '\\' '"' => '\\"'
 symbol ::=  ~<alt_inner> '['? (<letterOrDigit>|'-'|'@')+:symbol ']'? => u''.join(symbol)
 pathseg ::= <symbol>
     | '/' => u''
-    | ('.' '.' '/') => u'__parent'
+    | ('.' '.' '/') => u'@_parent'
     | '.' => u''
 pathfinish :expected ::= <start> '/' <path>:found ?(found == expected) <finish>
 symbolfinish :expected ::= <start> '/' <symbol>:found ?(found == expected) <finish>
@@ -201,7 +201,7 @@ class Scope:
     def get(self, name, default=None):
         if name == '@root':
             return self.root
-        if name == '__parent':
+        if name == '@_parent':
             return self.parent
         if name == '@index' and self.index is not None:
             return self.index
@@ -348,7 +348,7 @@ class CodeBuilder:
     def start(self):
         self.stack.append((strlist(), {}))
         self._result, self._locals = self.stack[-1]
-        # Context may be a user hash or a Scope (which injects '__parent' to
+        # Context may be a user hash or a Scope (which injects '@_parent' to
         # implement .. lookups). The JS implementation uses a vector of scopes
         # and then interprets a linear walk-up, which is why there is a
         # disabled test showing arbitrary complex path manipulation: the scope
