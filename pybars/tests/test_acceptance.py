@@ -262,6 +262,12 @@ class TestAcceptance(TestCase):
         context = {'omg': "OMG!", 'outer': [{'inner': [{'text': "goodbye"}]}]}
         self.assertEqual(u"Goodbye cruel OMG!", render(template, context))
 
+    def test_root_lookup(self):
+        template = u"{{#outer}}Goodbye "\
+            u"{{#inner}}cruel {{@root.top}}{{/inner}}{{/outer}}"
+        context = {'top': "world", 'outer': [{'inner': [{'text': "goodbye"}]}]}
+        self.assertEqual(u"Goodbye cruel world", render(template, context))
+
     def test_block_helper(self):
         template = u"{{#goodbyes}}{{text}}! {{/goodbyes}}cruel {{world}}!"
         self.assertEqual(
@@ -434,6 +440,22 @@ class TestAcceptance(TestCase):
 
     def test_rendering_undefined_partial_throws_an_exception(self):
         self.assertRaises(Exception, render, u"{{> whatever}}", {})
+
+    def test_root_nested_partial(self):
+        source = u"Dudes: {{#dudes}}{{>dude}}{{/dudes}}"
+        dude_src = u"{{name}} {{> url}} "
+        url_src = u"<a href='{{url}}' target='{{@root.target}}'>{{url}}</a>"
+        partials = {'dude': dude_src, 'url': url_src}
+        context = {
+            'target': '_blank',
+            'dudes': [
+                {'name': "Yehuda", 'url': "http://yehuda"},
+                {'name': "Alan", 'url': "http://alan"}
+                ]}
+        self.assertEqual(
+            "Dudes: Yehuda <a href='http://yehuda' target='_blank'>http://yehuda</a>"
+            " Alan <a href='http://alan' target='_blank'>http://alan</a> ",
+            render(source, context, partials=partials))
 
     def test_GH_14_a_partial_preceding_a_selector(self):
         source = u"Dudes: {{>dude}} {{another_dude}}"
