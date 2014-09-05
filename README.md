@@ -6,15 +6,40 @@ handlebars.js.
 ##Installation
 
 This Python 3 fork of pybars requires [pymeta](https://launchpad.net/pymeta)
-and [testtools](https://github.com/testing-cabal/testtools) that also run on
-Python 3. Currently this requires installing custom forks.
+that also runs on Python 3. Currently this requires installing a custom fork.
 
 ```bash
-pip install git+https://github.com/wbond/testtools
 pip install git+https://github.com/wbond/pymeta
 
 pip install git+https://github.com/wbond/pybars
 ```
+
+## Handlebars.js Compatibility
+
+This is somewhat of a side-project of mine (@wbond) that is maintained for
+almost purely pragmatic reasons. I want to share templates between the server
+and client-side, and I need something more powerful than Mustache.
+
+So, with that information, you should realize that the code is probably messy,
+that I am certain there are bugs, and select features from different versions
+of Handlebars are ported as I or other contributors need them.
+
+Here is a partial list of features that are supported:
+
+ - `@root` root data accesor (Handlebars 2.0)
+ - `@_parent` parent scope accesor (Handlebars 2.0)
+ - `../` parent scope accessor
+ - `@index`, `@key` (Handlebars 1.0, 1.2)
+ - `@first` and `@last` data element in the `#each` helper (Handlebars 1.1)
+
+Features not currently implemented:
+
+ - Complex paths (`../name/../name`)
+ - Subexpresions (Handlebars 1.3)
+ - Whitespace control, `{{var~}}` (Handlebars 1.1)
+ - Lines containing old block statements and whitespace are not removed (Handlebars 2.0)
+
+Feel free to jump in with issues or pull requests.
 
 ## Usage
 
