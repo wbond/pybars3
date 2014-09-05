@@ -5,7 +5,7 @@ handlebars.js.
 
 ##Installation
 
-This Python 3 fork of pybars requires [pymeta](https://launchpad.com/pymeta)
+This Python 3 fork of pybars requires [pymeta](https://launchpad.net/pymeta)
 and [testtools](https://github.com/testing-cabal/testtools) that also run on
 Python 3. Currently this requires installing custom forks.
 
