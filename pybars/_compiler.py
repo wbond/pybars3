@@ -189,10 +189,12 @@ sentinel = object()
 
 class Scope:
 
-    def __init__(self, context, parent, root, index=None, key=None, first=None, last=None):
+    def __init__(self, context, parent, root, overrides=None, index=None, key=None, first=None, last=None):
         self.context = context
         self.parent = parent
         self.root = root
+        # Must be dict of keys and values
+        self.overrides = overrides
         self.index = index
         self.key = key
         self.first = first
@@ -213,6 +215,8 @@ class Scope:
             return self.last
         if name == 'this':
             return self.context
+        if self.overrides and name in self.overrides:
+            return self.overrides[name]
         return pick(self.context, name, default)
     __getitem__ = get
 
@@ -510,14 +514,33 @@ class CodeBuilder:
             ])
 
     def add_partial(self, symbol, arguments):
+        arg = ""
+
+        overrides = None
+        positional_args = 0
         if arguments:
-            assert len(arguments) == 1, arguments
-            arg = arguments[0]
-        else:
-            arg = ""
+            for argument in arguments:
+                kwmatch = re.match('(\w+)=(.+)$', argument)
+                if kwmatch:
+                    if not overrides:
+                        overrides = {}
+                    overrides[kwmatch.group(1)] = kwmatch.group(2)
+                else:
+                    assert positional_args == 0, positional_args
+                    positional_args += 1
+                    arg = argument
+
+        overrides_literal = 'None'
+        if overrides:
+            overrides_literal = u'{'
+            for key in overrides:
+                overrides_literal += u'"%s": %s, ' % (key, overrides[key])
+            overrides_literal += u'}'
+        self._result.grow([u"    overrides = %s\n" % overrides_literal])
+
         self._result.grow([
             u"    inner = partials['%s']\n" % symbol,
-            u"    scope = Scope(%s, context, root)\n" % self._lookup_arg(arg)])
+            u"    scope = Scope(%s, context, root, overrides=overrides)\n" % self._lookup_arg(arg)])
         self._invoke_template("inner", "scope")
 
 

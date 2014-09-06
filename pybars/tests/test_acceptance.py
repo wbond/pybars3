@@ -431,6 +431,28 @@ class TestAcceptance(TestCase):
         self.assertEqual("Dudes: Yehuda (http://yehuda) Alan (http://alan) ",
             render(source, context, partials={'dude': partial}))
 
+    def test_partials_too_many_args(self):
+        source = u'Dudes: {{>dude dudes "extra"}}'
+        partial = u"{{#this}}{{name}} ({{url}}) {{/this}}"
+        context = {
+            'dudes': [
+                {'name': "Yehuda", 'url': "http://yehuda"},
+                {'name': "Alan", 'url': "http://alan"}
+                ]}
+        self.assertRaises(Exception, render, source, context,
+            partials={'dude': partial})
+
+    def test_partials_kwargs(self):
+        source = u'Dudes: {{#dudes}}{{>dude url="http://example"}}{{/dudes}}'
+        partial = u"{{name}} ({{url}}) "
+        context = {
+            'dudes': [
+                {'name': "Yehuda", 'url': "http://yehuda"},
+                {'name': "Alan", 'url': "http://alan"}
+                ]}
+        self.assertEqual("Dudes: Yehuda (http://example) Alan (http://example) ",
+            render(source, context, partials={'dude': partial}))
+
     def test_partial_in_a_partial(self):
         source = u"Dudes: {{#dudes}}{{>dude}}{{/dudes}}"
         dude_src = u"{{name}} {{> url}} "

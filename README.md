@@ -31,6 +31,7 @@ Here is a partial list of features that are supported:
  - `../` parent scope accessor
  - `@index`, `@key` (Handlebars 1.0, 1.2)
  - `@first` and `@last` data element in the `#each` helper (Handlebars 1.1)
+ - kwargs passed to partials (Handlebars 2.0)
 
 Features not currently implemented:
 
