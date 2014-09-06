@@ -84,7 +84,8 @@ true ::= 't' 'r' 'u' 'e' => True
 notquote ::= <escapedquote> | (~('"') <anything>)
 escapedquote ::= '\\' '"' => '\\"'
 symbol ::=  ~<alt_inner> '['? (<letterOrDigit>|'-'|'@')+:symbol ']'? => u''.join(symbol)
-pathseg ::= <symbol>
+pathseg ::= ('@' '.' '.' '/') => u'@@_parent'
+    | <symbol>
     | '/' => u''
     | ('.' '.' '/') => u'@_parent'
     | '.' => u''
@@ -233,7 +234,18 @@ class Scope:
 
 
 def resolve(context, *segments):
+    carryover_data = False
+
     for segment in segments:
+
+        # Handle @../index syntax by popping the extra @ along the segment path
+        if carryover_data:
+            carryover_data = False
+            segment = u'@%s' % segment
+        if len(segment) > 1 and segment[0:2] == '@@':
+            segment = segment[1:]
+            carryover_data = True
+
         if context is None:
             return None
         if segment in (None, ""):

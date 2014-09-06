@@ -748,6 +748,24 @@ class TestAcceptance(TestCase):
             "0. goodbye! 0 1 2 After 0 1. Goodbye! 0 1 2 After 1 2. GOODBYE! 0 1 2 After 2 cruel world!",
             render(source, context))
 
+    def test_each_with_parent_index(self):
+        source = u"{{#each people}}{{#each foods}}{{../name}}({{@../index}}) likes {{name}}({{@index}}), {{/each}}{{/each}}"
+        context = {
+            'people': [
+                {
+                    'name': 'John',
+                    'foods': [{'name': 'apples'}, {'name': 'pears'}]
+                },
+                {
+                    'name': 'Jane',
+                    'foods': [{'name': 'grapes'}, {'name': 'pineapple'}]
+                }
+            ],
+        }
+        self.assertEqual(
+            "John(0) likes apples(0), John(0) likes pears(1), Jane(1) likes grapes(0), Jane(1) likes pineapple(1), ",
+            render(source, context))
+
     def test_log(self):
         source = u"{{log blah}}"
         context = {'blah': "whee"}
