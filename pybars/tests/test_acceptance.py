@@ -698,6 +698,15 @@ class TestAcceptance(TestCase):
         self.assertEqual("cruel world!",
             render(source, {'goodbyes': [], 'world': "world"}))
 
+    def test_each_this(self):
+        source = u"{{#each name}}{{capitalize this}} {{/each}}"
+        helpers = {'capitalize': lambda this, value: value.upper()}
+        context = {
+            'name': ['John', 'James']
+        }
+        self.assertEqual("JOHN JAMES ",
+            render(source, context, helpers=helpers))
+
     def test_each_of_None(self):
         self.assertEqual(u"Goodbye cruel world!",
             render(u"Goodbye {{^each things}}cruel{{/each}} world!",

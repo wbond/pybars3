@@ -236,6 +236,10 @@ class Scope:
 def resolve(context, *segments):
     carryover_data = False
 
+    # This makes sure that bare "this" paths don't return a Scope object
+    if segments == ('',) and isinstance(context, Scope):
+        return context.get('this')
+
     for segment in segments:
 
         # Handle @../index syntax by popping the extra @ along the segment path
