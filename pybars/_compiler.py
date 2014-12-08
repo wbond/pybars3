@@ -77,7 +77,7 @@ path ::= ~('/') <pathseg>+:segments => ('path', segments)
 kwliteral ::= <symbol>:s '=' (<literal>|<path>):v => ('kwparam', s, v)
 literal ::= (<string>|<integer>|<boolean>):thing => ('literalparam', thing)
 string ::= '"' <notquote>*:ls '"' => u'"' + u''.join(ls) + u'"'
-integer ::= <digit>+:ds => int(''.join(ds))
+integer ::= '-'?:sign <digit>+:ds => int((sign if sign else '') + ''.join(ds))
 boolean ::= <false>|<true>
 false ::= 'f' 'a' 'l' 's' 'e' => False
 true ::= 't' 'r' 'u' 'e' => True

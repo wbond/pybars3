@@ -79,6 +79,14 @@ class TestAcceptance(TestCase):
         self.assertEqual("num: 0",
             render(u"num: {{num1/num2}}", {'num1': {'num2': 0}}))
 
+    def test_negative_int_literal(self):
+        self.assertEqual("str int int",
+            render(u"{{type \"string\"}} {{type 1}} {{type -1}}", None,
+            helpers={'type': lambda s, v: type(v).__name__}))
+        self.assertEqual("string 1 -1",
+            render(u"{{echo \"string\"}} {{echo 1}} {{echo -1}}", None,
+            helpers={'echo': lambda s, v: str(v)}))
+
     def test_newlines(self):
         self.assertThat(u"Alan's\nTest", RendersItself())
         self.assertThat(u"Alan's\rTest", RendersItself())
