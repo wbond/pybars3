@@ -71,8 +71,10 @@ expression ::= <start> '{' <expression_inner>:e '}' => ('expand', ) + e
 escapedexpression ::= <start> <expression_inner>:e => ('escapedexpand', ) + e
 block_inner ::= <spaces> <symbol>:s <arguments>:args <spaces> <finish>
     => (u''.join(s), args)
+partial_inner ::= <spaces> <partialname>:s <arguments>:args <spaces> <finish>
+    => (u''.join(s), args)
 alt_inner ::= <spaces> ('^' | 'e' 'l' 's' 'e') <spaces> <finish>
-partial ::= <start> '>' <block_inner>:i => ('partial',) + i
+partial ::= <start> '>' <partial_inner>:i => ('partial',) + i
 path ::= ~('/') <pathseg>+:segments => ('path', segments)
 kwliteral ::= <symbol>:s '=' (<literal>|<path>):v => ('kwparam', s, v)
 literal ::= (<string>|<integer>|<boolean>):thing => ('literalparam', thing)
@@ -84,6 +86,7 @@ true ::= 't' 'r' 'u' 'e' => True
 notquote ::= <escapedquote> | (~('"') <anything>)
 escapedquote ::= '\\' '"' => '\\"'
 symbol ::=  ~<alt_inner> '['? (<letterOrDigit>|'-'|'@')+:symbol ']'? => u''.join(symbol)
+partialname ::= ~<alt_inner> ('['|'"')? (~(<space>|<finish>|']'|'"' ) <anything>)+:symbol (']'|'"')? => u''.join(symbol)
 pathseg ::= ('@' '.' '.' '/') => u'@@_parent'
     | <symbol>
     | '/' => u''
