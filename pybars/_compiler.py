@@ -320,6 +320,13 @@ def _unless(this, options, context):
         return options['fn'](this)
 
 
+def _lookup(this, context, key):
+    try:
+        return context[key]
+    except (KeyError, IndexError, TypeError):
+        return
+
+
 def _blockHelperMissing(this, options, context):
     # print this, context
     if isinstance(context, collections.Callable):
@@ -355,6 +362,7 @@ _pybars_ = {
         'log': _log,
         'unless': _unless,
         'with': _with,
+        'lookup': _lookup,
     },
 }
 

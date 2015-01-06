@@ -910,7 +910,7 @@ class TestAcceptance(TestCase):
         self.assertEqual(str_class(result), '')
 
     def test_should_not_fail_on_unavailable_value(self):
-        string  = u"{{lookup thelist 3}}.{{lookup theobject 'qux'}}.{{lookup thenumber 0}}"
+        string  = u'{{lookup thelist 3}}.{{lookup theobject "qux"}}.{{lookup thenumber 0}}'
         context = {'thelist': ['foo', 'bar'], 'theobject': {'foo': 'bar'}, 'thenumber': 7}
 
         template = Compiler().compile(string)
