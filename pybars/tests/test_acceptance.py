@@ -535,7 +535,7 @@ class TestAcceptance(TestCase):
             render(source, {}, helpers=dict(hello=hello)))
 
     def test_it_works_with_single_quote_marks(self):
-        source = u'Message: {{{hello "Alan\'s world"}}}'
+        source = u"Message: {{{hello 'Alan\\\'s world'}}}"
         def hello(this, param):
             return "Hello " + param
         self.assertEqual("Message: Hello Alan's world",
