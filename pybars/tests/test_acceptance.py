@@ -891,6 +891,42 @@ class TestAcceptance(TestCase):
             render(u'{{#goodbye cruel="CRUEL" _print=false}}world{{/goodbye}}',
                 {}, helpers=helpers))
 
+    def test_should_lookup_arbitrary_content(self):
+        string  = u'{{#each goodbyes}}{{lookup ../data .}}{{/each}}'
+        context = {'goodbyes': [0, 1], 'data': ['foo', 'bar']}
+
+        template = Compiler().compile(string)
+        result   = template(context)
+
+        self.assertEqual(str_class(result), 'foobar')
+
+    def test_should_not_fail_on_undefined_value(self):
+        string  = u'{{#each goodbyes}}{{lookup ../bar .}}{{/each}}'
+        context = {'goodbyes': [0, 1], 'data': ['foo', 'bar']}
+
+        template = Compiler().compile(string)
+        result = template(context)
+
+        self.assertEqual(str_class(result), '')
+
+    def test_should_not_fail_on_unavailable_value(self):
+        string  = u"{{lookup thelist 3}}.{{lookup theobject 'qux'}}.{{lookup thenumber 0}}"
+        context = {'thelist': ['foo', 'bar'], 'theobject': {'foo': 'bar'}, 'thenumber': 7}
+
+        template = Compiler().compile(string)
+        result = template(context)
+
+        self.assertEqual(str_class(result), '..')
+
+    def test_should_lookup_content_by_special_variables(self):
+        string  = u'{{#each goodbyes}}{{lookup ../data @index}}{{/each}}'
+        context = {'goodbyes': [0, 1], 'data': ['foo', 'bar']}
+
+        template = Compiler().compile(string)
+        result   = template(context)
+
+        self.assertEqual(str_class(result), 'foobar')
+
     def test_GH_94_Cannot_read_property_of_undefined(self):
         context = {"books": [
             {"title": "The origin of species",
