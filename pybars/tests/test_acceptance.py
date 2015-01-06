@@ -941,3 +941,35 @@ class TestAcceptance(TestCase):
             }
         expected = "<strong>This is a slightly more complicated blah.</strong>.\n\nCheck this out:\n\n<ul>\n\n<li class=one>@fat</li>\n\n<li class=two>@dhg</li>\n\n<li class=three>@sayrer</li>\n</ul>.\n\n"
         self.assertEqual(expected, render(source, context))
+
+    def test_invalid_python_identifiers_cannot_be_used_as_keyword_arguments(self):
+        source = u'{{foo 0x="bar"}}'
+        self.assertEqual('', render(source, {}))
+
+    def test_backslash_does_not_normally_escape_text(self):
+        source = u'{{echo "\\x"}}'
+        self.assertEqual('\\x', render(source, {}, helpers={'echo': (lambda this, arg: arg)}))
+
+    def test_backslash_only_escapes_quote(self):
+        # Notice that the following is a raw string. It is a helper, 'echo',
+        # with a string argument equal to a backslash and an escaped quote.
+        source = u'{{echo "\\\\""}}'
+        # If the parser does not know to escape the backslash but does know to
+        # escape the quote, it will end up with something like the following
+        # in our generated rendering code:
+        #
+        #     value = value(child_scope, "\\"")
+        #
+        # Which will raise a SyntaxError.
+        self.assertEqual('\\&quot;', render(source, {}, helpers={'echo': (lambda this, arg: arg)}))
+
+    def test_newlines_in_string_litereals(self):
+        source = u'{{echo "Hello,\nWorld!"}}'
+        self.assertEqual('Hello,\nWorld!', render(source, {}, helpers={'echo': (lambda this, arg: arg)}))
+
+    def test_code_injection(self):
+        # If esape sequences are not dealt with properly, we are able to run
+        # arbitrary Python code. Thanks to @thomasst for pointing this out:
+        # https://github.com/elasticsales/pybars/commit/3a262b8cd7902889cde5c786f76bb0c30f8894e6#commitcomment-4687173
+        source = u'{{echo "\\\\")\n\n        raise AssertionError(\'Code Injected!\')\n#"}}'
+        self.assertEqual('\\&quot;)\n\n        raise AssertionError(&#x27;Code Injected!&#x27;)\n#', render(source, {}, helpers={'echo': (lambda this, arg: arg)}))
