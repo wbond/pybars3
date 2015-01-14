@@ -32,7 +32,7 @@ setup(name='pybars3',
       packages=['pybars', 'pybars.tests'],
       package_dir = {'':'.'},
       classifiers = [
-          'Development Status :: 3 - Beta',
+          'Development Status :: 4 - Beta',
           'Intended Audience :: Developers',
           'License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)',
           'Operating System :: OS Independent',
