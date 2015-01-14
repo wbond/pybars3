@@ -509,6 +509,13 @@ class TestAcceptance(TestCase):
         self.assertEqual("Dudes: Jeepers",
             render(source, context, partials=dict(dude=dude_src)))
 
+    def test_partials_with_string(self):
+        source = u'Dudes: {{> "+404/asdf?.bar"}}';
+        dude_src = u"{{name}}"
+        context = {'name': "Jeepers", 'another_dude': "Creepers"}
+        self.assertEqual("Dudes: Jeepers",
+            render(source, context, partials={'+404/asdf?.bar':dude_src}))
+
     def test_simple_literals_work(self):
         source = u'Message: {{hello "world" 12 true false}}'
         def hello(this, param, times, bool1, bool2):
