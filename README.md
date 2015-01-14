@@ -1,10 +1,10 @@
-#pybars3 - Handlebars.js for Python 2 and 3
+# pybars3 - Handlebars.js for Python 3 and 2
 
 Pybars3 provides a template system for Python which is compatible with
 Handlebars.js. It is a fork of the pybars project that adds Python 3
 compatibility and numerous features from Handlebars.js 2.0.
 
-##Installation
+## Installation
 
 ```bash
 pip install pybars3
