@@ -23,7 +23,7 @@ description = open(
         os.path.join(os.path.dirname(__file__), 'README.md'), 'r').read()
 
 setup(name='pybars3',
-      version='0.5.0',
+      version='0.5.1',
       description='Handlebars.js templating for Python 3 and 2',
       long_description=description,
       author='wbond, mjumbewu',
