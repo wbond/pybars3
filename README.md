@@ -1,17 +1,14 @@
-#pybars - handlebars.js for python
+#pybars3 - Handlebars.js for Python 2 and 3
 
-Pybars provides a template system for Python which is compatible with
-handlebars.js.
+Pybars3 provides a template system for Python which is compatible with
+Handlebars.js. It is a fork of the pybars project that adds Python 3
+compatibility and numerous features from Handlebars.js 2.0.
 
 ##Installation
 
-This Python 3 fork of pybars requires [pymeta](https://launchpad.net/pymeta)
-that also runs on Python 3. Currently this requires installing a custom fork.
-
 ```bash
-pip install git+https://github.com/wbond/pymeta
-
-pip install git+https://github.com/wbond/pybars
+pip install git+https://github.com/wbond/pymeta3
+pip install git+https://github.com/wbond/pybars3
 ```
 
 ## Handlebars.js Compatibility

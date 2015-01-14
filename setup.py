@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Copyright (c) 2012, Canonical Ltd
+# Copyright (c) 2012-2015, Canonical Ltd, Will Bond, Mjumbe Wawatu Ukweli
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as published by
@@ -22,25 +22,28 @@ import os.path
 description = open(
         os.path.join(os.path.dirname(__file__), 'README.md'), 'r').read()
 
-setup(name="pybars",
-      version="0.0.5",
-      description=\
-              "handlebars.js templating for Python.",
+setup(name='pybars3',
+      version='0.5.0',
+      description='Handlebars.js templating for Python 3 and 2',
       long_description=description,
-      maintainer="Launchpad Developers",
-      maintainer_email="launchpad-dev@lists.launchpad.net",
-      url="https://launchpad.net/pybars",
+      author='wbond, mjumbewu',
+      author_email='will@wbond.net, mjumbewu@gmail.com',
+      url='https://github.com/wbond/pybars3',
       packages=['pybars', 'pybars.tests'],
       package_dir = {'':'.'},
       classifiers = [
-          'Development Status :: 2 - Pre-Alpha',
+          'Development Status :: 3 - Beta',
           'Intended Audience :: Developers',
           'License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)',
           'Operating System :: OS Independent',
-          'Programming Language :: Python',
+          'Programming Language :: Python :: 2',
+          'Programming Language :: Python :: 2.7',
+          'Programming Language :: Python :: 3',
+          'Programming Language :: Python :: 3.3',
+          'Programming Language :: Python :: 3.4'
           ],
       install_requires = [
-          'PyMeta',
+          'PyMeta3',
           ],
       extras_require = dict(
           test=[
