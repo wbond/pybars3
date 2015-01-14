@@ -7,8 +7,7 @@ compatibility and numerous features from Handlebars.js 2.0.
 ##Installation
 
 ```bash
-pip install git+https://github.com/wbond/pymeta3
-pip install git+https://github.com/wbond/pybars3
+pip install pybars3
 ```
 
 ## Handlebars.js Compatibility
@@ -141,21 +140,19 @@ to a string in a helper call.
 ## Dependencies
 
 * Python 2.6-2.7, 3.3+
-* PyMeta (Python 3 fork, https://github.com/wbond/pymeta)
+* PyMeta3
 
 ## Testing Dependencies
 
-* testtools (Python 3 fork, https://github.com/wbond/testtools)
+* testtools
 * subunit (http://pypi.python.org/pypi/python-subunit) (optional)
 
 ## Development
 
-Upstream development takes place at https://launchpad.net/pybars.
-
 To run the tests use the runner of your choice, the test suite is
 pybars.tests.test_suite.
 
-For instance::
+For instance:
 
 ```bash
 python -m testtools.run pybars.tests.test_suite
@@ -171,7 +168,7 @@ testr run
 ## Copyright
 
 ```
-Copyright (c) 2012, Canonical Ltd
+Copyright (c) 2012-2015, Canonical Ltd, Will Bond, Mjumbe Wawatu Ukweli
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
