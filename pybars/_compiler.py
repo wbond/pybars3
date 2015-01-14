@@ -96,10 +96,12 @@ notsquote ::= <escapedquote>
     | (~("'") <anything>)
 escapedquote ::= '\\' '"' => '\\"'
     | "\\" "'" => "\\'"
+notclosebracket ::= (~(']') <anything>)
 safesymbol ::=  ~<alt_inner> '['? (<letter>|'_'):start (<letterOrDigit>|'_')+:symbol ']'? => start + u''.join(symbol)
 symbol ::=  ~<alt_inner> '['? (<letterOrDigit>|'-'|'@')+:symbol ']'? => u''.join(symbol)
 partialname ::= ~<alt_inner> ('['|'"')? (~(<space>|<finish>|']'|'"' ) <anything>)+:symbol (']'|'"')? => u''.join(symbol)
-pathseg ::= ('@' '.' '.' '/') => u'@@_parent'
+pathseg ::= '[' <notclosebracket>+:symbol ']' => u''.join(symbol)
+    | ('@' '.' '.' '/') => u'@@_parent'
     | <symbol>
     | '/' => u''
     | ('.' '.' '/') => u'@_parent'
