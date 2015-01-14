@@ -12,13 +12,14 @@ pip install pybars3
 
 ## Handlebars.js Compatibility
 
-This is somewhat of a side-project of mine (@wbond) that is maintained for
-almost purely pragmatic reasons. I want to share templates between the server
-and client-side, and I need something more powerful than Mustache.
+This is somewhat of a side-project for the current developers, and is
+maintained for almost purely pragmatic reasons. Being able to share templates
+between the server and client-side is very useful, and we like having something
+more powerful than Mustache.
 
 So, with that information, you should realize that the code is probably messy,
-that I am certain there are bugs, and select features from different versions
-of Handlebars are ported as I or other contributors need them.
+that there are certainly bugs and not all of Handlebars 2.0, or even 1.1 is
+currently implemented.
 
 Here is a partial list of features that are supported:
 
@@ -29,6 +30,9 @@ Here is a partial list of features that are supported:
  - `@first` and `@last` data element in the `#each` helper (Handlebars 1.1)
  - kwargs passed to partials (Handlebars 2.0)
  - `@../index` syntax for accessing parent scope data items (Handlebars 2.0)
+ - `{{[segment literal notation]}}` for paths that contain non-word chars (Handlebars 1.1)
+ - `{{> "quoted partial name"}}` for partials that contain non-word chars (Handlebars 1.1)
+ - `lookup` helper for dynamic name access (Handlebars 2.0)
 
 Features not currently implemented:
 
