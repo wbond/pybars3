@@ -76,7 +76,7 @@ partial_inner ::= <spaces> <partialname>:s <arguments>:args <spaces> <finish>
 alt_inner ::= <spaces> ('^' | 'e' 'l' 's' 'e') <spaces> <finish>
 partial ::= <start> '>' <partial_inner>:i => ('partial',) + i
 path ::= ~('/') <pathseg>+:segments => ('path', segments)
-kwliteral ::= <symbol>:s '=' (<literal>|<path>):v => ('kwparam', s, v)
+kwliteral ::= <safesymbol>:s '=' (<literal>|<path>):v => ('kwparam', s, v)
 literal ::= (<string>|<integer>|<boolean>):thing => ('literalparam', thing)
 string ::= '"' <notdquote>*:ls '"' => u'"' + u''.join(ls) + u'"'
     | "'" <notsquote>*:ls "'" => u"'" + u''.join(ls) + u"'"
@@ -84,10 +84,19 @@ integer ::= '-'?:sign <digit>+:ds => int((sign if sign else '') + ''.join(ds))
 boolean ::= <false>|<true>
 false ::= 'f' 'a' 'l' 's' 'e' => False
 true ::= 't' 'r' 'u' 'e' => True
-notdquote ::= <escapedquote> | (~('"') <anything>)
-notsquote ::= <escapedquote> | (~("'") <anything>)
+notdquote ::= <escapedquote>
+    | '\n' => '\\n'
+    | '\r' => '\\r'
+    | '\\' => '\\\\'
+    | (~('"') <anything>)
+notsquote ::= <escapedquote>
+    | '\n' => '\\n'
+    | '\r' => '\\r'
+    | '\\' => '\\\\'
+    | (~("'") <anything>)
 escapedquote ::= '\\' '"' => '\\"'
     | "\\" "'" => "\\'"
+safesymbol ::=  ~<alt_inner> '['? (<letter>|'_'):start (<letterOrDigit>|'_')+:symbol ']'? => start + u''.join(symbol)
 symbol ::=  ~<alt_inner> '['? (<letterOrDigit>|'-'|'@')+:symbol ']'? => u''.join(symbol)
 partialname ::= ~<alt_inner> ('['|'"')? (~(<space>|<finish>|']'|'"' ) <anything>)+:symbol (']'|'"')? => u''.join(symbol)
 pathseg ::= ('@' '.' '.' '/') => u'@@_parent'
