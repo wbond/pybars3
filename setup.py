@@ -17,15 +17,12 @@
 
 
 from distutils.core import setup
-import os.path
 
-description = open(
-        os.path.join(os.path.dirname(__file__), 'README.md'), 'r').read()
 
 setup(name='pybars3',
       version='0.5.1',
       description='Handlebars.js templating for Python 3 and 2',
-      long_description=description,
+      long_description='Documentation is maintained at https://github.com/wbond/pybars3#readme',
       author='wbond, mjumbewu',
       author_email='will@wbond.net, mjumbewu@gmail.com',
       url='https://github.com/wbond/pybars3',
