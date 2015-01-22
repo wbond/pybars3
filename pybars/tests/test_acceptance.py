@@ -528,6 +528,20 @@ class TestAcceptance(TestCase):
         self.assertEqual("Message: Hello world 12 times: True False",
             render(source, {}, helpers=helpers))
 
+    def test_null(self):
+        source = u"Message: {{{hello null}}}"
+        def hello(this, param):
+            return "Hello " + ('' if param is None else param)
+        self.assertEqual("Message: Hello ",
+            render(source, {}, helpers=dict(hello=hello)))
+
+    def test_undefined(self):
+        source = u"Message: {{{hello undefined}}}"
+        def hello(this, param):
+            return "Hello " + ('' if param is None else param)
+        self.assertEqual("Message: Hello ",
+            render(source, {}, helpers=dict(hello=hello)))
+
     def test_using_a_quote_in_the_middle_of_a_parameter_raises_an_error(self):
         self.skipTest("<end> causes the grammar to fail weirdly!")
         compiler = Compiler()
