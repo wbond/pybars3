@@ -520,8 +520,12 @@ class CodeBuilder:
         call = self.arguments_to_call(arguments)
         self.find_lookup(path, path_type, call)
         self._result.grow([
-            u"    if type(value) is not strlist:\n",
-            u"        value = escape(%s(value))\n" % str_class.__name__,
+            u"    type_ = type(value)\n",
+            u"    if type_ is not strlist:\n",
+            u"        if type_ is bool:\n",
+            u"            value = 'true' if value else 'false'\n",
+            u"        else:\n",
+            u"            value = escape(%s(value))\n" % str_class.__name__,
             u"    result.grow(value)\n"
             ])
 
@@ -530,8 +534,12 @@ class CodeBuilder:
         call = self.arguments_to_call(arguments)
         self.find_lookup(path, path_type, call)
         self._result.grow([
-            u"    if type(value) is not strlist:\n",
-            u"        value = %s(value)\n" % str_class.__name__,
+            u"    type_ = type(value)\n",
+            u"    if type_ is not strlist:\n",
+            u"        if type_ is bool:\n",
+            u"            value = 'true' if value else 'false'\n",
+            u"        else:\n",
+            u"            value = %s(value)\n" % str_class.__name__,
             u"    result.grow(value)\n"
             ])
 

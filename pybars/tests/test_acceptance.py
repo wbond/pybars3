@@ -528,6 +528,36 @@ class TestAcceptance(TestCase):
         self.assertEqual("Message: Hello world 12 times: True False",
             render(source, {}, helpers=helpers))
 
+    def test_true(self):
+        source = u"{{var}}"
+        self.assertEqual("true",
+            render(source, {'var': True}))
+
+    def test_true_unescaped(self):
+        source = u"{{{var}}}"
+        self.assertEqual("true",
+            render(source, {'var': True}))
+
+    def test_false(self):
+        source = u"{{var}}"
+        self.assertEqual("false",
+            render(source, {'var': False}))
+
+    def test_false_unescaped(self):
+        source = u"{{{var}}}"
+        self.assertEqual("false",
+            render(source, {'var': False}))
+
+    def test_none(self):
+        source = u"{{var}}"
+        self.assertEqual("",
+            render(source, {'var': None}))
+
+    def test_none_unescaped(self):
+        source = u"{{{var}}}"
+        self.assertEqual("",
+            render(source, {'var': None}))
+
     def test_null(self):
         source = u"Message: {{{hello null}}}"
         def hello(this, param):
