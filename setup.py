@@ -20,7 +20,7 @@ from distutils.core import setup
 
 
 setup(name='pybars3',
-      version='0.5.1',
+      version='0.6.0',
       description='Handlebars.js templating for Python 3 and 2',
       long_description='Documentation is maintained at https://github.com/wbond/pybars3#readme',
       author='wbond, mjumbewu',
