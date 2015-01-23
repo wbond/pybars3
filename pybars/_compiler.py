@@ -20,6 +20,7 @@
 __all__ = [
     'Compiler',
     'strlist',
+    'Scope'
     ]
 
 __metaclass__ = type
