@@ -64,7 +64,8 @@ start ::= '{' '{'
 finish ::= '}' '}'
 comment ::= <start> '!' (~(<finish>) <anything>)* <finish> => ('comment', )
 space ::= ' '|'\t'|'\r'|'\n'
-arguments ::= (<space>+ (<kwliteral>|<literal>|<path>))*:arguments => arguments
+arguments ::= (<space>+ (<kwliteral>|<literal>|<path>|<subexpression>))*:arguments => arguments
+subexpression ::= '(' <spaces> <path>:p (<space>+ (<kwliteral>|<literal>|<path>))*:arguments <spaces> ')' => ('subexpr', p, arguments)
 expression_inner ::= <spaces> <path>:p <arguments>:arguments <spaces> <finish> => (p, arguments)
 expression ::= <start> '{' <expression_inner>:e '}' => ('expand', ) + e
     | <start> '&' <expression_inner>:e => ('expand', ) + e
@@ -76,7 +77,7 @@ partial_inner ::= <spaces> <partialname>:s <arguments>:args <spaces> <finish>
 alt_inner ::= <spaces> ('^' | 'e' 'l' 's' 'e') <spaces> <finish>
 partial ::= <start> '>' <partial_inner>:i => ('partial',) + i
 path ::= ~('/') <pathseg>+:segments => ('path', segments)
-kwliteral ::= <safesymbol>:s '=' (<literal>|<path>):v => ('kwparam', s, v)
+kwliteral ::= <safesymbol>:s '=' (<literal>|<path>|<subexpression>):v => ('kwparam', s, v)
 literal ::= (<string>|<integer>|<boolean>|<null>|<undefined>):thing => ('literalparam', thing)
 string ::= '"' <notdquote>*:ls '"' => u'"' + u''.join(ls) + u'"'
     | "'" <notsquote>*:ls "'" => u"'" + u''.join(ls) + u"'"
@@ -139,8 +140,13 @@ path ::= [ "path" [<pathseg>:segment]] => ("simple", segment)
  | [ "path" [<pathseg>+:segments] ] => ("complex", u'resolve(context, "'  + u'","'.join(segments) + u'")' )
 simplearg ::= [ "path" [<pathseg>+:segments] ] => u'resolve(context, "'  + u'","'.join(segments) + u'")'
     | [ "literalparam" <anything>:value ] => {str_class}(value)
-arg ::= [ "kwparam" <anything>:symbol <simplearg>:a ] => {str_class}(symbol) + '=' + a
+subexprarg ::= [ "kwparam" <anything>:symbol <simplearg>:a ] => {str_class}(symbol) + '=' + a
     | <simplearg>
+complexarg ::= [ "path" [<pathseg>+:segments] ] => u'resolve(context, "'  + u'","'.join(segments) + u'")'
+    | [ "subexpr" ["path" <pathseg>:name] [<subexprarg>*:arguments] ] => u'resolve_subexpr(helpers, "' + name + '", context' + (u', ' + u', '.join(arguments) if arguments else u'') + u')'
+    | [ "literalparam" <anything>:value ] => {str_class}(value)
+arg ::= [ "kwparam" <anything>:symbol <complexarg>:a ] => {str_class}(symbol) + '=' + a
+    | <complexarg>
 pathseg ::= "/" => ''
     | "." => ''
     | "" => ''
@@ -283,6 +289,12 @@ def resolve(context, *segments):
     return context
 
 
+def resolve_subexpr(helpers, name, context, *args, **kwargs):
+    if name not in helpers:
+        raise Exception(u"Could not find property %s" % (name,))
+    return helpers[name](context, *args, **kwargs)
+
+
 def _each(this, options, context):
     result = strlist()
 
@@ -415,6 +427,7 @@ class CodeBuilder:
         self._locals['partial'] = partial
         self._locals['pybars'] = _pybars_
         self._locals['resolve'] = resolve
+        self._locals['resolve_subexpr'] = resolve_subexpr
 
     def finish(self):
         self._result.grow(u"    return result\n")

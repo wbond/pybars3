@@ -332,6 +332,36 @@ class TestAcceptance(TestCase):
         self.assertEqual("<form><p>Harold</p></form>",
             render(source, context, helpers={'form': form}))
 
+    def test_subexpression(self):
+        source = u"{{#para (fold 'foo' val)}}{{foo}}{{/para}}"
+        def para(this, options, values_dict):
+            return strlist(u'<p>') + options['fn'](values_dict) + strlist(u'</p>')
+        def fold(this, key, val):
+            return {key: val}
+        context = {'val': 'bar'}
+        self.assertEqual("<p>bar</p>",
+            render(source, context, helpers={'para': para, 'fold': fold}))
+
+    def test_subexpression_containing_keyword(self):
+        source = u"{{#para (fold2 'foo' value=val)}}{{foo}}{{/para}}"
+        def para(this, options, values_dict):
+            return strlist(u'<p>') + options['fn'](values_dict) + strlist(u'</p>')
+        def fold2(this, key, value=None):
+            return {key: value}
+        context = {'val': 'bar'}
+        self.assertEqual("<p>bar</p>",
+            render(source, context, helpers={'para': para, 'fold2': fold2}))
+
+    def test_subexpression_as_keyword(self):
+        source = u"{{#para2 values_dict=(fold2 'foo' value=val)}}{{foo}}{{/para2}}"
+        def para2(this, options, blah=None, values_dict=None):
+            return strlist(u'<p>') + options['fn'](values_dict) + strlist(u'</p>')
+        def fold2(this, key, value=None):
+            return {key: value}
+        context = {'val': 'bar'}
+        self.assertEqual("<p>bar</p>",
+            render(source, context, helpers={'para2': para2, 'fold2': fold2}))
+
     def test_nested_block_helpers(self):
         source = \
             u"{{#form yehuda}}<p>{{name}}</p>{{#link}}Hello{{/link}}{{/form}}"
