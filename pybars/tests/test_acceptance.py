@@ -35,6 +35,7 @@ import pybars
 from pybars import (
     Compiler,
     strlist,
+    Scope
     )
 from pybars.tests.test__compiler import render
 
@@ -271,6 +272,20 @@ class TestAcceptance(TestCase):
             return u"<a href='" + str_class(prefix) + u"/" + this['url'] + u"'>" + str_class(options['fn'](this)) + u"</a>"
         self.assertEqual(u"<a href='/root/goodbye'>Goodbye</a>",
             render(template, context, helpers={'link': link}))
+
+    def test_block_helper_with_deep_nested_lookup(self):
+        template = u"{{#para nested}}Goodbye "\
+            u"{{#if ../world}}cruel {{../world}}{{/if}}{{/para}}"
+        context = {'world': "world!", 'nested': True}
+        def para(this, options, value):
+            param = Scope(value, this, options['root'])
+            if value:
+                return strlist(['<p>']) + options['fn'](param) + strlist(['</p>'])
+        helpers = {
+            'para': para
+        }
+        self.assertEqual(u"<p>Goodbye cruel world!</p>",
+            render(template, context, helpers=helpers))
 
     def test_block_with_deep_nested_complex_lookup(self):
         template = u"{{#outer}}Goodbye "\

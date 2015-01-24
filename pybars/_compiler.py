@@ -474,7 +474,7 @@ class CodeBuilder:
             u"    if value is None:\n"
             u"        value = context.get('%s')\n" % symbol,
             u"    if helper and callable(helper):\n"
-            u"        this = Scope(context, context, root)\n"
+            u"        this = context if isinstance(context, Scope) else Scope(context, context, root)\n"
             u"        value = value(this, options, %s\n" % call,
             u"    else:\n"
             u"        helper = helpers['blockHelperMissing']\n"
@@ -517,13 +517,13 @@ class CodeBuilder:
             self._result.grow(u"    value = %s\n" % path)
         self._result.grow([
             u"    if callable(value):\n"
-            u"        this = Scope(context, context, root)\n"
+            u"        this = context if isinstance(context, Scope) else Scope(context, context, root)\n"
             u"        value = value(this, %s\n" % call,
             ])
         if realname:
             self._result.grow(
                 u"    elif value is None:\n"
-                u"        this = Scope(context, context, root)\n"
+                u"        this = context if isinstance(context, Scope) else Scope(context, context, root)\n"
                 u"        value = helpers.get('helperMissing')(this, '%s', %s\n"
                     % (realname, call)
                 )
