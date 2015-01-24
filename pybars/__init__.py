@@ -97,7 +97,7 @@ Typical usage:
 # established at this point, and setup.py will use a version of next-$(revno).
 # If the releaselevel is 'final', then the tarball will be major.minor.micro.
 # Otherwise it is major.minor.micro~$(revno).
-__version__ = (0, 7, 1, 'final', 0)
+__version__ = (0, 7, 2, 'final', 0)
 
 __all__ = [
     'Compiler',
