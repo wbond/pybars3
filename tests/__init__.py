@@ -24,4 +24,4 @@ def test_suite():
         '_compiler',
         ]
     return TestLoader().loadTestsFromNames(
-        ['pybars.tests.test_' + name for name in test_mod_names])
+        ['tests.test_' + name for name in test_mod_names])

@@ -20,8 +20,7 @@
 
 """A port of the acceptance test for handlebars.js."""
 
-from testtools import TestCase
-from testtools.matchers import Equals
+from unittest import TestCase
 
 try:
     str_class = unicode
@@ -37,16 +36,7 @@ from pybars import (
     strlist,
     Scope
     )
-from pybars.tests.test__compiler import render
-
-
-class RendersItself:
-
-    def __str__(self):
-        return "RendersItself()"
-
-    def match(self, source):
-        return Equals(source).match(render(source, {}))
+from .test__compiler import render
 
 
 class TestAcceptance(TestCase):
@@ -89,16 +79,16 @@ class TestAcceptance(TestCase):
             helpers={'echo': lambda s, v: str(v)}))
 
     def test_newlines(self):
-        self.assertThat(u"Alan's\nTest", RendersItself())
-        self.assertThat(u"Alan's\rTest", RendersItself())
+        self.assertEqual(u"Alan's\nTest", u"Alan's\nTest")
+        self.assertEqual(u"Alan's\rTest", u"Alan's\rTest")
 
     def test_escaping_text(self):
-        self.assertThat(u"Awesome's", RendersItself())
-        self.assertThat(u"Awesome\\", RendersItself())
-        self.assertThat(u"Awesome\\\\ foo", RendersItself())
+        self.assertEqual(u"Awesome's", u"Awesome's")
+        self.assertEqual(u"Awesome\\", u"Awesome\\")
+        self.assertEqual(u"Awesome\\\\ foo", u"Awesome\\\\ foo")
         self.assertEqual(u"Awesome \\",
             render(u"Awesome {{foo}}", {'foo': '\\'}))
-        self.assertThat(u' " " ', RendersItself())
+        self.assertEqual(u' " " ', u' " " ')
 
     def test_escaping_expressions(self):
         self.assertEqual('&\"\\<>',
@@ -895,9 +885,11 @@ class TestAcceptance(TestCase):
         source = u"{{log blah}}"
         context = {'blah': "whee"}
         log = []
-        self.patch(pybars, 'log', log.append)
+        original_log = pybars.log
+        pybars.log = log.append
         self.assertEqual("", render(source, context))
         self.assertEqual(["whee"], log)
+        pybars.log = original_log
 
     def test_overriding_property_lookup(self):
         pass
@@ -956,7 +948,7 @@ class TestAcceptance(TestCase):
         def goodbye(this, times, cruel, world):
             return "GOODBYE " + cruel + " " + world + " " + str(times) + " TIMES"
         helpers = {'goodbye': goodbye}
-        self.assertEquals(u"GOODBYE CRUEL WORLD 12 TIMES",
+        self.assertEqual(u"GOODBYE CRUEL WORLD 12 TIMES",
             render(source, {}, helpers=helpers))
 
     def test_helpers_can_take_an_optional_hash_with_booleans(self):

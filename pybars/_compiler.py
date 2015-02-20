@@ -43,6 +43,9 @@ except NameError:
 
 import collections
 
+# Flag for testing
+debug = False
+
 # preserve reference to the builtin compile.
 _compile = compile
 
@@ -433,7 +436,10 @@ class CodeBuilder:
         self._result = self.stack and self.stack[-1][0]
         self._locals = self.stack and self.stack[-1][1]
         fn = moduleFromSource(source, 'render', globalsDict=ns, registerModule=True)
-        # print source
+        if debug:
+            print('Compiled Python')
+            print('---------------')
+            print(source)
         return fn
 
     def allocate_value(self, value):
@@ -627,15 +633,9 @@ class Compiler:
         """
         assert isinstance(source, str_class)
         tree = self._handlebars(source).apply('template')[0]
-        # print source
-        # print '-->'
-        # print "T", tree
-        code = self._compiler(tree).apply('compile')[0]
-        # print code
-        return code
-
-#orig = Compiler._handlebars.rule_blockrule
-#def thunk(*args, **kwargs):
-#    import pdb;pdb.set_trace()
-#    return orig(*args, **kwargs)
-#Compiler._handlebars.rule_blockrule = thunk
+        if debug:
+            print('\nAST')
+            print('---')
+            print(tree)
+            print('')
+        return self._compiler(tree).apply('compile')[0]

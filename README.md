@@ -146,27 +146,30 @@ to a string in a helper call.
 * Python 2.6-2.7, 3.3+
 * PyMeta3
 
-## Testing Dependencies
-
-* testtools
-* subunit (http://pypi.python.org/pypi/python-subunit) (optional)
-
 ## Development
 
-To run the tests use the runner of your choice, the test suite is
-pybars.tests.test_suite.
-
-For instance:
+Running tests:
 
 ```bash
-python -m testtools.run pybars.tests.test_suite
+python tests.py
 ```
 
-pybars is testrepository enabled, so you can just do:
+To display the AST and generated Python code, execute:
 
 ```bash
-testr init
-testr run
+python tests.py --debug
+```
+
+To run a specific test:
+
+```bash
+python tests.py TestAcceptance.test_subexpression
+```
+
+Or to debug a specific test:
+
+```bash
+python tests.py --debug TestAcceptance.test_subexpression
 ```
 
 ## Copyright

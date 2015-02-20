@@ -21,7 +21,7 @@ except NameError:
     # Python 3 support
     str_class = str
 
-from testtools import TestCase
+from unittest import TestCase
 
 from pybars import Compiler
 

@@ -26,7 +26,7 @@ setup(name='pybars3',
       author='wbond, mjumbewu',
       author_email='will@wbond.net, mjumbewu@gmail.com',
       url='https://github.com/wbond/pybars3',
-      packages=['pybars', 'pybars.tests'],
+      packages=['pybars'],
       package_dir = {'':'.'},
       classifiers = [
           'Development Status :: 4 - Beta',
@@ -42,10 +42,4 @@ setup(name='pybars3',
       install_requires = [
           'PyMeta3',
           ],
-      extras_require = dict(
-          test=[
-              'fixtures',
-              'testtools',
-              ]
-          ),
       )
