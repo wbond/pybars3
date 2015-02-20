@@ -66,7 +66,7 @@ finish ::= '}' '}'
 comment ::= <start> '!' (~(<finish>) <anything>)* <finish> => ('comment', )
 space ::= ' '|'\t'|'\r'|'\n'
 arguments ::= (<space>+ (<kwliteral>|<literal>|<path>|<subexpression>))*:arguments => arguments
-subexpression ::= '(' <spaces> <path>:p (<space>+ (<kwliteral>|<literal>|<path>))*:arguments <spaces> ')' => ('subexpr', p, arguments)
+subexpression ::= '(' <spaces> <path>:p (<space>+ (<kwliteral>|<literal>|<path>|<subexpression>))*:arguments <spaces> ')' => ('subexpr', p, arguments)
 expression_inner ::= <spaces> <path>:p <arguments>:arguments <spaces> <finish> => (p, arguments)
 expression ::= <start> '{' <expression_inner>:e '}' => ('expand', ) + e
     | <start> '&' <expression_inner>:e => ('expand', ) + e
@@ -139,12 +139,8 @@ invertedblock ::= [ "invertedblock" <anything>:symbol [<arg>*:arguments] [<compi
 partial ::= ["partial" <anything>:symbol [<arg>*:arguments]] => builder.add_partial(symbol, arguments)
 path ::= [ "path" [<pathseg>:segment]] => ("simple", segment)
  | [ "path" [<pathseg>+:segments] ] => ("complex", u'resolve(context, "'  + u'","'.join(segments) + u'")' )
-simplearg ::= [ "path" [<pathseg>+:segments] ] => u'resolve(context, "'  + u'","'.join(segments) + u'")'
-    | [ "literalparam" <anything>:value ] => {str_class}(value)
-subexprarg ::= [ "kwparam" <anything>:symbol <simplearg>:a ] => {str_class}(symbol) + '=' + a
-    | <simplearg>
 complexarg ::= [ "path" [<pathseg>+:segments] ] => u'resolve(context, "'  + u'","'.join(segments) + u'")'
-    | [ "subexpr" ["path" <pathseg>:name] [<subexprarg>*:arguments] ] => u'resolve_subexpr(helpers, "' + name + '", context' + (u', ' + u', '.join(arguments) if arguments else u'') + u')'
+    | [ "subexpr" ["path" <pathseg>:name] [<arg>*:arguments] ] => u'resolve_subexpr(helpers, "' + name + '", context' + (u', ' + u', '.join(arguments) if arguments else u'') + u')'
     | [ "literalparam" <anything>:value ] => {str_class}(value)
 arg ::= [ "kwparam" <anything>:symbol <complexarg>:a ] => {str_class}(symbol) + '=' + a
     | <complexarg>

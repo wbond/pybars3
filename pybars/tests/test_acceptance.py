@@ -357,6 +357,18 @@ class TestAcceptance(TestCase):
         self.assertEqual("<p>bar</p>",
             render(source, context, helpers={'para': para, 'fold': fold}))
 
+    def test_nested_subexpression(self):
+        source = u"{{#para (fold 'foo' (add val 1))}}{{foo}}{{/para}}"
+        def para(this, options, values_dict):
+            return strlist(u'<p>') + options['fn'](values_dict) + strlist(u'</p>')
+        def fold(this, key, val):
+            return {key: val}
+        def add(this, num1, num2):
+            return num1 + num2
+        context = {'val': 1}
+        self.assertEqual("<p>2</p>",
+            render(source, context, helpers={'para': para, 'fold': fold, 'add': add}))
+
     def test_subexpression_containing_keyword(self):
         source = u"{{#para (fold2 'foo' value=val)}}{{foo}}{{/para}}"
         def para(this, options, values_dict):
