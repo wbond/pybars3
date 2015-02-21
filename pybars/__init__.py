@@ -103,13 +103,15 @@ __all__ = [
     'Compiler',
     'log',
     'strlist',
-    'Scope'
+    'Scope',
+    'PybarsError'
     ]
 
 from pybars._compiler import (
     Compiler,
     strlist,
-    Scope
+    Scope,
+    PybarsError
     )
 
 

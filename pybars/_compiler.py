@@ -156,6 +156,11 @@ pathseg ::= <anything>:symbol => u''.join(symbol)
 compile_grammar = compile_grammar.format(str_class=str_class.__name__)
 
 
+class PybarsError(Exception):
+
+    pass
+
+
 class strlist(list):
     """A quasi-list to let the template code avoid special casing."""
 
@@ -291,7 +296,7 @@ def resolve(context, *segments):
 
 def resolve_subexpr(helpers, name, context, *args, **kwargs):
     if name not in helpers:
-        raise Exception(u"Could not find property %s" % (name,))
+        raise PybarsError(u"Could not find property %s" % (name,))
     return helpers[name](context, *args, **kwargs)
 
 
@@ -376,7 +381,7 @@ def _blockHelperMissing(this, options, context):
 def _helperMissing(scope, name, *args):
     if not args:
         return None
-    raise Exception(u"Could not find property %s" % (name,))
+    raise PybarsError(u"Could not find property %s" % (name,))
 
 
 def _with(this, options, context):
@@ -424,6 +429,7 @@ class CodeBuilder:
         self._locals['strlist'] = strlist
         self._locals['escape'] = escape
         self._locals['Scope'] = Scope
+        self._locals['PybarsError'] = PybarsError
         self._locals['partial'] = partial
         self._locals['pybars'] = _pybars_
         self._locals['resolve'] = resolve
@@ -593,7 +599,8 @@ class CodeBuilder:
                         overrides = {}
                     overrides[kwmatch.group(1)] = kwmatch.group(2)
                 else:
-                    assert positional_args == 0, positional_args
+                    if positional_args != 0:
+                        raise PybarsError("An extra positional argument was passed to a partial")
                     positional_args += 1
                     arg = argument
 
@@ -606,6 +613,8 @@ class CodeBuilder:
         self._result.grow([u"    overrides = %s\n" % overrides_literal])
 
         self._result.grow([
+            u"    if '%s' not in partials:\n" % symbol,
+            u"        raise PybarsError('Partial \"%s\" not defined')\n" % symbol,
             u"    inner = partials['%s']\n" % symbol,
             u"    scope = Scope(%s, context, root, overrides=overrides)\n" % self._lookup_arg(arg)])
         self._invoke_template("inner", "scope")
@@ -631,11 +640,30 @@ class Compiler:
         :param source: The template to compile - should be a unicode string.
         :return: A template ready to run.
         """
-        assert isinstance(source, str_class)
-        tree = self._handlebars(source).apply('template')[0]
+        if not isinstance(source, str_class):
+            raise PybarsError("Template source must be a unicode string")
+
+        tree, error = self._handlebars(source).apply('template')
+
         if debug:
             print('\nAST')
             print('---')
             print(tree)
             print('')
+
+        if error[1]:
+            line_num = source.count('\n') + 1
+            beginning_of_line = source.rfind('\n', 0, error[0])
+            if beginning_of_line == -1:
+                char_num = error[0]
+            else:
+                char_num = error[0] - beginning_of_line
+            if error[1][0][0] == 'message':
+                message = error[1][0][1]
+            elif error[1][0][0] == 'expected':
+                message = 'expected "%s"' % error[1][0][2]
+            else:
+                message = repr(error[1][0])
+            raise PybarsError("Error at character %s of line %s - %s" % (char_num, line_num, message))
+
         return self._compiler(tree).apply('compile')[0]
