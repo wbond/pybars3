@@ -27,8 +27,8 @@ setup(name='pybars3',
       author_email='will@wbond.net, mjumbewu@gmail.com',
       url='https://github.com/wbond/pybars3',
       packages=['pybars'],
-      package_dir = {'':'.'},
-      classifiers = [
+      package_dir={'': '.'},
+      classifiers=[
           'Development Status :: 4 - Beta',
           'Intended Audience :: Developers',
           'License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)',
@@ -39,7 +39,7 @@ setup(name='pybars3',
           'Programming Language :: Python :: 3.3',
           'Programming Language :: Python :: 3.4'
           ],
-      install_requires = [
+      install_requires=[
           'PyMeta3',
           ],
       )

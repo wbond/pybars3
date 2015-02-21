@@ -31,16 +31,16 @@ See https://bugs.launchpad.net/bugs/928486
 from itertools import count
 import linecache
 import sys
-import os
-import tokenize
 from types import ModuleType as module
 
 
 class GeneratedCodeLoader(object):
+
     """
     Object for use as a module's __loader__, to display generated
     source.
     """
+
     def __init__(self, source):
         if sys.version_info >= (3,):
             self.source = source
@@ -50,10 +50,12 @@ class GeneratedCodeLoader(object):
     def get_source(self, name):
         return self.source
 
+
 next_filename = iter(count())
 
+
 def moduleFromSource(source, className, superclass=None, globalsDict=None,
-    registerModule=True):
+        registerModule=True):
     modname = "pymeta_grammar__" + className + "__" + str(next(next_filename))
     filename = "/pymeta_generated_code/" + modname + ".py"
     mod = module(modname)

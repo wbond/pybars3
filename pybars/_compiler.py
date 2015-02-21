@@ -162,13 +162,13 @@ class PybarsError(Exception):
 
 
 class strlist(list):
+
     """A quasi-list to let the template code avoid special casing."""
 
-    # Added for Python 3
-    def __str__(self):
+    def __str__(self):  # Python 3
         return ''.join(self)
 
-    def __unicode__(self):
+    def __unicode__(self):  # Python 2
         return u''.join(self)
 
     def grow(self, thing):
@@ -196,11 +196,15 @@ _map = {
     '<': '&lt;',
     '>': '&gt;',
     }
+
+
 def substitute(match, _map=_map):
     return _map[match.group(0)]
 
 
 _escape_re = re.compile(r"&|\"|'|`|<|>")
+
+
 def escape(something, _escape_re=_escape_re, substitute=substitute):
     return _escape_re.sub(substitute, something)
 
@@ -217,6 +221,7 @@ def pick(context, name, default=None):
 
 
 sentinel = object()
+
 
 class Scope:
 
@@ -311,7 +316,7 @@ def _each(this, options, context):
         if last_index < 0:
             raise IndexError()
 
-    except (TypeError, IndexError) as e:
+    except (TypeError, IndexError):
         return options['inverse'](this)
 
     # We use the presence of a keys method to determine if the
@@ -364,7 +369,6 @@ def _lookup(this, context, key):
 
 
 def _blockHelperMissing(this, options, context):
-    # print this, context
     if isinstance(context, collections.Callable):
         context = context(this)
     if context != u"" and not context:
@@ -404,6 +408,7 @@ _pybars_ = {
 
 
 class CodeBuilder:
+
     """Builds code for a template."""
 
     def __init__(self):
@@ -621,6 +626,7 @@ class CodeBuilder:
 
 
 class Compiler:
+
     """A handlebars template compiler.
 
     The compiler is not threadsafe: you need one per thread because of the

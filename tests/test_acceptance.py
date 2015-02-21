@@ -32,7 +32,6 @@ import sys
 
 import pybars
 from pybars import (
-    Compiler,
     strlist,
     Scope,
     PybarsError
