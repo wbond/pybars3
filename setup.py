@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Copyright (c) 2012-2015, Canonical Ltd, Will Bond, Mjumbe Wawatu Ukweli
+# Copyright (c) 2015 Will Bond, 2012 Canonical Ltd
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as published by
