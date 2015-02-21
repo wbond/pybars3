@@ -1,4 +1,4 @@
-# Copyright (c) 2012, Canonical Ltd
+# Copyright (c) 2015 Will Bond, 2012 Canonical Ltd
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as published by
@@ -27,7 +27,7 @@ from pybars import Compiler
 
 
 def render(source, context, helpers=None, partials=None, knownHelpers=None,
-    knownHelpersOnly=False):
+        knownHelpersOnly=False):
     compiler = Compiler()
     template = compiler.compile(source)
     # For real use, partials is a dict of compiled templates; but for testing
@@ -47,7 +47,7 @@ class TestCompiler(TestCase):
         pybars.Compiler
 
     def test_smoke(self):
-        compiler = Compiler()
+
         def _list(this, options, items):
             result = ['<ul>']
             for thing in items:
@@ -56,40 +56,61 @@ class TestCompiler(TestCase):
                 result.append('</li>')
             result.append('</ul>')
             return result
-        source = u"{{#list people}}{{firstName}} {{lastName}}{{/list}}"
-        template = compiler.compile(source)
+
+        helpers = {u'list': _list}
+
+        template = u"{{#list people}}{{firstName}} {{lastName}}{{/list}}"
         context = {
             'people': [
-                {'firstName': "Yehuda", 'lastName': "Katz"},
-                {'firstName': "Carl", 'lastName': "Lerche"},
-                {'firstName': "Alan", 'lastName': "Johnson"}
-           ]}
-        rendered = template(context, helpers={u'list': _list})
-        self.assertEqual(
-            u"<ul><li>Yehuda Katz</li><li>Carl Lerche</li>"\
-            "<li>Alan Johnson</li></ul>",
-            str_class(rendered))
+                {
+                    'firstName': "Yehuda",
+                    'lastName': "Katz"
+                },
+                {
+                    'firstName': "Carl",
+                    'lastName': "Lerche"
+                },
+                {
+                    'firstName': "Alan",
+                    'lastName': "Johnson"
+                }
+            ]
+        }
+        result = u"<ul><li>Yehuda Katz</li><li>Carl Lerche</li><li>Alan Johnson</li></ul>"
+
+        self.assertEqual(result, render(template, context, helpers=helpers))
 
     def test_escapes(self):
-        self.assertEqual(u"""\
-            <div class="entry">
-              <h1>All about &lt;p&gt; Tags</h1>
-              <div class="body">
-                <p>This is a post about &lt;p&gt; tags</p>
-              </div>
-            </div>""",
-            render(u"""\
+        template = u"""\
             <div class="entry">
               <h1>{{title}}</h1>
               <div class="body">
                 {{{body}}}
               </div>
-            </div>""", {
+            </div>
+        """
+        context = {
             'title': u"All about <p> Tags",
             'body': u"<p>This is a post about &lt;p&gt; tags</p>",
-            }))
+        }
+        result = u"""\
+            <div class="entry">
+              <h1>All about &lt;p&gt; Tags</h1>
+              <div class="body">
+                <p>This is a post about &lt;p&gt; tags</p>
+              </div>
+            </div>
+        """
+
+        self.assertEqual(result, render(template, context))
 
     def test_segment_literal_notation(self):
-        self.assertEqual(u"""hello""",
-            render(u"""{{foo.[bar baz]}}""",
-                {'foo': {'bar baz': 'hello' }}))
+        template = u"""{{foo.[bar baz]}}"""
+        context = {
+            'foo': {
+                'bar baz': 'hello'
+            }
+        }
+        result = u"""hello"""
+
+        self.assertEqual(result, render(template, context))
