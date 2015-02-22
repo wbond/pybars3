@@ -40,6 +40,6 @@ setup(name='pybars3',
           'Programming Language :: Python :: 3.4'
           ],
       install_requires=[
-          'PyMeta3',
+          'PyMeta3>=0.5.1',
           ],
       )
