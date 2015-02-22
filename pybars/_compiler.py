@@ -57,8 +57,11 @@ _compile = compile
 handlebars_grammar = r"""
 
 template ::= (<text> | <templatecommand>)*:body => ['template'] + body
-text ::= (~(<start>) <anything>)+:text => ('literal', u''.join(text))
-other ::= <anything>:char => ('literal', char)
+text ::= <newline_text> | <whitespace_text> | <other_text>
+newline_text ::= (~(<start>) ('\r'|'\n'):char) => ('newline', u'' + char)
+whitespace_text ::= (~(<start>) (' '|'\t'))+:text => ('whitespace', u''.join(text))
+other_text ::= (~(<start>) <anything>)+:text => ('literal', u''.join(text))
+other ::= <anything>:char => ('literal', u'' + char)
 templatecommand ::= <blockrule>
     | <comment>
     | <escapedexpression>
@@ -135,7 +138,7 @@ rule ::= <literal>
     | <partial>
 block ::= [ "block" <anything>:symbol [<arg>*:arguments] [<compile>:t] [<compile>?:alt_t] ] => builder.add_block(symbol, arguments, t, alt_t)
 comment ::= [ "comment" ]
-literal ::= [ "literal" :value ] => builder.add_literal(value)
+literal ::= [ ( "literal" | "newline" | "whitespace" ) :value ] => builder.add_literal(value)
 expand ::= [ "expand" <path>:value [<arg>*:arguments]] => builder.add_expand(value, arguments)
 escapedexpand ::= [ "escapedexpand" <path>:value [<arg>*:arguments]] => builder.add_escaped_expand(value, arguments)
 invertedblock ::= [ "invertedblock" <anything>:symbol [<arg>*:arguments] [<compile>:t] ] => builder.add_invertedblock(symbol, arguments, t)
@@ -659,6 +662,8 @@ class Compiler:
 
         tree, error = self._handlebars(source).apply('template')
 
+        self.clean_whitespace(tree)
+
         if debug:
             print('\nAST')
             print('---')
@@ -681,3 +686,84 @@ class Compiler:
             raise PybarsError("Error at character %s of line %s - %s" % (char_num, line_num, message))
 
         return self._compiler(tree).apply('compile')[0]
+
+    def clean_whitespace(self, tree):
+        """
+        Cleans up whitespace around block open and close tags if they are the
+        only thing on the line
+
+        :param tree:
+            The AST - will be modified in place
+        """
+
+        pointer = 0
+        end = len(tree)
+
+        while pointer < end:
+            piece = tree[pointer]
+            if piece[0] == 'block':
+                child_tree = piece[3]
+
+                # Look at open tag, if the only other thing on the line is whitespace
+                # then delete it so we don't introduce extra newlines to the output
+                open_pre_whitespace = False
+                open_pre_content = True
+                if pointer > 1 and tree[pointer - 1][0] == 'whitespace' and (tree[pointer - 2][0] == 'newline' or tree[pointer - 2] == 'template'):
+                    open_pre_whitespace = True
+                    open_pre_content = False
+                elif pointer > 0 and (tree[pointer - 1][0] == 'newline' or tree[pointer - 1] == 'template'):
+                    open_pre_content = False
+
+                open_post_whitespace = False
+                open_post_content = True
+                child_len = len(child_tree)
+                if child_len > 2 and child_tree[1][0] == 'whitespace' and child_tree[2][0] == 'newline':
+                    open_post_whitespace = True
+                    open_post_content = False
+                elif child_len > 1 and child_tree[1][0] == 'newline':
+                    open_post_content = False
+
+                if not open_pre_content and not open_post_content:
+                    if open_pre_whitespace:
+                        tree.pop(pointer - 1)
+                        pointer -= 1
+                        end -= 1
+                    if open_post_whitespace:
+                        child_tree.pop(1)
+                    child_tree.pop(1)  # trailing newline
+
+                # Do the same thing, but for the close tag
+                close_pre_whitespace = False
+                close_pre_content = True
+                child_len = len(child_tree)
+                if child_len > 2 and child_tree[child_len - 1][0] == 'whitespace' and child_tree[child_len - 2][0] == 'newline':
+                    close_pre_whitespace = True
+                    close_pre_content = False
+                elif child_len > 1 and child_tree[child_len - 1][0] == 'newline':
+                    close_pre_content = False
+
+                close_post_whitespace = False
+                close_post_content = True
+                tree_len = len(tree)
+                if tree_len > pointer + 2 and tree[pointer + 1][0] == 'whitespace' and tree[pointer + 2][0] == 'newline':
+                    close_post_whitespace = True
+                    close_post_content = False
+                elif tree_len == pointer + 2 and tree[pointer + 1][0] == 'whitespace':
+                    close_post_whitespace = True
+                    close_post_content = False
+                elif tree_len > pointer + 1 and tree[pointer + 1][0] == 'newline':
+                    close_post_content = False
+                elif tree_len == pointer + 1:
+                    close_post_content = False
+
+                if not close_pre_content and not close_post_content:
+                    if close_pre_whitespace:
+                        child_tree.pop()
+                    child_tree.pop()  # preceeding newline
+                    if close_post_whitespace:
+                        tree.pop(pointer + 1)
+                        end -= 1
+
+                self.clean_whitespace(child_tree)
+
+            pointer += 1

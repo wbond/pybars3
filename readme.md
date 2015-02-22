@@ -34,12 +34,12 @@ Here is a partial list of features that are supported:
  - `{{> "quoted partial name"}}` for partials that contain non-word chars (Handlebars 1.1)
  - `lookup` helper for dynamic name access (Handlebars 2.0)
  - Subexpresions (Handlebars 1.3)
+ - Lines containing only block statements and whitespace are removed (Handlebars 2.0)
 
 Features not currently implemented:
 
  - Complex paths (`../name/../name`)
  - Whitespace control, `{{var~}}` (Handlebars 1.1)
- - Lines containing old block statements and whitespace are not removed (Handlebars 2.0)
 
 Feel free to jump in with issues or pull requests.
 

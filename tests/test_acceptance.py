@@ -1205,6 +1205,32 @@ class TestAcceptance(TestCase):
 
         self.assertRender(template, context, result, helpers)
 
+    def test_block_tag_whitespace(self):
+        template = u"  {{#if var}}\n    {{var}}\n  {{/if}}"
+        context = {
+            'var': 'Hello'
+        }
+        result = "    Hello"
+
+        self.assertRender(template, context, result)
+
+        template = u"{{#if var}}    \n    {{var}}\n  {{/if}}    "
+
+        self.assertRender(template, context, result)
+
+        template = u"{{#if var}}\n    {{var}}\n{{/if}}    "
+
+        self.assertRender(template, context, result)
+
+        template = u"{{#if var}}\n    {{var}}\n{{/if}}"
+
+        self.assertRender(template, context, result)
+
+        template = u"\n{{#if var}}\n    {{var}}\n{{/if}}"
+        result = "\n    Hello"
+
+        self.assertRender(template, context, result)
+
     def test_using_a_quote_in_the_middle_of_a_parameter_raises_an_error(self):
         template = u'Message: {{hello wo"a"}}'
         context = None
