@@ -441,6 +441,14 @@ class CodeBuilder:
         self._locals['resolve_subexpr'] = resolve_subexpr
 
     def finish(self):
+        if debug:
+            print('Locals')
+            print('------')
+            for key in self._locals:
+                if key in ['strlist', 'escape', 'Scope', 'PybarsError', 'partial', 'pybars', 'resolve', 'resolve_subexpr']:
+                    continue
+                print("%s = %s" % (key, repr(self._locals[key])))
+            print('')
         self._result.grow(u"    return result\n")
         lines, ns = self.stack.pop(-1)
         source = str_class(u"".join(lines))
