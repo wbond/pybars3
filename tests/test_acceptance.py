@@ -1227,6 +1227,10 @@ class TestAcceptance(TestCase):
 
         self.assertRender(template, context, result)
 
+        template = u"{{#if var}}    \r\n    {{var}}\r\n  {{/if}}    "
+
+        self.assertRender(template, context, result)
+
         template = u"\n{{#if var}}\n    {{var}}\n{{/if}}"
         result = "\n    Hello"
 

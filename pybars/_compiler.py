@@ -58,7 +58,7 @@ handlebars_grammar = r"""
 
 template ::= (<text> | <templatecommand>)*:body => ['template'] + body
 text ::= <newline_text> | <whitespace_text> | <other_text>
-newline_text ::= (~(<start>) ('\r'|'\n'):char) => ('newline', u'' + char)
+newline_text ::= (~(<start>) ('\r'?'\n'):char) => ('newline', u'' + char)
 whitespace_text ::= (~(<start>) (' '|'\t'))+:text => ('whitespace', u''.join(text))
 other_text ::= (~(<start>) <anything>)+:text => ('literal', u''.join(text))
 other ::= <anything>:char => ('literal', u'' + char)
