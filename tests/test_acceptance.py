@@ -281,18 +281,19 @@ class TestAcceptance(TestCase):
 
         self.assertRender(template, context, result)
 
-    def skipped_upstream_not_ported_bad_idea_nested_paths(self):
-        pass
-#        test("--- TODO --- bad idea nested paths", function() {
-#            return;
-#            var hash     = {goodbyes: [{text: "goodbye"}, {text: "Goodbye"}, {text: "GOODBYE"}], world: "world"};
-#            shouldThrow(function() {
-#                CompilerContext.compile("{{#goodbyes}}{{../name/../name}}{{/goodbyes}}")(hash);
-#                }, Handlebars.Exception,
-#                "Cannot jump (..) into previous context after moving into a context.");
-#            var string = "{{#goodbyes}}{{.././world}} {{/goodbyes}}";
-#            shouldCompileTo(string, hash, "world world world ", "Same context (.) is ignored in paths");
-#        });
+    def test_nested_paths(self):
+        template = "{{#goodbyes}}{{.././world}} {{/goodbyes}}"
+        context = {
+            'goodbyes': [
+                {'text': "goodbye"},
+                {'text': "Goodbye"},
+                {'text': "GOODBYE"}
+            ],
+            'world': "world"
+        }
+        result = "world world world "
+
+        self.assertRender(template, context, result)
 
     def test_current_context_does_not_invoke_helpers(self):
         helpers = {'helper': "notcallable"}
