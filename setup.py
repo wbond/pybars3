@@ -26,7 +26,7 @@ setup(name='pybars3',
       author='wbond, mjumbewu',
       author_email='will@wbond.net, mjumbewu@gmail.com',
       url='https://github.com/wbond/pybars3',
-      packages=['pybars'],
+      packages=['pybars', 'pybars._templates'],
       package_dir={'': '.'},
       classifiers=[
           'Development Status :: 4 - Beta',
