@@ -1,6 +1,6 @@
 # changelog
 
-## 0.9.0
+## 0.9.1
 
  - Changed `pybars.__version__` tuple to `pybars.__version_info__`,
    `pybars.__version__` is now a string
