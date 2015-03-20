@@ -1,5 +1,14 @@
 # changelog
 
+## 0.9.0
+
+ - Changed `pybars.__version__` tuple to `pybars.__version_info__`,
+   `pybars.__version__` is now a string
+ - Added `Compiler().precompile(source)` that will return Python source code
+   to allow for caching of compiled templates and easier debugging
+ - Template code now checks to ensure it is being run with the same version of
+   pybars that is was generated with
+
 ## 0.8.0
 
  - The library now always throws `pybars.PybarsError` on errors
