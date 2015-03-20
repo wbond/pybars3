@@ -25,12 +25,14 @@ __all__ = [
 
 __metaclass__ = type
 
-from functools import partial
 import re
+import sys
+from types import ModuleType
+import linecache
 
 import pybars
+import pybars._templates
 from pymeta.grammar import OMeta
-from pybars.frompymeta import moduleFromSource
 
 # This allows the code to run on Python 2 and 3 by
 # creating a consistent reference for the appropriate
@@ -41,13 +43,10 @@ except NameError:
     # Python 3 support
     str_class = str
 
-import collections
 
 # Flag for testing
 debug = False
 
-# preserve reference to the builtin compile.
-_compile = compile
 
 # Note that unless we presume handlebars is only generating valid html, we have
 # to accept anything - so a broken template won't be all that visible - it will
@@ -144,8 +143,8 @@ escapedexpand ::= [ "escapedexpand" <path>:value [<arg>*:arguments]] => builder.
 invertedblock ::= [ "invertedblock" <anything>:symbol [<arg>*:arguments] [<compile>:t] ] => builder.add_invertedblock(symbol, arguments, t)
 partial ::= ["partial" <anything>:symbol [<arg>*:arguments]] => builder.add_partial(symbol, arguments)
 path ::= [ "path" [<pathseg>:segment]] => ("simple", segment)
- | [ "path" [<pathseg>+:segments] ] => ("complex", u'resolve(context, "'  + u'","'.join(segments) + u'")' )
-complexarg ::= [ "path" [<pathseg>+:segments] ] => u'resolve(context, "'  + u'","'.join(segments) + u'")'
+ | [ "path" [<pathseg>+:segments] ] => ("complex", u"resolve(context, '"  + u"', '".join(segments) + u"')" )
+complexarg ::= [ "path" [<pathseg>+:segments] ] => u"resolve(context, '"  + u"', '".join(segments) + u"')"
     | [ "subexpr" ["path" <pathseg>:name] [<arg>*:arguments] ] => u'resolve_subexpr(helpers, "' + name + '", context' + (u', ' + u', '.join(arguments) if arguments else u'') + u')'
     | [ "literalparam" <anything>:value ] => {str_class}(value)
 arg ::= [ "kwparam" <anything>:symbol <complexarg>:a ] => {str_class}(symbol) + '=' + a
@@ -308,6 +307,38 @@ def resolve_subexpr(helpers, name, context, *args, **kwargs):
     return helpers[name](context, *args, **kwargs)
 
 
+def prepare(value, should_escape):
+    """
+    Prepares a value to be added to the result
+
+    :param value:
+        The value to add to the result
+
+    :param should_escape:
+        If the string should be HTML-escaped
+
+    :return:
+        A unicode string or strlist
+    """
+
+    if value is None:
+        return u''
+    type_ = type(value)
+    if type_ is not strlist:
+        if type_ is not str_class:
+            if type_ is bool:
+                value = u'true' if value else u'false'
+            else:
+                value = str_class(value)
+        if should_escape:
+            value = escape(value)
+    return value
+
+
+def ensure_scope(context, root):
+    return context if isinstance(context, Scope) else Scope(context, context, root)
+
+
 def _each(this, options, context):
     result = strlist()
 
@@ -347,7 +378,7 @@ def _each(this, options, context):
 
 
 def _if(this, options, context):
-    if isinstance(context, collections.Callable):
+    if hasattr(context, '__call__'):
         context = context(this)
     if context:
         return options['fn'](this)
@@ -372,7 +403,7 @@ def _lookup(this, context, key):
 
 
 def _blockHelperMissing(this, options, context):
-    if isinstance(context, collections.Callable):
+    if hasattr(context, '__call__'):
         context = context(this)
     if context != u"" and not context:
         return options['inverse'](this)
@@ -410,72 +441,118 @@ _pybars_ = {
 }
 
 
+class FunctionContainer:
+
+    """
+    Used as a container for functions by the CodeBuidler
+    """
+
+    def __init__(self, name, code):
+        self.name = name
+        self.code = code
+
+    @property
+    def full_code(self):
+        headers = (
+            u'import pybars\n'
+            u'\n'
+            u'if pybars.__version__ != %s:\n'
+            u'    raise pybars.PybarsError("This template was precompiled with pybars3 version %s, running version %%s" %% pybars.__version__)\n'
+            u'\n'
+            u'from pybars import strlist, Scope, PybarsError\n'
+            u'from pybars._compiler import _pybars_, escape, resolve, resolve_subexpr, prepare, ensure_scope\n'
+            u'\n'
+            u'from functools import partial\n'
+            u'\n'
+            u'\n'
+        ) % (repr(pybars.__version__), pybars.__version__)
+
+        return headers + self.code
+
+
 class CodeBuilder:
 
     """Builds code for a template."""
 
     def __init__(self):
+        self._reset()
+
+    def _reset(self):
         self.stack = []
+        self.var_counter = 1
+        self.render_counter = 0
 
     def start(self):
-        self.stack.append((strlist(), {}))
-        self._result, self._locals = self.stack[-1]
+        function_name = 'render' if self.render_counter == 0 else 'block_%s' % self.render_counter
+        self.render_counter += 1
+
+        self.stack.append((strlist(), {}, function_name))
+        self._result, self._locals, _ = self.stack[-1]
         # Context may be a user hash or a Scope (which injects '@_parent' to
         # implement .. lookups). The JS implementation uses a vector of scopes
         # and then interprets a linear walk-up, which is why there is a
         # disabled test showing arbitrary complex path manipulation: the scope
         # approach used here will probably DTRT but may be slower: reevaluate
         # when profiling.
-        self._result.grow(u"def render(context, helpers=None, partials=None, root=None):\n")
+        if len(self.stack) == 1:
+            self._result.grow([
+                u"def render(context, helpers=None, partials=None, root=None):\n"
+                u"    _helpers = dict(_pybars_['helpers'])\n"
+                u"    if helpers is not None:\n"
+                u"        _helpers.update(helpers)\n"
+                u"    helpers = _helpers\n"
+                u"    if partials is None:\n"
+                u"        partials = {}\n"
+                u"    called = root is None\n"
+                u"    if called:\n"
+                u"        root = context\n"
+            ])
+        else:
+            self._result.grow(u"def %s(context, helpers, partials, root):\n" % function_name)
         self._result.grow(u"    result = strlist()\n")
-        self._result.grow(u"    _helpers = dict(pybars['helpers'])\n")
-        self._result.grow(u"    if helpers is not None: _helpers.update(helpers)\n")
-        self._result.grow(u"    helpers = _helpers\n")
-        self._result.grow(u"    if partials is None: partials = {}\n")
-        self._result.grow(u"    if root is None: root = context\n")
-        # Expose used functions and helpers to the template.
-        self._locals['strlist'] = strlist
-        self._locals['escape'] = escape
-        self._locals['Scope'] = Scope
-        self._locals['PybarsError'] = PybarsError
-        self._locals['partial'] = partial
-        self._locals['pybars'] = _pybars_
-        self._locals['resolve'] = resolve
-        self._locals['resolve_subexpr'] = resolve_subexpr
+        self._result.grow(u"    context = ensure_scope(context, root)\n")
 
     def finish(self):
-        if debug:
-            print('Locals')
-            print('------')
-            for key in self._locals:
-                if key in ['strlist', 'escape', 'Scope', 'PybarsError', 'partial', 'pybars', 'resolve', 'resolve_subexpr']:
-                    continue
-                print("%s = %s" % (key, repr(self._locals[key])))
-            print('')
+        lines, ns, function_name = self.stack.pop(-1)
+
+        # Ensure the result is a string and not a strlist
+        if len(self.stack) == 0:
+            self._result.grow(u"    if called:\n")
+            self._result.grow(u"        result = %s(result)\n" % str_class.__name__)
         self._result.grow(u"    return result\n")
-        lines, ns = self.stack.pop(-1)
+
         source = str_class(u"".join(lines))
+
         self._result = self.stack and self.stack[-1][0]
         self._locals = self.stack and self.stack[-1][1]
-        fn = moduleFromSource(source, 'render', globalsDict=ns, registerModule=True)
-        if debug:
+
+        code = ''
+        for key in ns:
+            if isinstance(ns[key], FunctionContainer):
+                code += ns[key].code + '\n'
+            else:
+                code += '%s = %s\n' % (key, repr(ns[key]))
+        code += source
+
+        result = FunctionContainer(function_name, code)
+        if debug and len(self.stack) == 0:
             print('Compiled Python')
             print('---------------')
-            print(source)
-        return fn
+            print(result.full_code)
 
-    def allocate_value(self, value):
-        name = 'constant_%d' % len(self._locals)
-        self._locals[name] = value
-        return name
+        return result
 
     def _wrap_nested(self, name):
         return u"partial(%s, helpers=helpers, partials=partials, root=root)" % name
 
     def add_block(self, symbol, arguments, nested, alt_nested):
-        name = self.allocate_value(nested)
+        name = nested.name
+        self._locals[name] = nested
+
         if alt_nested:
-            alt_name = self.allocate_value(alt_nested)
+            alt_name = alt_nested.name
+            self._locals[alt_name] = alt_nested
+
         call = self.arguments_to_call(arguments)
         self._result.grow([
             u"    options = {'fn': %s}\n" % self._wrap_nested(name),
@@ -496,20 +573,16 @@ class CodeBuilder:
         self._result.grow([
             u"    value = helper = helpers.get('%s')\n" % symbol,
             u"    if value is None:\n"
-            u"        value = context.get('%s')\n" % symbol,
-            u"    if helper and callable(helper):\n"
-            u"        this = context if isinstance(context, Scope) else Scope(context, context, root)\n"
-            u"        value = value(this, options, %s\n" % call,
+            u"        value = resolve(context, '%s')\n" % symbol,
+            u"    if helper and hasattr(helper, '__call__'):\n"
+            u"        value = helper(context, options%s\n" % call,
             u"    else:\n"
-            u"        helper = helpers['blockHelperMissing']\n"
-            u"        value = helper(context, options, value)\n"
-            u"    if value is None: value = ''\n"
-            u"    result.grow(value)\n"
+            u"        value = helpers['blockHelperMissing'](context, options, value)\n"
+            u"    result.grow(value or '')\n"
             ])
 
     def add_literal(self, value):
-        name = self.allocate_value(value)
-        self._result.grow(u"    result.append(%s)\n" % name)
+        self._result.grow(u"    result.append(%s)\n" % repr(value))
 
     def _lookup_arg(self, arg):
         if not arg:
@@ -518,10 +591,13 @@ class CodeBuilder:
 
     def arguments_to_call(self, arguments):
         params = list(map(self._lookup_arg, arguments))
-        return u", ".join(params) + ")"
+        output = u', '.join(params) + u')'
+        if len(params) > 0:
+            output = u', ' + output
+        return output
 
     def find_lookup(self, path, path_type, call):
-        if path and path_type == "simple":  # simple names can reference helpers.
+        if path_type == "simple":  # simple names can reference helpers.
             # TODO: compile this whole expression in the grammar; for now,
             # fugly but only a compile time overhead.
             # XXX: just rm.
@@ -531,40 +607,26 @@ class CodeBuilder:
                 u"    if value is None:\n"
                 u"        value = resolve(context, '%s')\n" % path,
                 ])
-        elif path_type == "simple":
-            realname = None
-            self._result.grow([
-                u"    value = resolve(context, '%s')\n" % path,
-                ])
         else:
             realname = None
             self._result.grow(u"    value = %s\n" % path)
         self._result.grow([
-            u"    if callable(value):\n"
-            u"        this = context if isinstance(context, Scope) else Scope(context, context, root)\n"
-            u"        value = value(this, %s\n" % call,
+            u"    if hasattr(value, '__call__'):\n"
+            u"        value = value(context%s\n" % call,
             ])
         if realname:
             self._result.grow(
                 u"    elif value is None:\n"
-                u"        this = context if isinstance(context, Scope) else Scope(context, context, root)\n"
-                u"        value = helpers.get('helperMissing')(this, '%s', %s\n"
+                u"        value = helpers['helperMissing'](context, '%s'%s\n"
                     % (realname, call)
                 )
-        self._result.grow(u"    if value is None: value = ''\n")
 
     def add_escaped_expand(self, path_type_path, arguments):
         (path_type, path) = path_type_path
         call = self.arguments_to_call(arguments)
         self.find_lookup(path, path_type, call)
         self._result.grow([
-            u"    type_ = type(value)\n",
-            u"    if type_ is not strlist:\n",
-            u"        if type_ is bool:\n",
-            u"            value = 'true' if value else 'false'\n",
-            u"        else:\n",
-            u"            value = escape(%s(value))\n" % str_class.__name__,
-            u"    result.grow(value)\n"
+            u"    result.grow(prepare(value, True))\n"
             ])
 
     def add_expand(self, path_type_path, arguments):
@@ -572,13 +634,7 @@ class CodeBuilder:
         call = self.arguments_to_call(arguments)
         self.find_lookup(path, path_type, call)
         self._result.grow([
-            u"    type_ = type(value)\n",
-            u"    if type_ is not strlist:\n",
-            u"        if type_ is bool:\n",
-            u"            value = 'true' if value else 'false'\n",
-            u"        else:\n",
-            u"            value = %s(value)\n" % str_class.__name__,
-            u"    result.grow(value)\n"
+            u"    result.grow(prepare(value, False))\n"
             ])
 
     def _debug(self):
@@ -586,7 +642,8 @@ class CodeBuilder:
 
     def add_invertedblock(self, symbol, arguments, nested):
         # This may need to be a blockHelperMissing clal as well.
-        name = self.allocate_value(nested)
+        name = nested.name
+        self._locals[name] = nested
         self._result.grow([
             u"    value = context.get('%s')\n" % symbol,
             u"    if not value:\n"
@@ -650,13 +707,19 @@ class Compiler:
 
     def __init__(self):
         self._helpers = {}
+        self.template_counter = 1
 
-    def compile(self, source):
-        """Compile source to a ready to run template.
-
-        :param source: The template to compile - should be a unicode string.
-        :return: A template ready to run.
+    def _generate_code(self, source):
         """
+        Common compilation code shared between precompile() and compile()
+
+        :param source:
+            The template source as a unicode string
+
+        :return:
+            A tuple of (function, source_code)
+        """
+
         if not isinstance(source, str_class):
             raise PybarsError("Template source must be a unicode string")
 
@@ -685,7 +748,66 @@ class Compiler:
                 message = repr(error[1][0])
             raise PybarsError("Error at character %s of line %s - %s" % (char_num, line_num, message))
 
-        return self._compiler(tree).apply('compile')[0]
+        # Ensure the builder is in a clean state - kinda gross
+        self._compiler.globals['builder']._reset()
+
+        output = self._compiler(tree).apply('compile')[0]
+        return output
+
+    def precompile(self, source):
+        """
+        Generates python source code that can be saved to a file for caching
+
+        :param source:
+            The template to generate source for - should be a unicode string
+
+        :return:
+            Python code as a unicode string
+        """
+
+        return self._generate_code(source).full_code
+
+    def compile(self, source, path=None):
+        """Compile source to a ready to run template.
+
+        :param source:
+            The template to compile - should be a unicode string
+
+        :return:
+            A template function ready to execute
+        """
+
+        container = self._generate_code(source)
+
+        def make_module_name(name, suffix=None):
+            output = 'pybars._templates.%s' % name
+            if suffix:
+                output += '_%s' % suffix
+            return output
+
+        if not path:
+            path = '_template'
+            generate_name = True
+        else:
+            path = path.replace('\\', '/')
+            path = path.replace('/', '_')
+            mod_name = make_module_name(path)
+            if mod_name in sys.modules:
+                generate_name = True
+
+        if generate_name:
+            mod_name = make_module_name(path, self.template_counter)
+            while mod_name in sys.modules:
+                self.template_counter += 1
+                mod_name = make_module_name(path, self.template_counter)
+
+        mod = ModuleType(mod_name)
+        filename = '%s.py' % mod_name.replace('pybars.', '').replace('.', '/')
+        exec(compile(container.full_code, filename, 'exec', dont_inherit=True), mod.__dict__)
+        sys.modules[mod_name] = mod
+        linecache.getlines(filename, mod.__dict__)
+
+        return mod.__dict__[container.name]
 
     def clean_whitespace(self, tree):
         """

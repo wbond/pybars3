@@ -29,12 +29,14 @@ except NameError:
     str_class = str
 
 import sys
+import os
 
 import pybars
 from pybars import (
     strlist,
     Scope,
-    PybarsError
+    PybarsError,
+    Compiler
     )
 from .test__compiler import render
 
@@ -282,7 +284,7 @@ class TestAcceptance(TestCase):
         self.assertRender(template, context, result)
 
     def test_nested_paths(self):
-        template = "{{#goodbyes}}{{.././world}} {{/goodbyes}}"
+        template = u"{{#goodbyes}}{{.././world}} {{/goodbyes}}"
         context = {
             'goodbyes': [
                 {'text': "goodbye"},
@@ -2090,3 +2092,26 @@ class TestAcceptance(TestCase):
         result = '\\&quot;)\n\n        raise AssertionError(&#x27;Code Injected!&#x27;)\n#'
 
         self.assertRender(template, context, result, helpers)
+
+    def test_precompile(self):
+        try:
+            template = u"Goodbye\n{{cruel}}\n{{world}}!"
+            context = {
+                'cruel': "cruel",
+                'world': "world"
+            }
+            result = "Goodbye\ncruel\nworld!"
+
+            compiler = Compiler()
+            code = compiler.precompile(template)
+
+            with open('test_precompile.py', 'w') as f:
+                f.write(code)
+
+            import test_precompile
+
+            self.assertEqual(result, str(test_precompile.render(context)))
+
+        finally:
+            if os.path.exists('test_precompile.py'):
+                os.unlink('test_precompile.py')

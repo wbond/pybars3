@@ -35,6 +35,7 @@ Here is a partial list of features that are supported:
  - `lookup` helper for dynamic name access (Handlebars 2.0)
  - Subexpresions (Handlebars 1.3)
  - Lines containing only block statements and whitespace are removed (Handlebars 2.0)
+ - `pybars.Compiler().precompile()` that is equivalent to `Handlebars.precompile()`
 
 Features not currently implemented:
 
