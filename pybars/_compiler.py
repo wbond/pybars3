@@ -212,10 +212,10 @@ def escape(something, _escape_re=_escape_re, substitute=substitute):
 
 
 def pick(context, name, default=None):
-    if isinstance(name, str) and hasattr(context, name):
-        return getattr(context, name)
     if hasattr(context, 'get'):
         return context.get(name)
+    if isinstance(name, str) and hasattr(context, name):
+        return getattr(context, name)
     try:
         return context[name]
     except (KeyError, TypeError):
