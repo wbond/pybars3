@@ -2126,5 +2126,11 @@ class TestAcceptance(TestCase):
         }
         result = 'hello'
 
+        context2 = {
+            "hello": MyDict()
+        }
+        result2 = "goodbye"
+
         self.assertRender(template, context, result)
+        self.assertRender(template, context2, result2)
 
