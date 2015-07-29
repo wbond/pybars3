@@ -469,6 +469,26 @@ class TestAcceptance(TestCase):
 
         self.assertRender(template, context, result)
 
+    def test_inverted_alternate_sections(self):
+        # We use this form to not introduce extra whitespace
+        template = (
+            u"{{#goodbyes}}{{this}}{{else}}Right On!{{/goodbyes}}\n"
+            u"{{^goodbyes}}Right On!{{else}}{{this}}{{/goodbyes}}"
+        )
+        result = "Right On!\nRight On!"
+
+        context = {}
+
+        self.assertRender(template, context, result)
+
+        context = {'goodbyes': False}
+
+        self.assertRender(template, context, result)
+
+        context = {'goodbyes': []}
+
+        self.assertRender(template, context, result)
+
     def test_array_iteration(self):
         template = u"{{#goodbyes}}{{text}}! {{/goodbyes}}cruel {{world}}!"
 
