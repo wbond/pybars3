@@ -71,7 +71,7 @@ def _list(this, options, items):
 helpers = {'list': _list}
 
 # Add partials
-header = compiler.compile('<h1>People</h1>')
+header = compiler.compile(u'<h1>People</h1>')
 partials = {'header': header}
 
 # Render the template
