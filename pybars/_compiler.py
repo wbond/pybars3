@@ -120,7 +120,7 @@ symbolfinish :expected ::= <start> '/' <symbol>:found ?(found == expected) <fini
 blockrule ::= <start> '#' <block_inner>:i
       <template>:t <alttemplate>:alt_t <symbolfinish i[0]> => ('block',) + i + (t, alt_t)
     | <start> '^' <block_inner>:i
-      <template>:t <symbolfinish i[0]> => ('invertedblock',) + i + (t,)
+      <template>:t <alttemplate>:alt_t <symbolfinish i[0]> => ('invertedblock',) + i + (t,alt_t)
 alttemplate ::= (<start> <alt_inner> <template>)?:alt_t => alt_t or []
 """
 
@@ -140,7 +140,7 @@ comment ::= [ "comment" ]
 literal ::= [ ( "literal" | "newline" | "whitespace" ) :value ] => builder.add_literal(value)
 expand ::= [ "expand" <path>:value [<arg>*:arguments]] => builder.add_expand(value, arguments)
 escapedexpand ::= [ "escapedexpand" <path>:value [<arg>*:arguments]] => builder.add_escaped_expand(value, arguments)
-invertedblock ::= [ "invertedblock" <anything>:symbol [<arg>*:arguments] [<compile>:t] ] => builder.add_invertedblock(symbol, arguments, t)
+invertedblock ::= [ "invertedblock" <anything>:symbol [<arg>*:arguments] [<compile>:t] [<compile>?:alt_t] ] => builder.add_invertedblock(symbol, arguments, t, alt_t)
 partial ::= ["partial" <anything>:symbol [<arg>*:arguments]] => builder.add_partial(symbol, arguments)
 path ::= [ "path" [<pathseg>:segment]] => ("simple", segment)
  | [ "path" [<pathseg>+:segments] ] => ("complex", u"resolve(context, '"  + u"', '".join(segments) + u"')" )
@@ -370,8 +370,12 @@ def _each(this, options, context):
             value = context[value]
 
         scope = Scope(value, this, options['root'], **kwargs)
-        result.grow(options['fn'](scope))
 
+        # Necessary because of cases such as {{^each things}}test{{/each}}.
+        try:
+            result.grow(options['fn'](scope))
+        except TypeError:
+            pass
         index += 1
 
     return result
@@ -640,15 +644,43 @@ class CodeBuilder:
     def _debug(self):
         self._result.grow(u"    import pdb;pdb.set_trace()\n")
 
-    def add_invertedblock(self, symbol, arguments, nested):
+    def add_invertedblock(self, symbol, arguments, nested, alt_nested):
         # This may need to be a blockHelperMissing clal as well.
+
         name = nested.name
         self._locals[name] = nested
+
+        if alt_nested:
+            alt_name = alt_nested.name
+            self._locals[alt_name] = alt_nested
+
+        call = self.arguments_to_call(arguments)
         self._result.grow([
-            u"    value = context.get('%s')\n" % symbol,
-            u"    if not value:\n"
-            u"    "])
-        self._invoke_template(name, "context")
+            u"    options = {'inverse': %s}\n" % self._wrap_nested(name),
+            u"    options['helpers'] = helpers\n"
+            u"    options['partials'] = partials\n"
+            u"    options['root'] = root\n"
+            ])
+        if alt_nested:
+            self._result.grow([
+                u"    options['fn'] = ",
+                self._wrap_nested(alt_name),
+                u"\n"
+                ])
+        else:
+            self._result.grow([
+                u"    options['fn'] = lambda this: None\n"
+                ])
+        self._result.grow([
+            u"    value = helper = helpers.get('%s')\n" % symbol,
+            u"    if value is None:\n"
+            u"        value = resolve(context, '%s')\n" % symbol,
+            u"    if helper and hasattr(helper, '__call__'):\n"
+            u"        value = helper(context, options%s\n" % call,
+            u"    else:\n"
+            u"        value = helpers['blockHelperMissing'](context, options, value)\n"
+            u"    result.grow(value or '')\n"
+            ])
 
     def _invoke_template(self, fn_name, this_name):
         self._result.grow([
