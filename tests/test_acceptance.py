@@ -58,7 +58,7 @@ class TestAcceptance(TestCase):
             'cruel': "cruel",
             'world': "world"
         }
-        result = "Goodbye\ncruel\nworld!"
+        result = u"Goodbye\ncruel\nworld!"
 
         self.assertRender(template, context, result)
 
@@ -68,7 +68,7 @@ class TestAcceptance(TestCase):
             'cruel': "cruel",
             'world': "world"
         }
-        result = "Goodbye\ncruel\nworld!"
+        result = u"Goodbye\ncruel\nworld!"
 
         self.assertRender(template, context, result)
 
@@ -79,14 +79,14 @@ class TestAcceptance(TestCase):
             'goodbye': True,
             'world': 'world'
         }
-        result = "GOODBYE cruel world!"
+        result = u"GOODBYE cruel world!"
         self.assertRender(template, context, result)
 
         context = {
             'goodbye': False,
             'world': 'world'
         }
-        result = "cruel world!"
+        result = u"cruel world!"
         self.assertRender(template, context, result)
 
     def test_zeros(self):
@@ -95,13 +95,13 @@ class TestAcceptance(TestCase):
             'num1': 42,
             'num2': 0
         }
-        result = "num1: 42, num2: 0"
+        result = u"num1: 42, num2: 0"
 
         self.assertRender(template, context, result)
 
         template = u"num: {{.}}"
         context = 0
-        result = "num: 0"
+        result = u"num: 0"
         self.assertRender(template, context, result)
 
         template = u"num: {{num1/num2}}"
@@ -110,7 +110,7 @@ class TestAcceptance(TestCase):
                 'num2': 0
             }
         }
-        result = "num: 0"
+        result = u"num: 0"
         self.assertRender(template, context, result)
 
     def test_negative_int_literal(self):
@@ -119,7 +119,7 @@ class TestAcceptance(TestCase):
         }
 
         template = u"{{type \"string\"}} {{type 1}} {{type -1}}"
-        result = "str int int"
+        result = u"str int int"
 
         self.assertRender(template, None, result, helpers)
 
@@ -128,7 +128,7 @@ class TestAcceptance(TestCase):
         }
 
         template = u"{{echo \"string\"}} {{echo 1}} {{echo -1}}"
-        result = "string 1 -1"
+        result = u"string 1 -1"
 
         self.assertRender(template, None, result, helpers)
 
@@ -234,7 +234,7 @@ class TestAcceptance(TestCase):
             'awesome': awesome,
             'frank': 'Frank'
         }
-        result = "Frank"
+        result = u"Frank"
 
         self.assertRender(template, context, result)
 
@@ -243,7 +243,34 @@ class TestAcceptance(TestCase):
             'awesome': awesome,
             'frank': 'Frank'
         }
-        result = "Frank"
+        result = u"Frank"
+
+        self.assertRender(template, context, result)
+
+    def test_pathed_functions_with_context_arguments(self):
+        def awesome(this, context):
+            return context
+
+        template = u"{{bar.awesome frank}}"
+        context = {
+            'bar': {
+                'awesome': awesome,
+            },
+            'frank': 'Frank'
+        }
+        result = u"Frank"
+
+        self.assertRender(template, context, result)
+
+    def test_block_functions_without_context_arguments(self):
+        def awesome(this):
+            return this
+
+        template = u"{{#awesome}}inner{{/awesome}}"
+        context = {
+            'awesome': awesome
+        }
+        result = u"inner"
 
         self.assertRender(template, context, result)
 
@@ -251,6 +278,26 @@ class TestAcceptance(TestCase):
         template = u"{{foo-bar}}"
         context = {
             "foo-bar": "baz"
+        }
+        result = u"baz"
+
+        self.assertRender(template, context, result)
+
+        template = u"{{foo.foo-bar}}"
+        context = {
+            'foo': {
+                'foo-bar': 'baz'
+            }
+        }
+        result = u"baz"
+
+        self.assertRender(template, context, result)
+
+        template = u"{{foo/foo-bar}}"
+        context = {
+            'foo': {
+                'foo-bar': 'baz'
+            }
         }
         result = u"baz"
 
@@ -289,6 +336,15 @@ class TestAcceptance(TestCase):
 
         self.assertRender(template, context, result)
 
+        template = u"Goodbye {{[foo bar]/expression}} world!"
+        context = {
+            'foo bar': {
+                'expression': 'beautiful'
+            }
+        }
+        result = u"Goodbye beautiful world!"
+        self.assertRender(template, context, result)
+
     def test_nested_paths(self):
         template = u"{{#goodbyes}}{{.././world}} {{/goodbyes}}"
         context = {
@@ -299,7 +355,7 @@ class TestAcceptance(TestCase):
             ],
             'world': "world"
         }
-        result = "world world world "
+        result = u"world world world "
 
         self.assertRender(template, context, result)
 
@@ -307,7 +363,7 @@ class TestAcceptance(TestCase):
         helpers = {'helper': "notcallable"}
 
         template = u"test: {{.}}"
-        result = "test: "
+        result = u"test: "
 
         self.assertRender(template, None, result, helpers)
 
@@ -318,7 +374,7 @@ class TestAcceptance(TestCase):
                 'name': None
             }
         }
-        result = ""
+        result = u""
 
         self.assertRender(template, context, result)
 
@@ -326,7 +382,7 @@ class TestAcceptance(TestCase):
         context = {
             'person': {}
         }
-        result = ""
+        result = u""
 
         self.assertRender(template, context, result)
 
@@ -339,7 +395,7 @@ class TestAcceptance(TestCase):
                 "GOODBYE"
             ]
         }
-        result = "goodbyeGoodbyeGOODBYE"
+        result = u"goodbyeGoodbyeGOODBYE"
 
         self.assertRender(template, context, result)
 
@@ -352,9 +408,46 @@ class TestAcceptance(TestCase):
                 {'text': "HELLO"}
             ]
         }
-        result = "helloHelloHELLO"
+        result = u"helloHelloHELLO"
 
         self.assertRender(template, context, result)
+
+    def test_this_keyword_in_helpers(self):
+        def helper(this, value):
+            return 'bar ' + value
+        helpers = {
+            'foo': helper
+        }
+        template = u"{{#goodbyes}}{{foo this}}{{/goodbyes}}"
+        context = {
+            'goodbyes': ['goodbye', 'Goodbye', 'GOODBYE']
+        }
+        result = u"bar goodbyebar Goodbyebar GOODBYE"
+
+        self.assertRender(template, context, result, helpers=helpers)
+
+        template = u"{{#hellos}}{{foo this/text}}{{/hellos}}"
+        context = {
+            'hellos': [{'text': 'hello'}, {'text': 'Hello'}, {'text': 'HELLO'}]
+        }
+        result = u"bar hellobar Hellobar HELLO"
+
+        self.assertRender(template, context, result, helpers=helpers)
+
+    def test_pass_number_literal(self):
+        self.assertRender(u"{{12}}", {}, u"")
+        self.assertRender(u"{{12}}", {'12': 'bar'}, u"bar")
+        self.assertRender(u"{{12.34}}", {}, u"")
+        # FIXME the two cases below currently fail, it is also the case for non-numeric variables
+        # self.assertRender(u"{{12.34}}", {'12.34': 'bar'}, u"bar")
+        # def func(this, arg):
+        #     return 'bar' + str(arg)
+        # self.assertRender(u"{{12.34 1}}", {'12.34': func}, u"bar1")
+
+    def test_pass_boolean_literal(self):
+        self.assertRender(u"{{true}}", {}, u"")
+        self.assertRender(u"{{true}}", {'': 'foo'}, u"")
+        self.assertRender(u"{{false}}", {'false': 'foo'}, u"foo")
 
     def test_inverted_sections(self):
         # We use this form to not introduce extra whitespace
@@ -362,7 +455,7 @@ class TestAcceptance(TestCase):
             u"{{#goodbyes}}{{this}}{{/goodbyes}}"
             u"{{^goodbyes}}Right On!{{/goodbyes}}"
         )
-        result = "Right On!"
+        result = u"Right On!"
 
         context = {}
 
@@ -387,7 +480,7 @@ class TestAcceptance(TestCase):
             ],
             'world': "world"
         }
-        result = "goodbye! Goodbye! GOODBYE! cruel world!"
+        result = u"goodbye! Goodbye! GOODBYE! cruel world!"
 
         self.assertRender(template, context, result)
 
@@ -395,7 +488,7 @@ class TestAcceptance(TestCase):
             'goodbyes': [],
             'world': "world"
         }
-        result = "cruel world!"
+        result = u"cruel world!"
 
         self.assertRender(template, context, result)
 
@@ -410,7 +503,7 @@ class TestAcceptance(TestCase):
             ],
             'world': "world"
         }
-        result = "cruel world!"
+        result = u"cruel world!"
 
         self.assertRender(template, context, result)
 
@@ -418,7 +511,7 @@ class TestAcceptance(TestCase):
             'goodbyes': [],
             'world': "world"
         }
-        result = "cruel world!"
+        result = u"cruel world!"
 
         self.assertRender(template, context, result)
 
@@ -436,7 +529,7 @@ class TestAcceptance(TestCase):
                 {'text': "GOODBYE"}
             ]
         }
-        result = "goodbye cruel Alan! Goodbye cruel Alan! GOODBYE cruel Alan! "
+        result = u"goodbye cruel Alan! Goodbye cruel Alan! GOODBYE cruel Alan! "
 
         self.assertRender(template, context, result)
 
@@ -450,7 +543,7 @@ class TestAcceptance(TestCase):
                 {'text': "GOODBYE"}
             ]
         }
-        result = "goodbye cruel Alan! Goodbye cruel Alan! GOODBYE cruel Alan! "
+        result = u"goodbye cruel Alan! Goodbye cruel Alan! GOODBYE cruel Alan! "
 
         self.assertRender(template, context, result)
 
@@ -473,7 +566,7 @@ class TestAcceptance(TestCase):
                 }
             ]
         }
-        result = "<a href='/root/goodbye'>Goodbye</a>"
+        result = u"<a href='/root/goodbye'>Goodbye</a>"
 
         self.assertRender(template, context, result, helpers)
 
@@ -493,7 +586,7 @@ class TestAcceptance(TestCase):
         context = {
             'name': "Alan"
         }
-        result = "Goodbye Alan! goodbye Alan! GOODBYE Alan! "
+        result = u"Goodbye Alan! goodbye Alan! GOODBYE Alan! "
 
         self.assertRender(template, context, result, helpers)
 
@@ -603,7 +696,7 @@ class TestAcceptance(TestCase):
         context = {
             'name': "Yehuda"
         }
-        result = "<form><p>Yehuda</p></form>"
+        result = u"<form><p>Yehuda</p></form>"
 
         self.assertRender(template, context, result, helpers)
 
@@ -693,7 +786,7 @@ class TestAcceptance(TestCase):
                 }
             }
         }
-        result = "<form><p>Harold</p></form>"
+        result = u"<form><p>Harold</p></form>"
 
         self.assertRender(template, context, result, helpers)
 
@@ -714,7 +807,7 @@ class TestAcceptance(TestCase):
         context = {
             'val': 'bar'
         }
-        result = "<p>bar</p>"
+        result = u"<p>bar</p>"
 
         self.assertRender(template, context, result, helpers)
 
@@ -739,7 +832,7 @@ class TestAcceptance(TestCase):
         context = {
             'val': 1
         }
-        result = "<p>2</p>"
+        result = u"<p>2</p>"
 
         self.assertRender(template, context, result, helpers)
 
@@ -760,7 +853,7 @@ class TestAcceptance(TestCase):
         context = {
             'val': 'bar'
         }
-        result = "<p>bar</p>"
+        result = u"<p>bar</p>"
 
         self.assertRender(template, context, result, helpers)
 
@@ -781,7 +874,7 @@ class TestAcceptance(TestCase):
         context = {
             'val': 'bar'
         }
-        result = "<p>bar</p>"
+        result = u"<p>bar</p>"
 
         self.assertRender(template, context, result, helpers)
 
@@ -806,14 +899,14 @@ class TestAcceptance(TestCase):
                 'name': "Yehuda"
             }
         }
-        result = "<form><p>Yehuda</p><a href='Yehuda'>Hello</a></form>"
+        result = u"<form><p>Yehuda</p><a href='Yehuda'>Hello</a></form>"
 
         self.assertRender(template, context, result, helpers)
 
     def test_block_inverted_sections(self):
         template = u"{{#people}}{{name}}{{^}}{{none}}{{/people}}"
         context = {'none': "No people"}
-        result = "No people"
+        result = u"No people"
 
         self.assertRender(template, context, result)
 
@@ -823,7 +916,7 @@ class TestAcceptance(TestCase):
             'none': "No people",
             'people': []
         }
-        result = "No people"
+        result = u"No people"
 
         self.assertRender(template, context, result)
 
@@ -849,14 +942,14 @@ class TestAcceptance(TestCase):
                 {'name': "Yehuda"}
             ]
         }
-        result = "<ul><li>Alan</li><li>Yehuda</li></ul>"
+        result = u"<ul><li>Alan</li><li>Yehuda</li></ul>"
 
         self.assertRender(template, context, result, helpers)
 
         context = {
             'people': []
         }
-        result = "<p><em>Nobody's here</em></p>"
+        result = u"<p><em>Nobody's here</em></p>"
 
         self.assertRender(template, context, result, helpers)
 
@@ -867,14 +960,14 @@ class TestAcceptance(TestCase):
                 {'name': "Yehuda"}
             ]
         }
-        result = "<ul><li>Alan</li><li>Yehuda</li></ul>"
+        result = u"<ul><li>Alan</li><li>Yehuda</li></ul>"
 
         self.assertRender(template, context, result, helpers)
 
         context = {
             'people': []
         }
-        result = "<p><em>Nobody's here</em></p>"
+        result = u"<p><em>Nobody's here</em></p>"
 
         self.assertRender(template, context, result, helpers)
 
@@ -883,7 +976,7 @@ class TestAcceptance(TestCase):
             'people': [],
             'message': "Nobody's here"
         }
-        result = "<p>Nobody&#x27;s here</p>"
+        result = u"<p>Nobody&#x27;s here</p>"
 
         self.assertRender(template, context, result, helpers)
 
@@ -894,7 +987,7 @@ class TestAcceptance(TestCase):
         context = {
             'cruel': "cruel"
         }
-        result = "Goodbye cruel world!"
+        result = u"Goodbye cruel world!"
 
         self.assertRender(template, context, result, helpers)
 
@@ -904,7 +997,7 @@ class TestAcceptance(TestCase):
                 {'cruel': "cruel"}
             ]
         }
-        result = "Goodbye cruel world!"
+        result = u"Goodbye cruel world!"
 
         self.assertRender(template, context, result, helpers)
 
@@ -914,7 +1007,7 @@ class TestAcceptance(TestCase):
         context = {
             'lookup': 'Explicit'
         }
-        result = "helpers"
+        result = u"helpers"
 
         self.assertRender(template, context, result, helpers)
 
@@ -923,7 +1016,7 @@ class TestAcceptance(TestCase):
         context = {
             'lookup': 'Explicit'
         }
-        result = "helpers"
+        result = u"helpers"
 
         self.assertRender(template, context, result, helpers)
 
@@ -932,7 +1025,7 @@ class TestAcceptance(TestCase):
         context = {
             'lookup': []
         }
-        result = "Explicit"
+        result = u"Explicit"
 
         self.assertRender(template, context, result, helpers)
 
@@ -941,7 +1034,7 @@ class TestAcceptance(TestCase):
 
         template = u"{{#outer}}{{#inner}}{{helper}}{{/inner}}{{/outer}}"
         context = {'outer': {'inner': {'unused': []}}}
-        result = "helper"
+        result = u"helper"
 
         self.assertRender(template, context, result, helpers)
 
@@ -963,7 +1056,7 @@ class TestAcceptance(TestCase):
                 }
             ]
         }
-        result = "Dudes: Yehuda (http://yehuda) Alan (http://alan) "
+        result = u"Dudes: Yehuda (http://yehuda) Alan (http://alan) "
 
         self.assertRender(template, context, result, None, partials)
 
@@ -985,7 +1078,7 @@ class TestAcceptance(TestCase):
                 }
             ]
         }
-        result = "Dudes: Yehuda (http://yehuda) Alan (http://alan) "
+        result = u"Dudes: Yehuda (http://yehuda) Alan (http://alan) "
 
         self.assertRender(template, context, result, None, partials)
 
@@ -1028,7 +1121,7 @@ class TestAcceptance(TestCase):
                 }
             ]
         }
-        result = "Dudes: Yehuda (http://example) Alan (http://example) "
+        result = u"Dudes: Yehuda (http://example) Alan (http://example) "
 
         self.assertRender(template, context, result, None, partials)
 
@@ -1101,7 +1194,7 @@ class TestAcceptance(TestCase):
             'name': "Jeepers",
             'another_dude': "Creepers"
         }
-        result = "Dudes: Jeepers Creepers"
+        result = u"Dudes: Jeepers Creepers"
 
         self.assertRender(template, context, result, None, partials)
 
@@ -1115,7 +1208,7 @@ class TestAcceptance(TestCase):
             'name': "Jeepers",
             'another_dude': "Creepers"
         }
-        result = "Dudes: Jeepers"
+        result = u"Dudes: Jeepers"
 
         self.assertRender(template, context, result, None, partials)
 
@@ -1129,7 +1222,7 @@ class TestAcceptance(TestCase):
             'name': "Jeepers",
             'another_dude': "Creepers"
         }
-        result = "Dudes: Jeepers"
+        result = u"Dudes: Jeepers"
 
         self.assertRender(template, context, result, None, partials)
 
@@ -1146,7 +1239,7 @@ class TestAcceptance(TestCase):
 
         template = u'Message: {{hello "world" 12 true false}}'
         context = {}
-        result = "Message: Hello world 12 times: True False"
+        result = u"Message: Hello world 12 times: True False"
 
         self.assertRender(template, context, result, helpers)
 
@@ -1155,7 +1248,7 @@ class TestAcceptance(TestCase):
         context = {
             'var': True
         }
-        result = "true"
+        result = u"true"
 
         self.assertRender(template, context, result)
 
@@ -1164,7 +1257,7 @@ class TestAcceptance(TestCase):
         context = {
             'var': True
         }
-        result = "true"
+        result = u"true"
 
         self.assertRender(template, context, result)
 
@@ -1173,7 +1266,7 @@ class TestAcceptance(TestCase):
         context = {
             'var': False
         }
-        result = "false"
+        result = u"false"
 
         self.assertRender(template, context, result)
 
@@ -1182,7 +1275,7 @@ class TestAcceptance(TestCase):
         context = {
             'var': False
         }
-        result = "false"
+        result = u"false"
 
         self.assertRender(template, context, result)
 
@@ -1191,7 +1284,7 @@ class TestAcceptance(TestCase):
         context = {
             'var': None
         }
-        result = ""
+        result = u""
 
         self.assertRender(template, context, result)
 
@@ -1200,7 +1293,7 @@ class TestAcceptance(TestCase):
         context = {
             'var': None
         }
-        result = ""
+        result = u""
 
         self.assertRender(template, context, result)
 
@@ -1213,7 +1306,7 @@ class TestAcceptance(TestCase):
 
         template = u"Message: {{{hello null}}}"
         context = {}
-        result = "Message: Hello "
+        result = u"Message: Hello "
 
         self.assertRender(template, context, result, helpers)
 
@@ -1226,7 +1319,7 @@ class TestAcceptance(TestCase):
 
         template = u"Message: {{{hello undefined}}}"
         context = {}
-        result = "Message: Hello "
+        result = u"Message: Hello "
 
         self.assertRender(template, context, result, helpers)
 
@@ -1235,7 +1328,7 @@ class TestAcceptance(TestCase):
         context = {
             'var': 'Hello'
         }
-        result = "    Hello"
+        result = u"    Hello"
 
         self.assertRender(template, context, result)
 
@@ -1256,7 +1349,7 @@ class TestAcceptance(TestCase):
         self.assertRender(template, context, result)
 
         template = u"\n{{#if var}}\n    {{var}}\n{{/if}}"
-        result = "\n    Hello"
+        result = u"\n    Hello"
 
         self.assertRender(template, context, result)
 
@@ -1275,7 +1368,7 @@ class TestAcceptance(TestCase):
 
         template = u'Message: {{{hello "\\"world\\""}}}'
         context = {}
-        result = "Message: Hello \"world\""
+        result = u"Message: Hello \"world\""
 
         self.assertRender(template, context, result, helpers)
 
@@ -1288,7 +1381,7 @@ class TestAcceptance(TestCase):
 
         template = u"Message: {{{hello 'Alan\\\'s world'}}}"
         context = {}
-        result = "Message: Hello Alan's world"
+        result = u"Message: Hello Alan's world"
 
         self.assertRender(template, context, result, helpers)
 
@@ -1304,7 +1397,7 @@ class TestAcceptance(TestCase):
             'cruel': "cruel",
             'world': "world"
         }
-        result = "Message: Goodbye cruel world"
+        result = u"Message: Goodbye cruel world"
 
         self.assertRender(template, context, result, helpers)
 
@@ -1324,7 +1417,7 @@ class TestAcceptance(TestCase):
             'cruel': "cruel",
             'world': "world"
         }
-        result = "Message: Goodbye cruel world"
+        result = u"Message: Goodbye cruel world"
 
         self.assertRender(template, context, result, helpers)
 
@@ -1347,7 +1440,7 @@ class TestAcceptance(TestCase):
             'hello': "Hello",
             'world': "world"
         }
-        result = "Hello <a>world</a>"
+        result = u"Hello <a>world</a>"
 
         self.assertRender(template, context, result, helpers)
 
@@ -1356,7 +1449,7 @@ class TestAcceptance(TestCase):
 
         template = u"{{hello}}"
         context = {}
-        result = "foo"
+        result = u"foo"
 
         self.assertRender(template, context, result, helpers)
 
@@ -1368,14 +1461,14 @@ class TestAcceptance(TestCase):
 
         template = u"{{{typeof hello}}}"
         context = {}
-        result = "<type 'NoneType'>" if sys.version_info < (3,) else "<class 'NoneType'>"
+        result = u"<type 'NoneType'>" if sys.version_info < (3,) else "<class 'NoneType'>"
 
         self.assertRender(template, context, result, helpers, knownHelpers=set(['typeof']), knownHelpersOnly=True)
 
     def test_Builtin_helpers_available_in_knownHelpers_only_mode(self):
         template = u"{{#unless foo}}bar{{/unless}}"
         context = {}
-        result = "bar"
+        result = u"bar"
 
         self.assertRender(template, context, result, knownHelpersOnly=True)
 
@@ -1384,7 +1477,7 @@ class TestAcceptance(TestCase):
         context = {
             'foo': 'bar'
         }
-        result = "bar"
+        result = u"bar"
 
         self.assertRender(template, context, result, knownHelpersOnly=True)
 
@@ -1393,7 +1486,7 @@ class TestAcceptance(TestCase):
         context = {
             'foo': 'baz'
         }
-        result = "bar"
+        result = u"bar"
 
         self.assertRender(template, context, result, knownHelpersOnly=True)
 
@@ -1402,7 +1495,7 @@ class TestAcceptance(TestCase):
         context = {
             'foo': False
         }
-        result = "bar"
+        result = u"bar"
 
         self.assertRender(template, context, result, knownHelpersOnly=True)
 
@@ -1415,14 +1508,14 @@ class TestAcceptance(TestCase):
         context = {
             'truthy': lambda this: True
         }
-        result = "yep"
+        result = u"yep"
 
         self.assertRender(template, context, result)
 
     def test_default_helperMissing_no_params(self):
         template = u"a{{missing}}b"
         context = {}
-        result = "ab"
+        result = u"ab"
 
         self.assertRender(template, context, result)
 
@@ -1440,7 +1533,7 @@ class TestAcceptance(TestCase):
                 'last': "Johnson"
             }
         }
-        result = "Alan Johnson"
+        result = u"Alan Johnson"
 
         self.assertRender(template, context, result)
 
@@ -1558,7 +1651,7 @@ class TestAcceptance(TestCase):
             {'test': TestGet()},
             {'test': {'text': 'Goodbye'}}
         ]
-        result = "Hello! Hi! Goodbye! "
+        result = u"Hello! Hi! Goodbye! "
 
         self.assertRender(template, context, result)
 
@@ -1571,7 +1664,7 @@ class TestAcceptance(TestCase):
                 {'text': "GOODBYE"}
             ]
         ]
-        result = "goodbye! Goodbye! GOODBYE! cruel world!"
+        result = u"goodbye! Goodbye! GOODBYE! cruel world!"
 
         self.assertRender(template, context, result)
 
@@ -1587,7 +1680,7 @@ class TestAcceptance(TestCase):
         context = [
             TestContext()
         ]
-        result = "Goodbye! cruel world!"
+        result = u"Goodbye! cruel world!"
 
         self.assertRender(template, context, result)
 
@@ -1602,12 +1695,12 @@ class TestAcceptance(TestCase):
             ],
             'world': "world"
         }
-        result = "goodbye! Goodbye! GOODBYE! cruel world!"
+        result = u"goodbye! Goodbye! GOODBYE! cruel world!"
 
         self.assertRender(template, context, result)
 
         context = {'goodbyes': [], 'world': "world"}
-        result = "cruel world!"
+        result = u"cruel world!"
 
         self.assertRender(template, context, result)
 
@@ -1623,7 +1716,7 @@ class TestAcceptance(TestCase):
                 'James'
             ]
         }
-        result = "JOHN JAMES "
+        result = u"JOHN JAMES "
 
         self.assertRender(template, context, result, helpers)
 
@@ -1687,7 +1780,7 @@ class TestAcceptance(TestCase):
             ],
             'world': "world"
         }
-        result = "0. goodbye! 1. Goodbye! 2. GOODBYE! cruel world!"
+        result = u"0. goodbye! 1. Goodbye! 2. GOODBYE! cruel world!"
 
         self.assertRender(template, context, result)
 
@@ -1701,7 +1794,7 @@ class TestAcceptance(TestCase):
             ],
             'world': "world"
         }
-        result = "0. goodbye! 0 1 2 After 0 1. Goodbye! 0 1 2 After 1 2. GOODBYE! 0 1 2 After 2 cruel world!"
+        result = u"0. goodbye! 0 1 2 After 0 1. Goodbye! 0 1 2 After 1 2. GOODBYE! 0 1 2 After 2 cruel world!"
 
         self.assertRender(template, context, result)
 
@@ -1725,7 +1818,7 @@ class TestAcceptance(TestCase):
                 }
             ]
         }
-        result = "John(0) likes apples(0), John(0) likes pears(1), Jane(1) likes grapes(0), Jane(1) likes pineapple(1), "
+        result = u"John(0) likes apples(0), John(0) likes pears(1), Jane(1) likes grapes(0), Jane(1) likes pineapple(1), "
 
         self.assertRender(template, context, result)
 
@@ -1762,7 +1855,7 @@ class TestAcceptance(TestCase):
             'cruel': lambda this, world: "cruel " + world.upper(),
             'world': "world"
         }
-        result = "GOODBYE cruel WORLD"
+        result = u"GOODBYE cruel WORLD"
 
         self.assertRender(template, context, result, helpers)
 
@@ -1779,7 +1872,7 @@ class TestAcceptance(TestCase):
             'cruel': lambda this, world: "cruel " + world.upper(),
             'world': "world"
         }
-        result = "GOODBYE cruel WORLD"
+        result = u"GOODBYE cruel WORLD"
 
         self.assertRender(template, context, result, helpers)
 
@@ -1811,7 +1904,7 @@ class TestAcceptance(TestCase):
             'cruel': lambda this, world: "cruel " + world.upper(),
             'world': "world"
         }
-        result = "GOODBYE cruel WORLD goodbye"
+        result = u"GOODBYE cruel WORLD goodbye"
 
         self.assertRender(template, context, result, helpers)
 
@@ -1843,13 +1936,13 @@ class TestAcceptance(TestCase):
 
         template = u'{{goodbye cruel="CRUEL" world="WORLD" _print=true}}'
         context = {}
-        result = "GOODBYE CRUEL WORLD"
+        result = u"GOODBYE CRUEL WORLD"
 
         self.assertRender(template, context, result, helpers)
 
         template = u'{{goodbye cruel="CRUEL" world="WORLD" _print=false}}'
         context = {}
-        result = "NOT PRINTING"
+        result = u"NOT PRINTING"
 
         self.assertRender(template, context, result, helpers)
 
@@ -1862,7 +1955,7 @@ class TestAcceptance(TestCase):
 
         template = u'{{#goodbye cruel="CRUEL" times=12}}world{{/goodbye}}'
         context = {}
-        result = "GOODBYE CRUEL world 12 TIMES"
+        result = u"GOODBYE CRUEL world 12 TIMES"
 
         self.assertRender(template, context, result, helpers)
 
@@ -1880,13 +1973,13 @@ class TestAcceptance(TestCase):
 
         template = u'{{#goodbye cruel="CRUEL" _print=true}}world{{/goodbye}}'
         context = {}
-        result = "GOODBYE CRUEL world"
+        result = u"GOODBYE CRUEL world"
 
         self.assertRender(template, context, result, helpers)
 
         template = u'{{#goodbye cruel="CRUEL" _print=false}}world{{/goodbye}}'
         context = {}
-        result = "NOT PRINTING"
+        result = u"NOT PRINTING"
 
         self.assertRender(template, context, result, helpers)
 
@@ -1969,7 +2062,7 @@ class TestAcceptance(TestCase):
                 }
             ]
         }
-        result = "The origin of speciesCharles DarwinLazarillo de Tormes"
+        result = u"The origin of speciesCharles DarwinLazarillo de Tormes"
 
         self.assertRender(template, context, result)
 
@@ -1977,28 +2070,28 @@ class TestAcceptance(TestCase):
         template = u"{{^set}}not set{{/set}} :: {{#set}}set{{/set}}"
 
         context = {}
-        result = "not set :: "
+        result = u"not set :: "
 
         self.assertRender(template, context, result)
 
         context = {
             'set': None
         }
-        result = "not set :: "
+        result = u"not set :: "
 
         self.assertRender(template, context, result)
 
         context = {
             'set': False
         }
-        result = "not set :: "
+        result = u"not set :: "
 
         self.assertRender(template, context, result)
 
         context = {
             'set': True
         }
-        result = " :: set"
+        result = u" :: set"
 
         self.assertRender(template, context, result)
 
@@ -2015,7 +2108,7 @@ class TestAcceptance(TestCase):
             "taxed_value": int(10000 - (10000 * 0.4)),
             "in_ca": True
         }
-        result = "Hello Chris. You have just won $10000! Well, $6000, after taxes."
+        result = u"Hello Chris. You have just won $10000! Well, $6000, after taxes."
 
         self.assertRender(template, context, result)
 
@@ -2027,7 +2120,7 @@ class TestAcceptance(TestCase):
                 2
             ]
         }
-        result = "1, 2"
+        result = u"1, 2"
 
         self.assertRender(template, context, result)
 
@@ -2051,7 +2144,7 @@ class TestAcceptance(TestCase):
             ],
             'hasThings': lambda this: True
         }
-        result = "<strong>This is a slightly more complicated blah.</strong>.\n\nCheck this out:\n\n<ul>\n\n<li class=one>@fat</li>\n\n<li class=two>@dhg</li>\n\n<li class=three>@sayrer</li>\n</ul>.\n\n"
+        result = u"<strong>This is a slightly more complicated blah.</strong>.\n\nCheck this out:\n\n<ul>\n\n<li class=one>@fat</li>\n\n<li class=two>@dhg</li>\n\n<li class=three>@sayrer</li>\n</ul>.\n\n"
 
         self.assertRender(template, context, result)
 
@@ -2123,7 +2216,7 @@ class TestAcceptance(TestCase):
                 'cruel': "cruel",
                 'world': "world"
             }
-            result = "Goodbye\ncruel\nworld!"
+            result = u"Goodbye\ncruel\nworld!"
 
             compiler = Compiler()
             code = compiler.precompile(template)
