@@ -709,6 +709,26 @@ class Compiler:
         self._helpers = {}
         self.template_counter = 1
 
+    def _extract_word(self, source, position):
+        """
+        Extracts the word that falls at or around a specific position
+
+        :param source:
+            The template source as a unicode string
+        :param position:
+            The position where the word falls
+
+        :return:
+            The word
+        """
+        boundry = re.search('{{|{|\s|$', source[:position][::-1])
+        start_offset = boundry.end() if boundry.group(0).startswith('{') else boundry.start()
+
+        boundry = re.search('}}|}|\s|$', source[position:])
+        end_offset = boundry.end() if boundry.group(0).startswith('}') else boundry.start()
+
+        return source[position-start_offset:position+end_offset]
+
     def _generate_code(self, source):
         """
         Common compilation code shared between precompile() and compile()
@@ -723,7 +743,7 @@ class Compiler:
         if not isinstance(source, str_class):
             raise PybarsError("Template source must be a unicode string")
 
-        tree, error = self._handlebars(source).apply('template')
+        tree, (position, _) = self._handlebars(source).apply('template')
 
         self.clean_whitespace(tree)
 
@@ -733,20 +753,15 @@ class Compiler:
             print(tree)
             print('')
 
-        if error[1]:
+        if position < len(source):
             line_num = source.count('\n') + 1
-            beginning_of_line = source.rfind('\n', 0, error[0])
+            beginning_of_line = source.rfind('\n', 0, position)
             if beginning_of_line == -1:
-                char_num = error[0]
+                char_num = position
             else:
-                char_num = error[0] - beginning_of_line
-            if error[1][0][0] == 'message':
-                message = error[1][0][1]
-            elif error[1][0][0] == 'expected':
-                message = 'expected "%s"' % error[1][0][2]
-            else:
-                message = repr(error[1][0])
-            raise PybarsError("Error at character %s of line %s - %s" % (char_num, line_num, message))
+                char_num = position - beginning_of_line
+            word = self._extract_word(source, position)
+            raise PybarsError("Error at character %s of line %s near %s" % (char_num, line_num, word))
 
         # Ensure the builder is in a clean state - kinda gross
         self._compiler.globals['builder']._reset()
