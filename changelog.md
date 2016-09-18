@@ -1,5 +1,9 @@
 # changelog
 
+## 0.9.2
+
+ - Improve error parsing and reporting (issue #23)
+
 ## 0.9.1
 
  - Changed `pybars.__version__` tuple to `pybars.__version_info__`,
@@ -35,7 +39,7 @@
  - Added support for `null` and `undefined` literals
 
 ## 0.5.1
- 
+
  - Added support for segment literals (`[foo bar]`)
  - Fixed a bug related to newlines in the middle of tags
  - Added support for single-quoted string literals
