@@ -2,7 +2,10 @@
 
 ## 0.9.2
 
+ - Make dictionary calls take precedence over attributes and .get (issue #16)
+ - Add else support in inverted if blocks (issue #17)
  - Improve error parsing and reporting (issue #23)
+ - Port over a few more tests from handlebars.js
 
 ## 0.9.1
 
