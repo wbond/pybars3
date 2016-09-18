@@ -1744,6 +1744,14 @@ class TestAcceptance(TestCase):
         self.assertRender(template, context, result, helpers)
 
     def test_each_of_None(self):
+        template = u"Goodbye {{#each things}}cruel{{/each}} world!"
+        context = {
+            'things': None
+        }
+        result = u"Goodbye  world!"
+
+        self.assertRender(template, context, result)
+
         template = u"Goodbye {{^each things}}cruel{{/each}} world!"
         context = {
             'things': None
@@ -1758,6 +1766,20 @@ class TestAcceptance(TestCase):
             'things': []
         }
         result = u"Goodbye cruel world!"
+
+        self.assertRender(template, context, result)
+
+    def test_each_of_non_empty_list(self):
+        template = u"Goodbye {{#each things}}cruel{{/each}} world!"
+        context = {
+            'things': ['thing1', 'thing2']
+        }
+        result = u"Goodbye cruelcruel world!"
+
+        self.assertRender(template, context, result)
+
+        template = u"Goodbye {{^each things}}cruel{{/each}} world!"
+        result = u"Goodbye  world!"
 
         self.assertRender(template, context, result)
 
