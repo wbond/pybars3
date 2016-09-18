@@ -1611,6 +1611,15 @@ class TestAcceptance(TestCase):
 
         self.assertRender(template, context, result)
 
+        template = u"{{^if goodbye}}Hello{{else}}GOODBYE{{/if}}"
+
+        self.assertRender(template, {}, u"Hello")
+        self.assertRender(template, {'goodbye': True}, u"GOODBYE")
+        self.assertRender(template, {'goodbye': "goodbye"}, u"GOODBYE")
+        self.assertRender(template, {'goodbye': False}, u"Hello")
+        self.assertRender(template, {'hello': 'hello'}, u"Hello")
+
+
     def test_if_with_function_argument(self):
         template = u"{{#if goodbye}}GOODBYE {{/if}}cruel {{world}}!"
 
