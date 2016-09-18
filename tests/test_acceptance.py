@@ -477,17 +477,11 @@ class TestAcceptance(TestCase):
         )
         result = "Right On!\nRight On!"
 
-        context = {}
+        self.assertRender(template, {}, result)
+        self.assertRender(template, {'goodbyes': False}, result)
+        self.assertRender(template, {'goodbyes': []}, result)
 
-        self.assertRender(template, context, result)
-
-        context = {'goodbyes': False}
-
-        self.assertRender(template, context, result)
-
-        context = {'goodbyes': []}
-
-        self.assertRender(template, context, result)
+        self.assertRender(template, {'goodbyes': ['Hello', 'world!']}, u"Helloworld!\nHelloworld!")
 
     def test_array_iteration(self):
         template = u"{{#goodbyes}}{{text}}! {{/goodbyes}}cruel {{world}}!"
@@ -1616,6 +1610,15 @@ class TestAcceptance(TestCase):
         result = u"Hello cruel world!"
 
         self.assertRender(template, context, result)
+
+        template = u"{{^if goodbye}}Hello{{else}}GOODBYE{{/if}}"
+
+        self.assertRender(template, {}, u"Hello")
+        self.assertRender(template, {'goodbye': True}, u"GOODBYE")
+        self.assertRender(template, {'goodbye': "goodbye"}, u"GOODBYE")
+        self.assertRender(template, {'goodbye': False}, u"Hello")
+        self.assertRender(template, {'hello': 'hello'}, u"Hello")
+
 
     def test_if_with_function_argument(self):
         template = u"{{#if goodbye}}GOODBYE {{/if}}cruel {{world}}!"
