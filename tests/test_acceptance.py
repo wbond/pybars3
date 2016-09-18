@@ -477,17 +477,11 @@ class TestAcceptance(TestCase):
         )
         result = "Right On!\nRight On!"
 
-        context = {}
+        self.assertRender(template, {}, result)
+        self.assertRender(template, {'goodbyes': False}, result)
+        self.assertRender(template, {'goodbyes': []}, result)
 
-        self.assertRender(template, context, result)
-
-        context = {'goodbyes': False}
-
-        self.assertRender(template, context, result)
-
-        context = {'goodbyes': []}
-
-        self.assertRender(template, context, result)
+        self.assertRender(template, {'goodbyes': ['Hello', 'world!']}, u"Helloworld!\nHelloworld!")
 
     def test_array_iteration(self):
         template = u"{{#goodbyes}}{{text}}! {{/goodbyes}}cruel {{world}}!"
