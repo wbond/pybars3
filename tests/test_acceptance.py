@@ -2231,3 +2231,22 @@ class TestAcceptance(TestCase):
         finally:
             if os.path.exists('test_precompile.py'):
                 os.unlink('test_precompile.py')
+
+    def test_attribute_precedence(self):
+        class MyDict(dict):
+            world = "goodbye"
+
+        template = u"{{hello.world}}"
+        context = {
+            "hello": MyDict({"world": "hello"})
+        }
+        result = 'hello'
+
+        context2 = {
+            "hello": MyDict()
+        }
+        result2 = "goodbye"
+
+        self.assertRender(template, context, result)
+        self.assertRender(template, context2, result2)
+
