@@ -79,7 +79,7 @@ escapedexpression ::= <start> <expression_inner>:e => ('escapedexpand', ) + e
 block_inner ::= <spaces> <symbol>:s <arguments>:args <spaces> <finish>
     => (u''.join(s), args)
 partial_inner ::= <spaces> <partialname>:s <arguments>:args <spaces> <finish>
-    => (u''.join(s), args)
+    => (s, args)
 alt_inner ::= <spaces> ('^' | 'e' 'l' 's' 'e') <spaces> <finish>
 partial ::= <start> '>' <partial_inner>:i => ('partial',) + i
 path ::= ~('/') <pathseg>+:segments => ('path', segments)
@@ -108,7 +108,8 @@ escapedquote ::= '\\' '"' => '\\"'
 notclosebracket ::= (~(']') <anything>)
 safesymbol ::=  ~<alt_inner> '['? (<letter>|'_'):start (<letterOrDigit>|'_')+:symbol ']'? => start + u''.join(symbol)
 symbol ::=  ~<alt_inner> '['? (<letterOrDigit>|'-'|'@')+:symbol ']'? => u''.join(symbol)
-partialname ::= ~<alt_inner> ('['|'"')? (~(<space>|<finish>|']'|'"' ) <anything>)+:symbol (']'|'"')? => u''.join(symbol)
+partialname ::= <subexpression>:s => s
+    | ~<alt_inner> ('['|'"')? (~(<space>|<finish>|']'|'"' ) <anything>)+:symbol (']'|'"')? => ('literalparam', '"' + u''.join(symbol) + '"')
 pathseg ::= '[' <notclosebracket>+:symbol ']' => u''.join(symbol)
     | ('@' '.' '.' '/') => u'@@_parent'
     | <symbol>
@@ -141,7 +142,7 @@ literal ::= [ ( "literal" | "newline" | "whitespace" ) :value ] => builder.add_l
 expand ::= [ "expand" <path>:value [<arg>*:arguments]] => builder.add_expand(value, arguments)
 escapedexpand ::= [ "escapedexpand" <path>:value [<arg>*:arguments]] => builder.add_escaped_expand(value, arguments)
 invertedblock ::= [ "invertedblock" <anything>:symbol [<arg>*:arguments] [<compile>:t] [<compile>?:alt_t] ] => builder.add_invertedblock(symbol, arguments, t, alt_t)
-partial ::= ["partial" <anything>:symbol [<arg>*:arguments]] => builder.add_partial(symbol, arguments)
+partial ::= ["partial" <complexarg>:symbol [<arg>*:arguments]] => builder.add_partial(symbol, arguments)
 path ::= [ "path" [<pathseg>:segment]] => ("simple", segment)
  | [ "path" [<pathseg>+:segments] ] => ("complex", u"resolve(context, '"  + u"', '".join(segments) + u"')" )
 complexarg ::= [ "path" [<pathseg>+:segments] ] => u"resolve(context, '"  + u"', '".join(segments) + u"')"
@@ -718,9 +719,10 @@ class CodeBuilder:
         self._result.grow([u"    overrides = %s\n" % overrides_literal])
 
         self._result.grow([
-            u"    if '%s' not in partials:\n" % symbol,
-            u"        raise PybarsError('Partial \"%s\" not defined')\n" % symbol,
-            u"    inner = partials['%s']\n" % symbol,
+            u"    partialName = %s\n" % symbol,
+            u"    if partialName not in partials:\n",
+            u"        raise PybarsError('Partial \"%s\" not defined' % partialName)\n",
+            u"    inner = partials[partialName]\n",
             u"    scope = Scope(%s, context, root, overrides=overrides)\n" % self._lookup_arg(arg)])
         self._invoke_template("inner", "scope")
 

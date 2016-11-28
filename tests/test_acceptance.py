@@ -1240,6 +1240,47 @@ class TestAcceptance(TestCase):
 
         self.assertRender(template, context, result, None, partials)
 
+    def test_partials_dynamic_name(self):
+        def helper_whichPartial(this):
+            return "partialOne"
+
+        helpers = {
+            'whichPartial': helper_whichPartial
+        }
+
+        partials = {
+            "partialOne" : u"1 1 1",
+            "partialTwo" : u"2 2 2",
+        }
+
+        template = u"It is {{> (whichPartial)}} items"
+        context = {}
+        result = u"It is 1 1 1 items"
+
+        self.assertRender(template, context, result, helpers, partials)
+
+    def test_partials_dynamic_name_with_params(self):
+
+        def helper_whichPartialParametrized(this, suffix):
+            return "partial" + suffix
+
+        helpers = {
+            'whichPartial': helper_whichPartialParametrized
+        }
+
+        partials = {
+            "partialOne" : u"1 1 1",
+            "partialTwo" : u"2 2 2",
+        }
+
+        context = {
+            "suffix" : "Two"
+        }
+
+        template = u"It is literal call: {{> (whichPartial 'One')}}. And from context: {{> (whichPartial suffix)}}"
+        result = u"It is literal call: 1 1 1. And from context: 2 2 2"
+        self.assertRender(template, context, result, helpers, partials)
+
     def test_simple_literals_work(self):
 
         def hello(this, param, times, bool1, bool2):
