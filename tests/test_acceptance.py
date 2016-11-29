@@ -46,7 +46,7 @@ class TestAcceptance(TestCase):
     def assertRender(self, template, context, result, helpers=None, partials=None, error=None, **kwargs):
         try:
             self.assertEqual(result, render(template, context, helpers=helpers, partials=partials, **kwargs))
-        except PybarsError, e:
+        except PybarsError as e:
             self.assertEqual(e.message, error)
         else:
             if error:
