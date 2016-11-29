@@ -45,4 +45,5 @@ from pybars._compiler import (
     )
 
 
-log = lambda value: None
+def log(value):
+    print value
