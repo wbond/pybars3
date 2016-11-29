@@ -1,5 +1,5 @@
 [run]
 omit =
-    /tests.py
-    /setup.py
-    /tests/*
+    tests.py
+    setup.py
+    tests/*
