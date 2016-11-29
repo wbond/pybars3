@@ -1619,7 +1619,6 @@ class TestAcceptance(TestCase):
         self.assertRender(template, {'goodbye': False}, u"Hello")
         self.assertRender(template, {'hello': 'hello'}, u"Hello")
 
-
     def test_if_with_function_argument(self):
         template = u"{{#if goodbye}}GOODBYE {{/if}}cruel {{world}}!"
 
@@ -2170,7 +2169,7 @@ class TestAcceptance(TestCase):
         self.assertRender(template, context, result)
 
     def test_bug_reported_by__fat_where_lambdas_weren_t_being_properly_resolved(self):
-        template = u"<strong>This is a slightly more complicated {{thing}}.</strong>.\n{{! Just ignore this business. }}\nCheck this out:\n{{#hasThings}}\n<ul>\n{{#things}}\n<li class={{className}}>{{word}}</li>\n{{/things}}</ul>.\n{{/hasThings}}\n{{^hasThings}}\n\n<small>Nothing to check out...</small>\n{{/hasThings}}"
+        template = u"<strong>This is a slightly more complicated {{thing}}.</strong>.\n{{! Just ignore this business. }}\nCheck this out:\n{{#hasThings}}\n<ul>\n{{#things}}\n<li class={{className}}>{{word}}</li>\n{{/things}}</ul>.\n{{/hasThings}}\n{{^hasThings}}\n\n<small>Nothing to check out...</small>\n{{/hasThings}}"  # noqa: E501
         context = {
             'thing': lambda this: "blah",
             'things': [
@@ -2189,7 +2188,7 @@ class TestAcceptance(TestCase):
             ],
             'hasThings': lambda this: True
         }
-        result = u"<strong>This is a slightly more complicated blah.</strong>.\n\nCheck this out:\n\n<ul>\n\n<li class=one>@fat</li>\n\n<li class=two>@dhg</li>\n\n<li class=three>@sayrer</li>\n</ul>.\n\n"
+        result = u"<strong>This is a slightly more complicated blah.</strong>.\n\nCheck this out:\n\n<ul>\n\n<li class=one>@fat</li>\n\n<li class=two>@dhg</li>\n\n<li class=three>@sayrer</li>\n</ul>.\n\n"    # noqa: E501
 
         self.assertRender(template, context, result)
 

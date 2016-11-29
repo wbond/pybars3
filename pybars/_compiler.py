@@ -16,6 +16,14 @@
 
 """The compiler for pybars."""
 
+import re
+import sys
+from types import ModuleType
+import linecache
+
+import pybars
+import pybars._templates
+from pymeta.grammar import OMeta
 
 __all__ = [
     'Compiler',
@@ -25,14 +33,6 @@ __all__ = [
 
 __metaclass__ = type
 
-import re
-import sys
-from types import ModuleType
-import linecache
-
-import pybars
-import pybars._templates
-from pymeta.grammar import OMeta
 
 # This allows the code to run on Python 2 and 3 by
 # creating a consistent reference for the appropriate
@@ -154,7 +154,7 @@ pathseg ::= "/" => ''
     | "" => ''
     | "this" => ''
 pathseg ::= <anything>:symbol => u''.join(symbol)
-"""
+"""  # noqa: E501
 compile_grammar = compile_grammar.format(str_class=str_class.__name__)
 
 
@@ -759,7 +759,7 @@ class Compiler:
         boundry = re.search('}}|}|\s|$', source[position:])
         end_offset = boundry.end() if boundry.group(0).startswith('}') else boundry.start()
 
-        return source[position-start_offset:position+end_offset]
+        return source[position - start_offset:position + end_offset]
 
     def _generate_code(self, source):
         """
