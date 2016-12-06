@@ -1240,7 +1240,49 @@ class TestAcceptance(TestCase):
 
         self.assertRender(template, context, result, None, partials)
 
-    def test_partials_dynamic_name(self):
+    def test_dynamic_partials(self):
+        def helper_partial(this):
+            return "dude"
+
+        helpers = {
+            'partial': helper_partial
+        }
+
+        partials = {
+            "dude" : u"{{name}} ({{url}}) ",
+        }
+
+        template = u"Dudes: {{#dudes}}{{> (partial)}}{{/dudes}}"
+        context = {
+            "dudes": [{"name": "Yehuda", "url": "http://yehuda"}, {"name": "Alan", "url": "http://alan"}]
+        }
+        result = u"Dudes: Yehuda (http://yehuda) Alan (http://alan) "
+
+        self.assertRender(template, context, result, helpers, partials)
+
+    def test_failing_dynamic_partials(self):
+        def helper_partial(this):
+            return "missing"
+
+        helpers = {
+            'partial': helper_partial
+        }
+
+        partials = {
+            "dude" : u"{{name}} ({{url}}) ",
+        }
+
+        template = u"Dudes: {{#dudes}}{{> (partial)}}{{/dudes}}"
+        context = {
+            "dudes": [{"name": "Yehuda", "url": "http://yehuda"}, {"name": "Alan", "url": "http://alan"}]
+        }
+        result = u"Dudes: Yehuda (http://yehuda) Alan (http://alan) "
+
+        error = 'The partial missing could not be found'
+
+        self.assertRender(template, context, result, helpers=helpers, partials=partials, error=error)
+
+    def test_dynamic_partials_name(self):
         def helper_whichPartial(this):
             return "partialOne"
 
@@ -1259,7 +1301,7 @@ class TestAcceptance(TestCase):
 
         self.assertRender(template, context, result, helpers, partials)
 
-    def test_partials_dynamic_name_with_params(self):
+    def test_dynamic_partials_with_params(self):
 
         def helper_whichPartialParametrized(this, suffix):
             return "partial" + suffix
