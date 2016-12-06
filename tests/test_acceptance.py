@@ -1249,7 +1249,7 @@ class TestAcceptance(TestCase):
         }
 
         partials = {
-            "dude" : u"{{name}} ({{url}}) ",
+            "dude": u"{{name}} ({{url}}) ",
         }
 
         template = u"Dudes: {{#dudes}}{{> (partial)}}{{/dudes}}"
@@ -1269,7 +1269,7 @@ class TestAcceptance(TestCase):
         }
 
         partials = {
-            "dude" : u"{{name}} ({{url}}) ",
+            "dude": u"{{name}} ({{url}}) ",
         }
 
         template = u"Dudes: {{#dudes}}{{> (partial)}}{{/dudes}}"
@@ -1291,8 +1291,8 @@ class TestAcceptance(TestCase):
         }
 
         partials = {
-            "partialOne" : u"1 1 1",
-            "partialTwo" : u"2 2 2",
+            "partialOne": u"1 1 1",
+            "partialTwo": u"2 2 2",
         }
 
         template = u"It is {{> (whichPartial)}} items"
@@ -1311,12 +1311,12 @@ class TestAcceptance(TestCase):
         }
 
         partials = {
-            "partialOne" : u"1 1 1",
-            "partialTwo" : u"2 2 2",
+            "partialOne": u"1 1 1",
+            "partialTwo": u"2 2 2",
         }
 
         context = {
-            "suffix" : "Two"
+            "suffix": "Two"
         }
 
         template = u"It is literal call: {{> (whichPartial 'One')}}. And from context: {{> (whichPartial suffix)}}"
