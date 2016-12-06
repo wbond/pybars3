@@ -1,0 +1,11 @@
+# .coveragerc to control coverage.py
+
+[run]
+branch = True
+omit =
+    tests.py
+    setup.py
+    tests/*
+
+[report]
+precision=3

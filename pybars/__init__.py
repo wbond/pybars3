@@ -26,6 +26,14 @@
 # established at this point, and setup.py will use a version of next-$(revno).
 # If the releaselevel is 'final', then the tarball will be major.minor.micro.
 # Otherwise it is major.minor.micro~$(revno).
+
+from pybars._compiler import (
+    Compiler,
+    strlist,
+    Scope,
+    PybarsError
+    )
+
 __version__ = '0.9.2'
 __version_info__ = (0, 9, 2, 'final', 0)
 
@@ -37,12 +45,6 @@ __all__ = [
     'PybarsError'
     ]
 
-from pybars._compiler import (
-    Compiler,
-    strlist,
-    Scope,
-    PybarsError
-    )
 
-
-log = lambda value: None
+def log(value):
+    return None
