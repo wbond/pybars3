@@ -1260,6 +1260,27 @@ class TestAcceptance(TestCase):
 
         self.assertRender(template, context, result, helpers, partials)
 
+    def test_dynamic_partials_with_explicit_scope(self):
+        def helper_partial(this):
+            return "dude"
+
+        helpers = {
+            'partial': helper_partial
+        }
+
+        partials = {
+            "dude": u"{{note}}",
+        }
+
+        template = u"Dudes: {{#dudes}}{{> (partial) @root.joke}} {{/dudes}}"
+        context = {
+            "dudes": [{"name": "Yehuda", "url": "http://yehuda"}, {"name": "Alan", "url": "http://alan"}],
+            "joke": { "note": "explicit scope for partial" },
+        }
+        result = u"Dudes: explicit scope for partial explicit scope for partial "
+
+        self.assertRender(template, context, result, helpers, partials)
+
     def test_failing_dynamic_partials(self):
         def helper_partial(this):
             return "missing"
