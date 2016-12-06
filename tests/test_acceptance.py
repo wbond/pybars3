@@ -1275,7 +1275,7 @@ class TestAcceptance(TestCase):
         template = u"Dudes: {{#dudes}}{{> (partial) @root.joke}} {{/dudes}}"
         context = {
             "dudes": [{"name": "Yehuda", "url": "http://yehuda"}, {"name": "Alan", "url": "http://alan"}],
-            "joke": { "note": "explicit scope for partial" },
+            "joke": {"note": "explicit scope for partial"},
         }
         result = u"Dudes: explicit scope for partial explicit scope for partial "
 
