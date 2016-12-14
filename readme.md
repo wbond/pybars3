@@ -39,6 +39,7 @@ Here is a partial list of features that are supported:
  - Subexpresions (Handlebars 1.3)
  - Lines containing only block statements and whitespace are removed (Handlebars 2.0)
  - `pybars.Compiler().precompile()` that is equivalent to `Handlebars.precompile()`
+ - [Dynamic partials](http://handlebarsjs.com/partials.html#dynamic-partials) `{{> (whichPartial) }}` (Handlebars ???)
 
 Features not currently implemented:
 

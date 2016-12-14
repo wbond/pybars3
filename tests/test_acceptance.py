@@ -1240,6 +1240,110 @@ class TestAcceptance(TestCase):
 
         self.assertRender(template, context, result, None, partials)
 
+    def test_dynamic_partials(self):
+        def helper_partial(this):
+            return "dude"
+
+        helpers = {
+            'partial': helper_partial
+        }
+
+        partials = {
+            "dude": u"{{name}} ({{url}}) ",
+        }
+
+        template = u"Dudes: {{#dudes}}{{> (partial)}}{{/dudes}}"
+        context = {
+            "dudes": [{"name": "Yehuda", "url": "http://yehuda"}, {"name": "Alan", "url": "http://alan"}]
+        }
+        result = u"Dudes: Yehuda (http://yehuda) Alan (http://alan) "
+
+        self.assertRender(template, context, result, helpers, partials)
+
+    def test_dynamic_partials_with_explicit_scope(self):
+        def helper_partial(this):
+            return "dude"
+
+        helpers = {
+            'partial': helper_partial
+        }
+
+        partials = {
+            "dude": u"{{note}}",
+        }
+
+        template = u"Dudes: {{#dudes}}{{> (partial) @root.joke}} {{/dudes}}"
+        context = {
+            "dudes": [{"name": "Yehuda", "url": "http://yehuda"}, {"name": "Alan", "url": "http://alan"}],
+            "joke": {"note": "explicit scope for partial"},
+        }
+        result = u"Dudes: explicit scope for partial explicit scope for partial "
+
+        self.assertRender(template, context, result, helpers, partials)
+
+    def test_failing_dynamic_partials(self):
+        def helper_partial(this):
+            return "missing"
+
+        helpers = {
+            'partial': helper_partial
+        }
+
+        partials = {
+            "dude": u"{{name}} ({{url}}) ",
+        }
+
+        template = u"Dudes: {{#dudes}}{{> (partial)}}{{/dudes}}"
+        context = {
+            "dudes": [{"name": "Yehuda", "url": "http://yehuda"}, {"name": "Alan", "url": "http://alan"}]
+        }
+        result = u"Dudes: Yehuda (http://yehuda) Alan (http://alan) "
+
+        error = 'The partial missing could not be found'
+
+        self.assertRender(template, context, result, helpers=helpers, partials=partials, error=error)
+
+    def test_dynamic_partials_name(self):
+        def helper_whichPartial(this):
+            return "partialOne"
+
+        helpers = {
+            'whichPartial': helper_whichPartial
+        }
+
+        partials = {
+            "partialOne": u"1 1 1",
+            "partialTwo": u"2 2 2",
+        }
+
+        template = u"It is {{> (whichPartial)}} items"
+        context = {}
+        result = u"It is 1 1 1 items"
+
+        self.assertRender(template, context, result, helpers, partials)
+
+    def test_dynamic_partials_with_params(self):
+
+        def helper_whichPartialParametrized(this, suffix):
+            return "partial" + suffix
+
+        helpers = {
+            'whichPartial': helper_whichPartialParametrized
+        }
+
+        partials = {
+            "partialOne": u"1 1 1",
+            "partialTwo": u"2 2 2",
+        }
+
+        context = {
+            "suffix": "Two"
+        }
+
+        template = u"It is literal call: {{> (whichPartial 'One')}}. And from context: {{> (whichPartial suffix)}}"
+        result = u"It is literal call: 1 1 1. And from context: 2 2 2"
+        self.assertRender(template, context, result, helpers, partials)
+
     def test_simple_literals_work(self):
 
         def hello(this, param, times, bool1, bool2):
