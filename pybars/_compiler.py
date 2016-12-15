@@ -182,7 +182,7 @@ class strlist(list):
         # This will only ever match in Python 2 since str_class is str in
         # Python 3.
         elif type(thing) == str:
-            self.append(unicode(thing))
+            self.append(unicode(thing))  # flake8: ignore=F821 undefined name 'unicode'
 
         else:
             # Recursively expand to a flat list; may deserve a C accelerator at
@@ -268,7 +268,7 @@ class Scope:
 
     # Only called in Python 2
     def __unicode__(self):
-        return unicode(self.context)
+        return unicode(self.context)  # flake8: ignore=F821 undefined name 'unicode'
 
 
 def resolve(context, *segments):
