@@ -46,4 +46,4 @@ from pybars._compiler import (
 
 
 def log(value):
-    print value
+    return None
