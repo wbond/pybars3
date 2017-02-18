@@ -1,5 +1,9 @@
 # changelog
 
+## 0.9.3
+ - Add support for dynamic partials
+ - Add travis integration (flake8 and coverage)
+
 ## 0.9.2
 
  - Make dictionary calls take precedence over attributes and .get (issue #16)
