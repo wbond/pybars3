@@ -1986,6 +1986,12 @@ class TestAcceptance(TestCase):
 
         pybars.log = original_log
 
+    def test_log_underlying_function(self):
+        # log implementation and test are just stubs
+        template = u"{{log '123'}}"
+        result = ''
+        self.assertRender(template, {}, result)
+
     def test_overriding_property_lookup(self):
         pass
         # Empty upstream
