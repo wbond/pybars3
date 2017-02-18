@@ -44,6 +44,7 @@ Here is a partial list of features that are supported:
 Features not currently implemented:
 
  - Whitespace control, `{{var~}}` (Handlebars 1.1)
+ - [Partial blocks](http://handlebarsjs.com/partials.html#partial-block), `{{#> partial}} FallBack {{/partial}}` (Handlebars ?.?)
 
 Feel free to jump in with issues or pull requests.
 
