@@ -2403,3 +2403,7 @@ class TestAcceptance(TestCase):
 
         self.assertRender(template, context, result)
         self.assertRender(template, context2, result2)
+
+    def test_unicode(self):
+        source = u'{{[\xe4]}}'
+        self.assertEqual('foo', render(source, {u'\xe4': 'foo'}))
