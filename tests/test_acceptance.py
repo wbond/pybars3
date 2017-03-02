@@ -2407,3 +2407,7 @@ class TestAcceptance(TestCase):
     def test_unicode(self):
         source = u'{{[\xe4]}}'
         self.assertEqual('foo', render(source, {u'\xe4': 'foo'}))
+
+    def test_unicode_nested(self):
+        source = u'{{bar.[\xe4]}}'
+        self.assertEqual('foo', render(source, {'bar': {u'\xe4': 'foo'}}))

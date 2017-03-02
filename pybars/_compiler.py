@@ -144,8 +144,8 @@ escapedexpand ::= [ "escapedexpand" <path>:value [<arg>*:arguments]] => builder.
 invertedblock ::= [ "invertedblock" <anything>:symbol [<arg>*:arguments] [<compile>:t] [<compile>?:alt_t] ] => builder.add_invertedblock(symbol, arguments, t, alt_t)
 partial ::= ["partial" <complexarg>:symbol [<arg>*:arguments]] => builder.add_partial(symbol, arguments)
 path ::= [ "path" [<pathseg>:segment]] => ("simple", segment)
- | [ "path" [<pathseg>+:segments] ] => ("complex", u"resolve(context, '"  + u"', '".join(segments) + u"')" )
-complexarg ::= [ "path" [<pathseg>+:segments] ] => u"resolve(context, '"  + u"', '".join(segments) + u"')"
+ | [ "path" [<pathseg>+:segments] ] => ("complex", u"resolve(context, u'"  + u"', u'".join(segments) + u"')" )
+complexarg ::= [ "path" [<pathseg>+:segments] ] => u"resolve(context, u'"  + u"', u'".join(segments) + u"')"
     | [ "subexpr" ["path" <pathseg>:name] [<arg>*:arguments] ] => u'resolve_subexpr(helpers, "' + name + '", context' + (u', ' + u', '.join(arguments) if arguments else u'') + u')'
     | [ "literalparam" <anything>:value ] => {str_class}(value)
 arg ::= [ "kwparam" <anything>:symbol <complexarg>:a ] => {str_class}(symbol) + '=' + a
