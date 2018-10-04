@@ -126,7 +126,7 @@ blockrule ::= <start> '#' <block_inner>:i
 alttemplate ::= (<start> <alt_inner> <template>)?:alt_t => alt_t or []
 rawblockstart ::= <start> <start> 'r' 'a' 'w' <finish> <finish>
 rawblockend ::= <start> <start> '/' 'r' 'a' 'w' <finish> <finish>
-rawblock ::= <rawblockstart> (~(<rawblockend>) <anything>)*:s <rawblockend> => ('rawblock', u''.join(s))
+rawblock ::= <rawblockstart> (~(<rawblockend>) <anything>)*:e <rawblockend> => ('rawblock', u''.join(e))
 """
 
 # this grammar compiles the template to python
@@ -147,7 +147,7 @@ literal ::= [ ( "literal" | "newline" | "whitespace" ) :value ] => builder.add_l
 expand ::= [ "expand" <path>:value [<arg>*:arguments]] => builder.add_expand(value, arguments)
 escapedexpand ::= [ "escapedexpand" <path>:value [<arg>*:arguments]] => builder.add_escaped_expand(value, arguments)
 invertedblock ::= [ "invertedblock" <anything>:symbol [<arg>*:arguments] [<compile>:t] [<compile>?:alt_t] ] => builder.add_invertedblock(symbol, arguments, t, alt_t)
-rawblock ::= [ "rawblock" <anything>:raw ] => builder.add_rawblock(raw)
+rawblock ::= [ "rawblock" <anything>:escaped ] => builder.add_rawblock(escaped)
 partial ::= ["partial" <complexarg>:symbol [<arg>*:arguments]] => builder.add_partial(symbol, arguments)
 path ::= [ "path" [<pathseg>:segment]] => ("simple", segment)
  | [ "path" [<pathseg>+:segments] ] => ("complex", u"resolve(context, '"  + u"', '".join(segments) + u"')" )
@@ -690,9 +690,8 @@ class CodeBuilder:
             ])
 
 
-    def add_rawblock(self, value):
-        print 'add_rawblock', value
-        self._result.grow(u"    result.append(%s)\n" % repr(value))
+    def add_rawblock(self, escaped):
+        self._result.grow(u"    result.append(%s)\n" % repr(escaped))
 
     def _invoke_template(self, fn_name, this_name):
         self._result.grow([
@@ -789,7 +788,6 @@ class Compiler:
             raise PybarsError("Template source must be a unicode string")
 
         tree, (position, _) = self._handlebars(source).apply('template')
-        print position
         self.clean_whitespace(tree)
 
         if debug:
@@ -812,7 +810,6 @@ class Compiler:
         self._compiler.globals['builder']._reset()
 
         output = self._compiler(tree).apply('compile')[0]
-        print 'output', output
         return output
 
     def precompile(self, source):
