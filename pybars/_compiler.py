@@ -45,7 +45,7 @@ except NameError:
 
 
 # Flag for testing
-debug = True
+debug = False
 
 
 # Note that unless we presume handlebars is only generating valid html, we have
