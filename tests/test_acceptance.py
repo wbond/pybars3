@@ -2403,3 +2403,9 @@ class TestAcceptance(TestCase):
 
         self.assertRender(template, context, result)
         self.assertRender(template, context2, result2)
+
+    def test_raw_block(self):
+        template = u"{{{{raw}}}}{{escaped}}{{{{/raw}}}}"
+        context = {}
+        result = u"{{escaped}}"
+        self.assertRender(template, context, result)

@@ -45,7 +45,7 @@ except NameError:
 
 
 # Flag for testing
-debug = False
+debug = True
 
 
 # Note that unless we presume handlebars is only generating valid html, we have
@@ -66,6 +66,7 @@ templatecommand ::= <blockrule>
     | <escapedexpression>
     | <expression>
     | <partial>
+    | <rawblock>
 start ::= '{' '{'
 finish ::= '}' '}'
 comment ::= <start> '!' (~(<finish>) <anything>)* <finish> => ('comment', )
@@ -123,6 +124,9 @@ blockrule ::= <start> '#' <block_inner>:i
     | <start> '^' <block_inner>:i
       <template>:t <alttemplate>:alt_t <symbolfinish i[0]> => ('invertedblock',) + i + (t,alt_t)
 alttemplate ::= (<start> <alt_inner> <template>)?:alt_t => alt_t or []
+rawblockstart ::= <start> <start> 'r' 'a' 'w' <finish> <finish>
+rawblockend ::= <start> <start> '/' 'r' 'a' 'w' <finish> <finish>
+rawblock ::= <rawblockstart> (~(<rawblockend>) <anything>)*:s <rawblockend> => ('rawblock', u''.join(s))
 """
 
 # this grammar compiles the template to python
@@ -135,6 +139,7 @@ rule ::= <literal>
     | <comment>
     | <block>
     | <invertedblock>
+    | <rawblock>
     | <partial>
 block ::= [ "block" <anything>:symbol [<arg>*:arguments] [<compile>:t] [<compile>?:alt_t] ] => builder.add_block(symbol, arguments, t, alt_t)
 comment ::= [ "comment" ]
@@ -142,6 +147,7 @@ literal ::= [ ( "literal" | "newline" | "whitespace" ) :value ] => builder.add_l
 expand ::= [ "expand" <path>:value [<arg>*:arguments]] => builder.add_expand(value, arguments)
 escapedexpand ::= [ "escapedexpand" <path>:value [<arg>*:arguments]] => builder.add_escaped_expand(value, arguments)
 invertedblock ::= [ "invertedblock" <anything>:symbol [<arg>*:arguments] [<compile>:t] [<compile>?:alt_t] ] => builder.add_invertedblock(symbol, arguments, t, alt_t)
+rawblock ::= [ "rawblock" <anything>:raw ] => builder.add_rawblock(raw)
 partial ::= ["partial" <complexarg>:symbol [<arg>*:arguments]] => builder.add_partial(symbol, arguments)
 path ::= [ "path" [<pathseg>:segment]] => ("simple", segment)
  | [ "path" [<pathseg>+:segments] ] => ("complex", u"resolve(context, '"  + u"', '".join(segments) + u"')" )
@@ -683,6 +689,11 @@ class CodeBuilder:
             u"    result.grow(value or '')\n"
             ])
 
+
+    def add_rawblock(self, value):
+        print 'add_rawblock', value
+        self._result.grow(u"    result.append(%s)\n" % repr(value))
+
     def _invoke_template(self, fn_name, this_name):
         self._result.grow([
             u"    result.grow(",
@@ -778,7 +789,7 @@ class Compiler:
             raise PybarsError("Template source must be a unicode string")
 
         tree, (position, _) = self._handlebars(source).apply('template')
-
+        print position
         self.clean_whitespace(tree)
 
         if debug:
@@ -801,6 +812,7 @@ class Compiler:
         self._compiler.globals['builder']._reset()
 
         output = self._compiler(tree).apply('compile')[0]
+        print 'output', output
         return output
 
     def precompile(self, source):
