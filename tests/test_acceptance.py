@@ -2409,3 +2409,27 @@ class TestAcceptance(TestCase):
         context = {}
         result = u"{{escaped}}"
         self.assertRender(template, context, result)
+
+    def test_raw_block_in_block(self):
+        template = u"{{#valid}}{{{{raw}}}}{{escaped}}{{{{/raw}}}}{{/valid}}"
+        context = {
+            "valid": True
+        }
+        result = u"{{escaped}}"
+        self.assertRender(template, context, result)
+
+    def test_raw_block_in_inverted_block(self):
+        template = u"{{^valid}}{{{{raw}}}}{{escaped}}{{{{/raw}}}}{{/valid}}"
+        context = {
+            "valid": False
+        }
+        result = u"{{escaped}}"
+        self.assertRender(template, context, result)
+
+    def test_raw_block_with_spaces(self):
+        template = u"this is a{{{{raw}}}} {{ .raw.block }}! {{{{/raw}}}}"
+        context = {
+            "valid": True
+        }
+        result = u"this is a {{ .raw.block }}! "
+        self.assertRender(template, context, result)
