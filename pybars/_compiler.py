@@ -788,6 +788,7 @@ class Compiler:
             raise PybarsError("Template source must be a unicode string")
 
         tree, (position, _) = self._handlebars(source).apply('template')
+
         self.clean_whitespace(tree)
 
         if debug:
