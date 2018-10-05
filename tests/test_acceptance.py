@@ -2440,27 +2440,46 @@ class TestAcceptance(TestCase):
             "test": "hello"
         }
         helpers = {
-            "raw": lambda this: this
+            "raw": lambda this, options: options['fn'](this)
         }
         result = u" {{test}} "
         self.assertRender(template, context, result, helpers)
 
-    def test_raw_block_with_helper_that_takes_params(self):
+    def test_raw_block_with_helper_that_takes_args(self):
         template = u"{{{{raw \"sky\" \"is\" \"blue\"}}}}the {{{{/raw}}}}"
         context = {
             "test": u"hello"
         }
         helpers = {
-            "raw": lambda this, a, b, c: this + ' '.join([a, b, c])
+            "raw": lambda this, options, a, b, c: options['fn'](this) + ' '.join([a, b, c])
         }
         result = u"the sky is blue"
         self.assertRender(template, context, result, helpers)
+
+    def test_raw_block_with_helper_that_takes_kwargs(self):
+        template1 = u"{{{{underline style=\"dotted\" width=18}}}} {{ Book Title }} {{{{/underline}}}}"
+        template2 = u"{{{{underline}}}} {{ Book Title }} {{{{/underline}}}}"
+        context = {}
+
+        def underline(this, options, style=None, width=10):
+            pattern = u'.' if style == 'dotted' else u'-'
+            return options['fn'](this) + u"\n" + pattern * width
+
+        helpers = {
+            "underline": underline
+        }
+        result1 = u"\n".join([u" {{ Book Title }} ",
+                             u".................."])
+        result2 = u"\n".join([u" {{ Book Title }} ",
+                             u"----------"])
+        self.assertRender(template1, context, result1, helpers)
+        self.assertRender(template2, context, result2, helpers)
 
     def test_nested_raw_block_with_helper_that_gets_raw_content(self):
         template = u"{{{{a}}}} {{{{b}}}} {{{{/b}}}} {{{{/a}}}}"
         context = {}
         helpers = {
-            "a": lambda this: this
+            "a": lambda this, options: options['fn'](this)
         }
         result = u" {{{{b}}}} {{{{/b}}}} "
         self.assertRender(template, context, result, helpers)

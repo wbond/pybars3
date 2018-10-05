@@ -691,9 +691,14 @@ class CodeBuilder:
     def add_rawblock(self, symbol, arguments, raw):
         call = self.arguments_to_call(arguments)
         self._result.grow([
+            u"    options = {'fn': lambda this: %s}\n" % repr(raw),
+            u"    options['helpers'] = helpers\n"
+            u"    options['partials'] = partials\n"
+            u"    options['root'] = root\n"
+            u"    options['inverse'] = lambda this: None\n"
             u"    helper = helpers.get('%s')\n" % symbol,
             u"    if helper and hasattr(helper, '__call__'):\n"
-            u"        value = helper(%s%s\n" % (repr(raw), call),
+            u"        value = helper(context, options%s\n" % call,
             u"    else:\n"
             u"        value = %s\n" % repr(raw),
             u"    result.grow(value or '')\n"
