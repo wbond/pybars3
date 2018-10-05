@@ -2433,3 +2433,34 @@ class TestAcceptance(TestCase):
         }
         result = u"this is a {{ .raw.block }}! "
         self.assertRender(template, context, result)
+
+    def test_raw_block_with_helper_that_gets_raw_content(self):
+        template = u"{{{{raw}}}} {{test}} {{{{/raw}}}}"
+        context = {
+            "test": "hello"
+        }
+        helpers = {
+            "raw": lambda this: this
+        }
+        result = u" {{test}} "
+        self.assertRender(template, context, result, helpers)
+
+    def test_raw_block_with_helper_that_takes_params(self):
+        template = u"{{{{raw \"sky\" \"is\" \"blue\"}}}}the {{{{/raw}}}}"
+        context = {
+            "test": u"hello"
+        }
+        helpers = {
+            "raw": lambda this, a, b, c: this + ' '.join([a, b, c])
+        }
+        result = u"the sky is blue"
+        self.assertRender(template, context, result, helpers)
+
+    def test_nested_raw_block_gets_raw_content(self):
+        template = u"{{{{a}}}} {{{{b}}}} {{{{/b}}}} {{{{/a}}}}"
+        context = {}
+        helpers = {
+            "a": lambda this: this
+        }
+        result = u" {{{{b}}}} {{{{/b}}}} "
+        self.assertRender(template, context, result, helpers)
