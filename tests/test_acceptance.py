@@ -2456,7 +2456,7 @@ class TestAcceptance(TestCase):
         result = u"the sky is blue"
         self.assertRender(template, context, result, helpers)
 
-    def test_nested_raw_block_gets_raw_content(self):
+    def test_nested_raw_block_with_helper_that_gets_raw_content(self):
         template = u"{{{{a}}}} {{{{b}}}} {{{{/b}}}} {{{{/a}}}}"
         context = {}
         helpers = {
@@ -2464,3 +2464,9 @@ class TestAcceptance(TestCase):
         }
         result = u" {{{{b}}}} {{{{/b}}}} "
         self.assertRender(template, context, result, helpers)
+
+    def test_nested_raw_blocks(self):
+        template = u"{{{{a}}}} {{{{b}}}} {{{{/b}}}} {{{{/a}}}}"
+        context = {}
+        result = u" {{{{b}}}} {{{{/b}}}} "
+        self.assertRender(template, context, result)
