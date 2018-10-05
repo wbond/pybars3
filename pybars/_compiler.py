@@ -66,6 +66,7 @@ templatecommand ::= <blockrule>
     | <escapedexpression>
     | <expression>
     | <partial>
+    | <rawblock>
 start ::= '{' '{'
 finish ::= '}' '}'
 comment ::= <start> '!' (~(<finish>) <anything>)* <finish> => ('comment', )
@@ -121,8 +122,12 @@ symbolfinish :expected ::= <start> '/' <symbol>:found ?(found == expected) <fini
 blockrule ::= <start> '#' <block_inner>:i
       <template>:t <alttemplate>:alt_t <symbolfinish i[0]> => ('block',) + i + (t, alt_t)
     | <start> '^' <block_inner>:i
-      <template>:t <alttemplate>:alt_t <symbolfinish i[0]> => ('invertedblock',) + i + (t,alt_t)
+      <template>:t <alttemplate>:alt_t <symbolfinish i[0]> => ('invertedblock',) + i + (t, alt_t)
 alttemplate ::= (<start> <alt_inner> <template>)?:alt_t => alt_t or []
+rawblockstart ::= <start> <start> <block_inner>:i <finish> => i
+rawblockfinish :expected ::= <start> <symbolfinish expected> <finish>
+rawblock ::= <rawblockstart>:i (~(<rawblockfinish i[0]>) <anything>)*:r <rawblockfinish i[0]>
+    => ('rawblock',) + i + (''.join(r),)
 """
 
 # this grammar compiles the template to python
@@ -135,6 +140,7 @@ rule ::= <literal>
     | <comment>
     | <block>
     | <invertedblock>
+    | <rawblock>
     | <partial>
 block ::= [ "block" <anything>:symbol [<arg>*:arguments] [<compile>:t] [<compile>?:alt_t] ] => builder.add_block(symbol, arguments, t, alt_t)
 comment ::= [ "comment" ]
@@ -142,6 +148,7 @@ literal ::= [ ( "literal" | "newline" | "whitespace" ) :value ] => builder.add_l
 expand ::= [ "expand" <path>:value [<arg>*:arguments]] => builder.add_expand(value, arguments)
 escapedexpand ::= [ "escapedexpand" <path>:value [<arg>*:arguments]] => builder.add_escaped_expand(value, arguments)
 invertedblock ::= [ "invertedblock" <anything>:symbol [<arg>*:arguments] [<compile>:t] [<compile>?:alt_t] ] => builder.add_invertedblock(symbol, arguments, t, alt_t)
+rawblock ::= [ "rawblock" <anything>:symbol [<arg>*:arguments] <anything>:raw ] => builder.add_rawblock(symbol, arguments, raw)
 partial ::= ["partial" <complexarg>:symbol [<arg>*:arguments]] => builder.add_partial(symbol, arguments)
 path ::= [ "path" [<pathseg>:segment]] => ("simple", segment)
  | [ "path" [<pathseg>+:segments] ] => ("complex", u"resolve(context, '"  + u"', '".join(segments) + u"')" )
@@ -646,8 +653,6 @@ class CodeBuilder:
         self._result.grow(u"    import pdb;pdb.set_trace()\n")
 
     def add_invertedblock(self, symbol, arguments, nested, alt_nested):
-        # This may need to be a blockHelperMissing clal as well.
-
         name = nested.name
         self._locals[name] = nested
 
@@ -680,6 +685,22 @@ class CodeBuilder:
             u"        value = helper(context, options%s\n" % call,
             u"    else:\n"
             u"        value = helpers['blockHelperMissing'](context, options, value)\n"
+            u"    result.grow(value or '')\n"
+            ])
+
+    def add_rawblock(self, symbol, arguments, raw):
+        call = self.arguments_to_call(arguments)
+        self._result.grow([
+            u"    options = {'fn': lambda this: %s}\n" % repr(raw),
+            u"    options['helpers'] = helpers\n"
+            u"    options['partials'] = partials\n"
+            u"    options['root'] = root\n"
+            u"    options['inverse'] = lambda this: None\n"
+            u"    helper = helpers.get('%s')\n" % symbol,
+            u"    if helper and hasattr(helper, '__call__'):\n"
+            u"        value = helper(context, options%s\n" % call,
+            u"    else:\n"
+            u"        value = %s\n" % repr(raw),
             u"    result.grow(value or '')\n"
             ])
 

@@ -2403,3 +2403,95 @@ class TestAcceptance(TestCase):
 
         self.assertRender(template, context, result)
         self.assertRender(template, context2, result2)
+
+    def test_raw_block(self):
+        template = u"{{{{raw}}}}{{escaped}}{{{{/raw}}}}"
+        context = {}
+        result = u"{{escaped}}"
+        self.assertRender(template, context, result)
+
+    def test_raw_block_in_block(self):
+        template = u"{{#valid}}{{{{raw}}}}{{escaped}}{{{{/raw}}}}{{/valid}}"
+        context = {
+            "valid": True
+        }
+        result = u"{{escaped}}"
+        self.assertRender(template, context, result)
+
+    def test_raw_block_in_inverted_block(self):
+        template = u"{{^valid}}{{{{raw}}}}{{escaped}}{{{{/raw}}}}{{/valid}}"
+        context = {
+            "valid": False
+        }
+        result = u"{{escaped}}"
+        self.assertRender(template, context, result)
+
+    def test_raw_block_with_spaces(self):
+        template = u"this is a{{{{raw}}}} {{ .raw.block }}! {{{{/raw}}}}"
+        context = {
+            "valid": True
+        }
+        result = u"this is a {{ .raw.block }}! "
+        self.assertRender(template, context, result)
+
+    def test_raw_block_with_helper_that_gets_raw_content(self):
+        template = u"{{{{raw}}}} {{test}} {{{{/raw}}}}"
+        context = {
+            "test": "hello"
+        }
+        helpers = {
+            "raw": lambda this, options: options['fn'](this)
+        }
+        result = u" {{test}} "
+        self.assertRender(template, context, result, helpers)
+
+    def test_raw_block_with_helper_that_takes_args(self):
+        template = u"{{{{raw \"sky\" \"is\" \"blue\"}}}}the {{{{/raw}}}}"
+        context = {
+            "test": u"hello"
+        }
+        helpers = {
+            "raw": lambda this, options, a, b, c: options['fn'](this) + ' '.join([a, b, c])
+        }
+        result = u"the sky is blue"
+        self.assertRender(template, context, result, helpers)
+
+    def test_raw_block_with_helper_that_takes_kwargs(self):
+        template1 = u"{{{{underline style=\"dotted\" width=18}}}} {{ Book Title }} {{{{/underline}}}}"
+        template2 = u"{{{{underline}}}} {{ Book Title }} {{{{/underline}}}}"
+        context = {}
+
+        def underline(this, options, style=None, width=10):
+            pattern = u'.' if style == 'dotted' else u'-'
+            return options['fn'](this) + u"\n" + pattern * width
+
+        helpers = {
+            "underline": underline
+        }
+        result1 = u"\n".join([u" {{ Book Title }} ",
+                             u".................."])
+        result2 = u"\n".join([u" {{ Book Title }} ",
+                             u"----------"])
+        self.assertRender(template1, context, result1, helpers)
+        self.assertRender(template2, context, result2, helpers)
+
+    def test_nested_raw_block_with_helper_that_gets_raw_content(self):
+        template = u"{{{{a}}}} {{{{b}}}} {{{{/b}}}} {{{{/a}}}}"
+        context = {}
+        helpers = {
+            "a": lambda this, options: options['fn'](this)
+        }
+        result = u" {{{{b}}}} {{{{/b}}}} "
+        self.assertRender(template, context, result, helpers)
+
+    def test_nested_raw_blocks(self):
+        template = u"{{{{a}}}} {{{{b}}}} {{{{/b}}}} {{{{/a}}}}"
+        context = {}
+        result = u" {{{{b}}}} {{{{/b}}}} "
+        self.assertRender(template, context, result)
+
+    def test_markdow_and_html_in_raw_block(self):
+        template = u"{{{{markdown}}}}**HTML** <a href='#'>link</a>{{{{/markdown}}}}"
+        context = {}
+        result = u"**HTML** <a href='#'>link</a>"
+        self.assertRender(template, context, result)
