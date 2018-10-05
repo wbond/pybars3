@@ -2489,3 +2489,9 @@ class TestAcceptance(TestCase):
         context = {}
         result = u" {{{{b}}}} {{{{/b}}}} "
         self.assertRender(template, context, result)
+
+    def test_markdow_and_html_in_raw_block(self):
+        template = u"{{{{markdown}}}}**HTML** <a href='#'>link</a>{{{{/markdown}}}}"
+        context = {}
+        result = u"**HTML** <a href='#'>link</a>"
+        self.assertRender(template, context, result)
