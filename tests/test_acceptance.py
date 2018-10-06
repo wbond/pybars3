@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # Copyright (C) 2015 Will Bond, Mjumbe Wawatu Ukweli, 2011 by Yehuda Katz
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -62,8 +65,27 @@ class TestAcceptance(TestCase):
 
         self.assertRender(template, context, result)
 
+    def test_basic_unicode_context(self):
+        template = u"وداعا أيها {{العالم}} {{القاسي}}!"
+        context = {
+            u"القاسي": u"القاسي",
+            u"العالم": u"العالم"
+        }
+        result = u"وداعا أيها العالم القاسي!"
+        self.assertRender(template, context, result)
+
     def test_comments_ignored(self):
         template = u"{{! Goodbye}}Goodbye\n{{cruel}}\n{{world}}!"
+        context = {
+            'cruel': "cruel",
+            'world': "world"
+        }
+        result = u"Goodbye\ncruel\nworld!"
+
+        self.assertRender(template, context, result)
+
+    def test_unicode_comments_ignored(self):
+        template = u"{{! مع السلامه}}Goodbye\n{{cruel}}\n{{world}}!"
         context = {
             'cruel': "cruel",
             'world': "world"
@@ -84,6 +106,23 @@ class TestAcceptance(TestCase):
 
         context = {
             'goodbye': False,
+            'world': 'world'
+        }
+        result = u"cruel world!"
+        self.assertRender(template, context, result)
+
+    def test_unicode_boolean_block(self):
+        template = u"{{#وداعا}}GOODBYE {{/وداعا}}cruel {{world}}!"
+
+        context = {
+            u'وداعا': True,
+            'world': 'world'
+        }
+        result = u"GOODBYE cruel world!"
+        self.assertRender(template, context, result)
+
+        context = {
+            u'وداعا': False,
             'world': 'world'
         }
         result = u"cruel world!"
@@ -262,6 +301,21 @@ class TestAcceptance(TestCase):
 
         self.assertRender(template, context, result)
 
+    def test_unicode_pathed_functions_with_context_arguments(self):
+        def awesome(this, context):
+            return context
+
+        template = u"{{بار.رائع frank}}"
+        context = {
+            u'بار': {
+                u'رائع': awesome,
+            },
+            'frank': 'Frank'
+        }
+        result = u"Frank"
+
+        self.assertRender(template, context, result)
+
     def test_block_functions_without_context_arguments(self):
         def awesome(this):
             return this
@@ -303,6 +357,35 @@ class TestAcceptance(TestCase):
 
         self.assertRender(template, context, result)
 
+    def test_unicode_paths_can_contain_hyphens(self):
+        template = u"{{فوو-بار}}"
+        context = {
+            u"فوو-بار": "baz"
+        }
+        result = u"baz"
+
+        self.assertRender(template, context, result)
+
+        template = u"{{فوو.فوو-بار}}"
+        context = {
+            u"فوو": {
+                u"فوو-بار": u"باز"
+            }
+        }
+        result = u"باز"
+
+        self.assertRender(template, context, result)
+
+        template = u"{{فوو/فوو-بار}}"
+        context = {
+            u"فوو": {
+                u"فوو-بار": u"باز"
+            }
+        }
+        result = u"باز"
+
+        self.assertRender(template, context, result)
+
     def test_nested_paths_access_nested_objects(self):
         template = u"Goodbye {{alan/expression}} world!"
         context = {
@@ -339,6 +422,26 @@ class TestAcceptance(TestCase):
         template = u"Goodbye {{[foo bar]/expression}} world!"
         context = {
             'foo bar': {
+                'expression': 'beautiful'
+            }
+        }
+        result = u"Goodbye beautiful world!"
+        self.assertRender(template, context, result)
+
+    def test_unicode_literal_paths_can_be_used(self):
+        template = u"Goodbye {{[@اسحق]/expression}} world!"
+        context = {
+            u"@اسحق": {
+                'expression': 'beautiful'
+            }
+        }
+        result = u"Goodbye beautiful world!"
+
+        self.assertRender(template, context, result)
+
+        template = u"Goodbye {{[فوو بار]/expression}} world!"
+        context = {
+            u"فوو بار": {
                 'expression': 'beautiful'
             }
         }
@@ -469,6 +572,26 @@ class TestAcceptance(TestCase):
 
         self.assertRender(template, context, result)
 
+    def test_unicode_inverted_sections(self):
+        # We use this form to not introduce extra whitespace
+        template = (
+            u"{{#سلامات}}{{this}}{{/سلامات}}"
+            u"{{^سلامات}}Right On!{{/سلامات}}"
+        )
+        result = u"Right On!"
+
+        context = {}
+
+        self.assertRender(template, context, result)
+
+        context = {u'سلامات': False}
+
+        self.assertRender(template, context, result)
+
+        context = {u'سلامات': []}
+
+        self.assertRender(template, context, result)
+
     def test_inverted_alternate_sections(self):
         # We use this form to not introduce extra whitespace
         template = (
@@ -482,6 +605,20 @@ class TestAcceptance(TestCase):
         self.assertRender(template, {'goodbyes': []}, result)
 
         self.assertRender(template, {'goodbyes': ['Hello', 'world!']}, u"Helloworld!\nHelloworld!")
+
+    def test_unicode_inverted_alternate_sections(self):
+        # We use this form to not introduce extra whitespace
+        template = (
+            u"{{#سلامات}}{{this}}{{else}}Right On!{{/سلامات}}\n"
+            u"{{^سلامات}}Right On!{{else}}{{this}}{{/سلامات}}"
+        )
+        result = "Right On!\nRight On!"
+
+        self.assertRender(template, {}, result)
+        self.assertRender(template, {u'سلامات': False}, result)
+        self.assertRender(template, {u'سلامات': []}, result)
+
+        self.assertRender(template, {u'سلامات': ['Hello', 'world!']}, u"Helloworld!\nHelloworld!")
 
     def test_array_iteration(self):
         template = u"{{#goodbyes}}{{text}}! {{/goodbyes}}cruel {{world}}!"
@@ -500,6 +637,29 @@ class TestAcceptance(TestCase):
 
         context = {
             'goodbyes': [],
+            'world': "world"
+        }
+        result = u"cruel world!"
+
+        self.assertRender(template, context, result)
+
+    def test_unicode_array_iteration(self):
+        template = u"{{#سلامات}}{{النص}}! {{/سلامات}}cruel {{world}}!"
+
+        context = {
+            u'سلامات': [
+                {u'النص': "goodbye"},
+                {u'النص': "Goodbye"},
+                {u'النص': "GOODBYE"}
+            ],
+            'world': "world"
+        }
+        result = u"goodbye! Goodbye! GOODBYE! cruel world!"
+
+        self.assertRender(template, context, result)
+
+        context = {
+            'سلامات': [],
             'world': "world"
         }
         result = u"cruel world!"

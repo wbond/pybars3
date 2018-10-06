@@ -43,6 +43,11 @@ except NameError:
     # Python 3 support
     str_class = str
 
+# backward compatibility for basestring for python < 2.3
+try:
+    basestring
+except NameError:
+    basestring = str
 
 # Flag for testing
 debug = False
@@ -151,8 +156,8 @@ invertedblock ::= [ "invertedblock" <anything>:symbol [<arg>*:arguments] [<compi
 rawblock ::= [ "rawblock" <anything>:symbol [<arg>*:arguments] <anything>:raw ] => builder.add_rawblock(symbol, arguments, raw)
 partial ::= ["partial" <complexarg>:symbol [<arg>*:arguments]] => builder.add_partial(symbol, arguments)
 path ::= [ "path" [<pathseg>:segment]] => ("simple", segment)
- | [ "path" [<pathseg>+:segments] ] => ("complex", u"resolve(context, '"  + u"', '".join(segments) + u"')" )
-complexarg ::= [ "path" [<pathseg>+:segments] ] => u"resolve(context, '"  + u"', '".join(segments) + u"')"
+ | [ "path" [<pathseg>+:segments] ] => ("complex", u"resolve(context, u'" + u"', u'".join(segments) + u"')" )
+complexarg ::= [ "path" [<pathseg>+:segments] ] => u"resolve(context, u'" + u"', u'".join(segments) + u"')"
     | [ "subexpr" ["path" <pathseg>:name] [<arg>*:arguments] ] => u'resolve_subexpr(helpers, "' + name + '", context' + (u', ' + u', '.join(arguments) if arguments else u'') + u')'
     | [ "literalparam" <anything>:value ] => {str_class}(value)
 arg ::= [ "kwparam" <anything>:symbol <complexarg>:a ] => {str_class}(symbol) + '=' + a
@@ -223,8 +228,15 @@ def pick(context, name, default=None):
     try:
         return context[name]
     except (KeyError, TypeError, AttributeError):
-        if isinstance(name, str) and hasattr(context, name):
-            return getattr(context, name)
+        if isinstance(name, basestring):
+            try:
+                exists = hasattr(context, name)
+            except UnicodeEncodeError:
+                # Python 2 raises UnicodeEncodeError on non-ASCII strings
+                pass
+            else:
+                if exists:
+                    return getattr(context, name)
         if hasattr(context, 'get'):
             return context.get(name)
         return default
@@ -583,9 +595,9 @@ class CodeBuilder:
                 u"    options['inverse'] = lambda this: None\n"
                 ])
         self._result.grow([
-            u"    value = helper = helpers.get('%s')\n" % symbol,
+            u"    value = helper = helpers.get(u'%s')\n" % symbol,
             u"    if value is None:\n"
-            u"        value = resolve(context, '%s')\n" % symbol,
+            u"        value = resolve(context, u'%s')\n" % symbol,
             u"    if helper and hasattr(helper, '__call__'):\n"
             u"        value = helper(context, options%s\n" % call,
             u"    else:\n"
@@ -615,9 +627,9 @@ class CodeBuilder:
             # XXX: just rm.
             realname = path.replace('.get("', '').replace('")', '')
             self._result.grow([
-                u"    value = helpers.get('%s')\n" % realname,
+                u"    value = helpers.get(u'%s')\n" % realname,
                 u"    if value is None:\n"
-                u"        value = resolve(context, '%s')\n" % path,
+                u"        value = resolve(context, u'%s')\n" % path,
                 ])
         else:
             realname = None
@@ -629,7 +641,7 @@ class CodeBuilder:
         if realname:
             self._result.grow(
                 u"    elif value is None:\n"
-                u"        value = helpers['helperMissing'](context, '%s'%s\n"
+                u"        value = helpers['helperMissing'](context, u'%s'%s\n"
                     % (realname, call)
                 )
 
@@ -678,9 +690,9 @@ class CodeBuilder:
                 u"    options['fn'] = lambda this: None\n"
                 ])
         self._result.grow([
-            u"    value = helper = helpers.get('%s')\n" % symbol,
+            u"    value = helper = helpers.get(u'%s')\n" % symbol,
             u"    if value is None:\n"
-            u"        value = resolve(context, '%s')\n" % symbol,
+            u"        value = resolve(context, u'%s')\n" % symbol,
             u"    if helper and hasattr(helper, '__call__'):\n"
             u"        value = helper(context, options%s\n" % call,
             u"    else:\n"
@@ -696,7 +708,7 @@ class CodeBuilder:
             u"    options['partials'] = partials\n"
             u"    options['root'] = root\n"
             u"    options['inverse'] = lambda this: None\n"
-            u"    helper = helpers.get('%s')\n" % symbol,
+            u"    helper = helpers.get(u'%s')\n" % symbol,
             u"    if helper and hasattr(helper, '__call__'):\n"
             u"        value = helper(context, options%s\n" % call,
             u"    else:\n"
