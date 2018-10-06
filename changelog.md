@@ -1,8 +1,12 @@
 # changelog
 
+## 0.9.5
+
+- Fix resolving unicode fields in Python 2
+
 ## 0.9.4
 
-- Add support for raw blocks
+- Add support for raw blocks (issues: #24, #25, #36)
 
 ## 0.9.3
 

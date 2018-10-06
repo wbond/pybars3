@@ -34,8 +34,8 @@ from pybars._compiler import (
     PybarsError
     )
 
-__version__ = '0.9.4'
-__version_info__ = (0, 9, 4, 'final', 0)
+__version__ = '0.9.5'
+__version_info__ = (0, 9, 5, 'final', 0)
 
 __all__ = [
     'Compiler',
