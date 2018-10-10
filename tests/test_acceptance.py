@@ -2655,3 +2655,25 @@ class TestAcceptance(TestCase):
         context = {}
         result = u"**HTML** <a href='#'>link</a>"
         self.assertRender(template, context, result)
+
+    def test_template(self):
+        compiler = Compiler()
+
+        # test precompiling a template
+        text = u"Hi {{name}}!"
+        context = {'name': u"Samira"}
+        precompiled = compiler.precompile(text)
+        template = compiler.template(precompiled)
+        self.assertEqual(template(context), u"Hi Samira!")
+
+        # test a different template
+        text = u"Hello {{name}}!"
+        context = {'name': u"Samira"}
+        precompiled = compiler.precompile(text)
+        template = compiler.template(precompiled)
+        self.assertEqual(template(context), u"Hello Samira!")
+
+        # test that compiling is not affected
+        text = u"Hola {{name}}!"
+        context = {'name': u"Samira"}
+        self.assertRender(text, context, u"Hola Samira!")
