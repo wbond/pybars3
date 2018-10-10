@@ -894,7 +894,7 @@ class Compiler:
     def template(self, code):
         def _render(context, helpers=None, partials=None, root=None):
             exec(code, globals())
-            return render(context, helpers=helpers, partials=partials, root=root)
+            return render(context, helpers=helpers, partials=partials, root=root) # noqa: F821
         return _render
 
     def clean_whitespace(self, tree):
