@@ -1,5 +1,9 @@
 # changelog
 
+## 0.9.6
+
+- Add `template` method which creates a renderer from precompiled code.
+
 ## 0.9.5
 
 - Fix resolving unicode fields in Python 2
