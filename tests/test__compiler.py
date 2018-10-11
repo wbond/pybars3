@@ -29,9 +29,9 @@ from pybars import Compiler
 
 
 def render(source, context, helpers=None, partials=None, knownHelpers=None,
-           knownHelpersOnly=False, path=None):
+           knownHelpersOnly=False):
     compiler = Compiler()
-    template = compiler.compile(source, path=path)
+    template = compiler.compile(source)
     # For real use, partials is a dict of compiled templates; but for testing
     # we compile just-in-time.
     if not partials:
