@@ -867,9 +867,9 @@ class Compiler:
                 output += '_%s' % suffix
             return output
 
+        generate_name = True
         if not path:
             path = '_template'
-            generate_name = True
         else:
             path = path.replace('\\', '/')
             path = path.replace('/', '_')
