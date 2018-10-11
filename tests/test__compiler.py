@@ -125,4 +125,4 @@ class TestCompiler(TestCase):
         result = u"Hi Ahmed!"
         path = '/project/widgets/templates'
         self.assertEqual(result, render(template, context, path=path))
-        self.assertTrue(sys.modules.get('pybars._templates._project_widgets_templates_1') is not None)
+        self.assertTrue(sys.modules.get('pybars._templates._project_widgets_templates') is not None)

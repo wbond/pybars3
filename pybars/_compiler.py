@@ -867,15 +867,14 @@ class Compiler:
                 output += '_%s' % suffix
             return output
 
-        generate_name = True
         if not path:
             path = '_template'
+            generate_name = True
         else:
             path = path.replace('\\', '/')
             path = path.replace('/', '_')
             mod_name = make_module_name(path)
-            if mod_name in sys.modules:
-                generate_name = True
+            generate_name = mod_name in sys.modules
 
         if generate_name:
             mod_name = make_module_name(path, self.template_counter)
