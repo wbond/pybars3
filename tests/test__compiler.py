@@ -124,5 +124,13 @@ class TestCompiler(TestCase):
         }
         result = u"Hi Ahmed!"
         path = '/project/widgets/templates'
-        self.assertEqual(result, render(template, context, path=path))
+
+        compiler = Compiler()
+
+        # compile and check that speficified path is used
+        self.assertEqual(result, compiler.compile(template, path=path)(context))
         self.assertTrue(sys.modules.get('pybars._templates._project_widgets_templates') is not None)
+
+        # recompile and check that a new path is used
+        self.assertEqual(result, compiler.compile(template, path=path)(context))
+        self.assertTrue(sys.modules.get('pybars._templates._project_widgets_templates_1') is not None)
