@@ -21,6 +21,8 @@ except NameError:
     # Python 3 support
     str_class = str
 
+import sys
+
 from unittest import TestCase
 
 from pybars import Compiler
@@ -114,3 +116,21 @@ class TestCompiler(TestCase):
         result = u"""hello"""
 
         self.assertEqual(result, render(template, context))
+
+    def test_compile_with_path(self):
+        template = u"Hi {{name}}!"
+        context = {
+            'name': 'Ahmed'
+        }
+        result = u"Hi Ahmed!"
+        path = '/project/widgets/templates'
+
+        compiler = Compiler()
+
+        # compile and check that speficified path is used
+        self.assertEqual(result, compiler.compile(template, path=path)(context))
+        self.assertTrue(sys.modules.get('pybars._templates._project_widgets_templates') is not None)
+
+        # recompile and check that a new path is used
+        self.assertEqual(result, compiler.compile(template, path=path)(context))
+        self.assertTrue(sys.modules.get('pybars._templates._project_widgets_templates_1') is not None)

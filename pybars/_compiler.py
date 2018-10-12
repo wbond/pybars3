@@ -874,8 +874,7 @@ class Compiler:
             path = path.replace('\\', '/')
             path = path.replace('/', '_')
             mod_name = make_module_name(path)
-            if mod_name in sys.modules:
-                generate_name = True
+            generate_name = mod_name in sys.modules
 
         if generate_name:
             mod_name = make_module_name(path, self.template_counter)
