@@ -25,7 +25,7 @@ import sys
 
 from unittest import TestCase
 
-from pybars import Compiler
+from pybars import Compiler, PybarsError
 
 
 def render(source, context, helpers=None, partials=None, knownHelpers=None,
@@ -116,6 +116,19 @@ class TestCompiler(TestCase):
         result = u"""hello"""
 
         self.assertEqual(result, render(template, context))
+
+    def test_arbitrary_code_execution(self):
+        for template in [
+            u"{{#if ['));exit(1);((']}}{{/if}}",
+            u"{{['+exit(1)+']}}",
+            u"{{[');exit(1)#]}}",
+        ]:
+            render(template, {})
+
+        try:
+            render(u"{{> ([log\", \"\", \"\");exit(1)#])}}", {})
+        except PybarsError:
+            pass
 
     def test_compile_with_path(self):
         template = u"Hi {{name}}!"

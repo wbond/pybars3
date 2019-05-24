@@ -156,9 +156,9 @@ invertedblock ::= [ "invertedblock" <anything>:symbol [<arg>*:arguments] [<compi
 rawblock ::= [ "rawblock" <anything>:symbol [<arg>*:arguments] <anything>:raw ] => builder.add_rawblock(symbol, arguments, raw)
 partial ::= ["partial" <complexarg>:symbol [<arg>*:arguments]] => builder.add_partial(symbol, arguments)
 path ::= [ "path" [<pathseg>:segment]] => ("simple", segment)
- | [ "path" [<pathseg>+:segments] ] => ("complex", u"resolve(context, u'" + u"', u'".join(segments) + u"')" )
-complexarg ::= [ "path" [<pathseg>+:segments] ] => u"resolve(context, u'" + u"', u'".join(segments) + u"')"
-    | [ "subexpr" ["path" <pathseg>:name] [<arg>*:arguments] ] => u'resolve_subexpr(helpers, "' + name + '", context' + (u', ' + u', '.join(arguments) if arguments else u'') + u')'
+ | [ "path" [<pathseg>+:segments] ] => ("complex", u"resolve(context, " + u", ".join(map(repr, segments)) + u")" )
+complexarg ::= [ "path" [<pathseg>+:segments] ] => u"resolve(context, " + u", ".join(map(repr, segments)) + u")"
+    | [ "subexpr" ["path" <pathseg>:name] [<arg>*:arguments] ] => u'resolve_subexpr(helpers, ' + repr({str_class}(name)) + ', context' + (u', ' + u', '.join(arguments) if arguments else u'') + u')'
     | [ "literalparam" <anything>:value ] => {str_class}(value)
 arg ::= [ "kwparam" <anything>:symbol <complexarg>:a ] => {str_class}(symbol) + '=' + a
     | <complexarg>
@@ -489,7 +489,7 @@ class FunctionContainer:
             u'from functools import partial\n'
             u'\n'
             u'\n'
-        ) % (repr(pybars.__version__), pybars.__version__)
+        ) % (repr(str_class(pybars.__version__)), pybars.__version__)
 
         return headers + self.code
 
@@ -555,7 +555,7 @@ class CodeBuilder:
             if isinstance(ns[key], FunctionContainer):
                 code += ns[key].code + '\n'
             else:
-                code += '%s = %s\n' % (key, repr(ns[key]))
+                code += '%s = %s\n' % (key, repr(str_class(ns[key])))
         code += source
 
         result = FunctionContainer(function_name, code)
@@ -595,9 +595,9 @@ class CodeBuilder:
                 u"    options['inverse'] = lambda this: None\n"
                 ])
         self._result.grow([
-            u"    value = helper = helpers.get(u'%s')\n" % symbol,
+            u"    value = helper = helpers.get(%s)\n" % repr(str_class(symbol)),
             u"    if value is None:\n"
-            u"        value = resolve(context, u'%s')\n" % symbol,
+            u"        value = resolve(context, %s)\n" % repr(str_class(symbol)),
             u"    if helper and hasattr(helper, '__call__'):\n"
             u"        value = helper(context, options%s\n" % call,
             u"    else:\n"
@@ -606,7 +606,7 @@ class CodeBuilder:
             ])
 
     def add_literal(self, value):
-        self._result.grow(u"    result.append(%s)\n" % repr(value))
+        self._result.grow(u"    result.append(%s)\n" % repr(str_class(value)))
 
     def _lookup_arg(self, arg):
         if not arg:
@@ -627,9 +627,9 @@ class CodeBuilder:
             # XXX: just rm.
             realname = path.replace('.get("', '').replace('")', '')
             self._result.grow([
-                u"    value = helpers.get(u'%s')\n" % realname,
+                u"    value = helpers.get(%s)\n" % repr(str_class(realname)),
                 u"    if value is None:\n"
-                u"        value = resolve(context, u'%s')\n" % path,
+                u"        value = resolve(context, %s)\n" % repr(str_class(path)),
                 ])
         else:
             realname = None
@@ -641,8 +641,8 @@ class CodeBuilder:
         if realname:
             self._result.grow(
                 u"    elif value is None:\n"
-                u"        value = helpers['helperMissing'](context, u'%s'%s\n"
-                    % (realname, call)
+                u"        value = helpers['helperMissing'](context, %s%s\n"
+                    % (repr(str_class(realname)), call)
                 )
 
     def add_escaped_expand(self, path_type_path, arguments):
@@ -690,9 +690,9 @@ class CodeBuilder:
                 u"    options['fn'] = lambda this: None\n"
                 ])
         self._result.grow([
-            u"    value = helper = helpers.get(u'%s')\n" % symbol,
+            u"    value = helper = helpers.get(%s)\n" % repr(str_class(symbol)),
             u"    if value is None:\n"
-            u"        value = resolve(context, u'%s')\n" % symbol,
+            u"        value = resolve(context, %s)\n" % repr(str_class(symbol)),
             u"    if helper and hasattr(helper, '__call__'):\n"
             u"        value = helper(context, options%s\n" % call,
             u"    else:\n"
@@ -703,16 +703,16 @@ class CodeBuilder:
     def add_rawblock(self, symbol, arguments, raw):
         call = self.arguments_to_call(arguments)
         self._result.grow([
-            u"    options = {'fn': lambda this: %s}\n" % repr(raw),
+            u"    options = {'fn': lambda this: %s}\n" % repr(str_class(raw)),
             u"    options['helpers'] = helpers\n"
             u"    options['partials'] = partials\n"
             u"    options['root'] = root\n"
             u"    options['inverse'] = lambda this: None\n"
-            u"    helper = helpers.get(u'%s')\n" % symbol,
+            u"    helper = helpers.get(%s)\n" % repr(str_class(symbol)),
             u"    if helper and hasattr(helper, '__call__'):\n"
             u"        value = helper(context, options%s\n" % call,
             u"    else:\n"
-            u"        value = %s\n" % repr(raw),
+            u"        value = %s\n" % repr(str_class(raw)),
             u"    result.grow(value or '')\n"
             ])
 
