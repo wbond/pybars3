@@ -724,9 +724,9 @@ class TestAcceptance(TestCase):
     def test_helper_with_complex_lookup(self):
 
         def link(this, prefix):
-            return (u"<a href='" + prefix + u"/" +
-                this.get('url') + u"'>" +
-                this.get('text') + u"</a>")
+            return (u"<a href='" + prefix + u"/"
+                + this.get('url') + u"'>"
+                + this.get('text') + u"</a>")
 
         helpers = {'link': link}
 
@@ -1056,8 +1056,8 @@ class TestAcceptance(TestCase):
 
         def link(this, options):
             return (
-                "<a href='" + this['name'] + "'>" +
-                str_class(options['fn'](this)) + "</a>")
+                "<a href='" + this['name'] + "'>"
+                + str_class(options['fn'](this)) + "</a>")
 
         def form(this, options, context):
             return "<form>" + str_class(options['fn'](context)) + "</form>"
@@ -1510,8 +1510,8 @@ class TestAcceptance(TestCase):
             self.assertEqual(True, bool1)
             self.assertEqual(False, bool2)
             self.assertEqual(12, times)
-            return ("Hello " + param + " " + str_class(times) + " times: " +
-                str_class(bool1) + " " + str_class(bool2))
+            return ("Hello " + param + " " + str_class(times) + " times: "
+                + str_class(bool1) + " " + str_class(bool2))
 
         helpers = {'hello': hello}
 

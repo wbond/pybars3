@@ -732,7 +732,7 @@ class CodeBuilder:
         positional_args = 0
         if arguments:
             for argument in arguments:
-                kwmatch = re.match('(\w+)=(.+)$', argument)
+                kwmatch = re.match(r'(\w+)=(.+)$', argument)
                 if kwmatch:
                     if not overrides:
                         overrides = {}
@@ -788,10 +788,10 @@ class Compiler:
         :return:
             The word
         """
-        boundry = re.search('{{|{|\s|$', source[:position][::-1])
+        boundry = re.search(r'{{|{|\s|$', source[:position][::-1])
         start_offset = boundry.end() if boundry.group(0).startswith('{') else boundry.start()
 
-        boundry = re.search('}}|}|\s|$', source[position:])
+        boundry = re.search(r'}}|}|\s|$', source[position:])
         end_offset = boundry.end() if boundry.group(0).startswith('}') else boundry.start()
 
         return source[position - start_offset:position + end_offset]
