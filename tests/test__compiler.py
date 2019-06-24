@@ -122,8 +122,9 @@ class TestCompiler(TestCase):
             u"{{#if ['));exit(1);((']}}{{/if}}",
             u"{{['+exit(1)+']}}",
             u"{{[');exit(1)#]}}",
+            u"{{foo.join}}"
         ]:
-            render(template, {})
+            render(template, {"foo": "bar"})
 
         try:
             render(u"{{> ([log\", \"\", \"\");exit(1)#])}}", {})
