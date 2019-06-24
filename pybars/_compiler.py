@@ -225,10 +225,13 @@ def escape(something, _escape_re=_escape_re, substitute=substitute):
 
 
 def pick(context, name, default=None):
-    if isinstance(context, dict):
-        return context.get(name, None)
-
-    return None
+    try:
+        return context.get(name)
+    except (KeyError, TypeError, AttributeError):
+        value = getattr(context, name)
+    if not callable(value):
+        return value
+    return default
 
 
 sentinel = object()

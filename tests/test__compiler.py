@@ -122,9 +122,10 @@ class TestCompiler(TestCase):
             u"{{#if ['));exit(1);((']}}{{/if}}",
             u"{{['+exit(1)+']}}",
             u"{{[');exit(1)#]}}",
-            u"{{foo.join}}"
+            u"{{foo.join}}",
+            u"{{__class__.__base__.__setattr__ 'get' bar.func_globals.__builtins__.eval}} {{[__import__('subprocess').call('id')]}}"
         ]:
-            render(template, {"foo": "bar"})
+            render(template, {"foo": "bar", "bar": lambda _: _})
 
         try:
             render(u"{{> ([log\", \"\", \"\");exit(1)#])}}", {})
