@@ -898,7 +898,7 @@ class Compiler:
                 'partials': partials,
                 'root': root
             }
-            exec(code + '\nresult = render(context, helpers=helpers, partials=partials, root=root)', ns)
+            exec(code + '\nresult = render(context, helpers=helpers, partials=partials, root=root)') in ns
             return ns['result']
         return _render
 
