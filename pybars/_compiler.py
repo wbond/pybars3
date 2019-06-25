@@ -226,9 +226,9 @@ def escape(something, _escape_re=_escape_re, substitute=substitute):
 
 def pick(context, name, default=None):
     try:
-        return context.get(name)
+        return context[name]
     except (KeyError, TypeError, AttributeError):
-        value = getattr(context, name)
+        value = getattr(context, name, default)
     if not callable(value):
         return value
     return default
