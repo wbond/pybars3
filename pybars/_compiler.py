@@ -312,6 +312,8 @@ def resolve(context, *segments):
         if segment in (None, ""):
             continue
         if type(context) in (list, tuple):
+            if segment == 'length':
+                return len(context)
             offset = int(segment)
             context = context[offset]
         elif isinstance(context, Scope):
