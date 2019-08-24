@@ -74,6 +74,16 @@ class TestAcceptance(TestCase):
         result = u"وداعا أيها العالم القاسي!"
         self.assertRender(template, context, result)
 
+    def test_whitespace_control(self):
+        template = u"Goodbye\n  \n \t{{~cruel~}} \n \t  {{world}}!"
+        context = {
+            'cruel': "cruel",
+            'world': "world"
+        }
+        result = u"Goodbyecruelworld!"
+
+        self.assertRender(template, context, result)
+
     def test_comments_ignored(self):
         template = u"{{! Goodbye}}Goodbye\n{{cruel}}\n{{world}}!"
         context = {

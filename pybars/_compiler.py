@@ -810,6 +810,8 @@ class Compiler:
         if not isinstance(source, str_class):
             raise PybarsError("Template source must be a unicode string")
 
+        source = self.whitespace_control(source)
+
         tree, (position, _) = self._handlebars(source).apply('template')
 
         self.clean_whitespace(tree)
@@ -835,6 +837,18 @@ class Compiler:
 
         output = self._compiler(tree).apply('compile')[0]
         return output
+
+    def whitespace_control(self, source):
+        """
+        Process whitespace control in source.
+
+        :param source:
+            The template source as a unicode string
+        :return:
+            The template source as a unicode string with whitespace control
+            processed
+        """
+        return re.sub(r'~}}\s*', '}}', re.sub(r'\s*{{~', '{{', source))
 
     def precompile(self, source):
         """

@@ -41,9 +41,6 @@ Here is a partial list of features that are supported:
 - `pybars.Compiler().precompile()` that is equivalent to `Handlebars.precompile()`
 - `{{> (whichPartial) }}` dynamic partials (Handlebars 3.0)
 - `{{{{raw}}}}{{escaped}}{{{{/raw}}}}` raw blocks (Handlebars 2.0)
-
-Features not currently implemented:
-
 - Whitespace control, `{{var~}}` (Handlebars 1.1)
 
 Feel free to jump in with issues or pull requests.
