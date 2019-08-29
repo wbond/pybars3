@@ -1641,6 +1641,12 @@ class TestAcceptance(TestCase):
 
         self.assertRender(template, context, result)
 
+        template = u" {{#if var}}{{#if var}} \n    {{var}}\n {{/if}} {{/if}}" \
+                   u"\n {{#if var}} {{#if var}} \n    {{var}}\n {{/if}}{{/if}} "
+        result = u"    Hello\n    Hello"
+
+        self.assertRender(template, context, result)
+
     def test_using_a_quote_in_the_middle_of_a_parameter_raises_an_error(self):
         template = u'Message: {{hello wo"a"}}'
         context = None
@@ -2468,7 +2474,7 @@ class TestAcceptance(TestCase):
             ],
             'hasThings': lambda this: True
         }
-        result = u"<strong>This is a slightly more complicated blah.</strong>.\n\nCheck this out:\n\n<ul>\n\n<li class=one>@fat</li>\n\n<li class=two>@dhg</li>\n\n<li class=three>@sayrer</li>\n</ul>.\n\n"    # noqa: E501
+        result = u"<strong>This is a slightly more complicated blah.</strong>.\nCheck this out:\n<ul>\n<li class=one>@fat</li>\n<li class=two>@dhg</li>\n<li class=three>@sayrer</li>\n</ul>.\n"    # noqa: E501
 
         self.assertRender(template, context, result)
 
