@@ -1,5 +1,9 @@
 # changelog
 
+## 0.9.7
+
+- Add support for whitespace control, `{{var~}}` (Handlebars 1.1)
+
 ## 0.9.6
 
 - Add `template` method which creates a renderer from precompiled code.
