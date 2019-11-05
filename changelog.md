@@ -3,6 +3,7 @@
 ## 0.9.7
 
 - Add support for whitespace control, `{{var~}}` (Handlebars 1.1)
+- Add "list.length" support
 
 ## 0.9.6
 
