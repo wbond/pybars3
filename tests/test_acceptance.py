@@ -653,6 +653,16 @@ class TestAcceptance(TestCase):
 
         self.assertRender(template, context, result)
 
+    def test_array_length(self):
+        template = u"{{array.length}}"
+
+        context = {
+            'array': ['1', '2', '3']
+        }
+        result = u"3"
+
+        self.assertRender(template, context, result)
+
     def test_unicode_array_iteration(self):
         template = u"{{#سلامات}}{{النص}}! {{/سلامات}}cruel {{world}}!"
 
