@@ -2682,6 +2682,17 @@ class TestAcceptance(TestCase):
         result = u"**HTML** <a href='#'>link</a>"
         self.assertRender(template, context, result)
 
+    def test_periods_in_variable(self):
+        template = u"{{[a.b]}} {{[a.b.c].name}}: {{#if [a.b]}}AB_OK{{/if}} {{#if [a.b.c].name}}ABC_OK{{/if}}"
+        context = {
+            "a.b": "AB",
+            "a.b.c": {
+                "name": "ABC"
+            }
+        }
+        result = u"AB ABC: AB_OK ABC_OK"
+        self.assertRender(template, context, result)
+
     def test_template(self):
         compiler = Compiler()
 
