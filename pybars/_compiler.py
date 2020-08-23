@@ -419,6 +419,8 @@ def _log(this, context):
 def _unless(this, options, context):
     if not context:
         return options['fn'](this)
+    else:
+        return options['inverse'](this)
 
 
 def _lookup(this, context, key):
