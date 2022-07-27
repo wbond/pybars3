@@ -26,8 +26,8 @@ jobs:
         run: flake8
       - name: Run tests
         run: coverage run tests.py
-      - name: Upload coverage data
-        run: codecov
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
 
   build-ubuntu-old:
     name: Python ${{ matrix.python }} on ubuntu-18.04 x64
@@ -52,5 +52,5 @@ jobs:
         run: flake8
       - name: Run tests
         run: coverage run tests.py
-      - name: Upload coverage data
-        run: codecov
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
