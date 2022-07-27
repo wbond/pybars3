@@ -57,8 +57,8 @@ jobs:
       - name: Install PyMeta3
         run: python${{matrix.python}} -m pip install PyMeta3==0.5.1
       - name: Lint
-        run: python${{matrix.python} -m flake8
+        run: python${{matrix.python}} -m flake8
       - name: Run tests
-        run: python${{matrix.python} -m coverage run tests.py
+        run: python${{matrix.python}} -m coverage run tests.py
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
