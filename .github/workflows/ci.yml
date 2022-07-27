@@ -1,0 +1,52 @@
+name: CI
+on: [push, pull_request]
+
+jobs:
+  build-ubuntu:
+    name: Python ${{ matrix.python }} on ubuntu-18.04 x64
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        python:
+          - '3.6'
+          - '3.9'
+          - '3.10'
+          - 'pypy-3.7-v7.3.5'
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+          architecture: x64
+      - name: Install dependencies
+        run: python -m pip install -r ./ci-requirements.txt
+      - name: Lint
+        run: flake8
+      - name: Run tests
+        run: coverage run tests.py
+      - name: Upload coverage data
+        run: codecov
+
+  build-ubuntu-old:
+    name: Python ${{ matrix.python }} on ubuntu-18.04 x64
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        python:
+          - '3.3'
+    steps:
+      - uses: actions/checkout@master
+      - name: Setup deadsnakes/ppa
+        run: sudo apt-add-repository ppa:deadsnakes/ppa
+      - name: Update apt
+        run: sudo apt-get update
+      - name: Install Python ${{matrix.python}}
+        run: sudo apt-get install python${{matrix.python}}
+      - name: Install dependencies
+        run: python${{matrix.python}} -m pip install -r ./ci-requirements.txt
+      - name: Lint
+        run: flake8
+      - name: Run tests
+        run: coverage run tests.py
+      - name: Upload coverage data
+        run: codecov
