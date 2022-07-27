@@ -1944,6 +1944,17 @@ class TestAcceptance(TestCase):
 
         self.assertRender(template, context, result)
 
+    def test_unless_else(self):
+        template = u"{{#unless goodbye}}Hello{{else}}GOODBYE{{/unless}} cruel world"
+
+        context = {
+            'goodbye': True
+        }
+
+        result = u"GOODBYE cruel world"
+
+        self.assertRender(template, context, result)
+
     def test_resolve_with_attrs(self):
 
         class TestAttr():
