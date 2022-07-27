@@ -30,6 +30,8 @@ jobs:
         run: python -m flake8
       - name: Run tests
         run: python -m coverage run tests.py
+      - name: Convert coverage data to XML
+        run: python -m coverage xml
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
 
@@ -60,5 +62,7 @@ jobs:
         run: python${{matrix.python}} -m flake8
       - name: Run tests
         run: python${{matrix.python}} -m coverage run tests.py
+      - name: Convert coverage data to XML
+        run: python${{matrix.python}} -m coverage xml
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
