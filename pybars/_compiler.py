@@ -315,7 +315,10 @@ def resolve(context, *segments):
             if segment == 'length':
                 return len(context)
             offset = int(segment)
-            context = context[offset]
+            if offset < len(context):
+                context = context[offset]
+            else:
+                context = {}
         elif isinstance(context, Scope):
             context = context.get(segment)
         else:
