@@ -31,7 +31,7 @@ jobs:
       - name: Run tests
         run: python -m coverage run tests.py
       - name: Convert coverage data to XML
-        run: python -m coverage xml
+        run: python -m coverage xml --include=pybars/*.py
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
 
@@ -63,6 +63,6 @@ jobs:
       - name: Run tests
         run: python${{matrix.python}} -m coverage run tests.py
       - name: Convert coverage data to XML
-        run: python${{matrix.python}} -m coverage xml
+        run: python${{matrix.python}} -m coverage xml --include=pybars/*.py
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
