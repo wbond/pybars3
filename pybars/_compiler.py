@@ -72,6 +72,7 @@ templatecommand ::= <blockrule>
     | <expression>
     | <partial>
     | <rawblock>
+    | <partialblockrule>
 start ::= '{' '{'
 finish ::= '}' '}'
 comment ::= <start> '!' (~(<finish>) <anything>)* <finish> => ('comment', )
@@ -124,6 +125,9 @@ pathseg ::= '[' <notclosebracket>+:symbol ']' => u''.join(symbol)
     | '.' => u''
 pathfinish :expected ::= <start> '/' <path>:found ?(found == expected) <finish>
 symbolfinish :expected ::= <start> '/' <symbol>:found ?(found == expected) <finish>
+partialfinish :expected ::= <start> '>' <partialname>:found ?(found == expected) <finish>
+partialblockrule ::= <start> '#' '>' <block_inner>:i
+      <template>:t <symbolfinish i[0]> => ('partialblock', u'"' + i[0] + u'"', i[1], t)
 blockrule ::= <start> '#' <block_inner>:i
       <template>:t <alttemplate>:alt_t <symbolfinish i[0]> => ('block',) + i + (t, alt_t)
     | <start> '^' <block_inner>:i
@@ -147,14 +151,16 @@ rule ::= <literal>
     | <invertedblock>
     | <rawblock>
     | <partial>
+    | <partialblock>
 block ::= [ "block" <anything>:symbol [<arg>*:arguments] [<compile>:t] [<compile>?:alt_t] ] => builder.add_block(symbol, arguments, t, alt_t)
+partialblock ::= [ "partialblock" <anything>:symbol [<arg>*:arguments] [<compile>:t] ] => builder.add_partial(symbol, arguments, t)
 comment ::= [ "comment" ]
 literal ::= [ ( "literal" | "newline" | "whitespace" ) :value ] => builder.add_literal(value)
 expand ::= [ "expand" <path>:value [<arg>*:arguments]] => builder.add_expand(value, arguments)
 escapedexpand ::= [ "escapedexpand" <path>:value [<arg>*:arguments]] => builder.add_escaped_expand(value, arguments)
 invertedblock ::= [ "invertedblock" <anything>:symbol [<arg>*:arguments] [<compile>:t] [<compile>?:alt_t] ] => builder.add_invertedblock(symbol, arguments, t, alt_t)
 rawblock ::= [ "rawblock" <anything>:symbol [<arg>*:arguments] <anything>:raw ] => builder.add_rawblock(symbol, arguments, raw)
-partial ::= ["partial" <complexarg>:symbol [<arg>*:arguments]] => builder.add_partial(symbol, arguments)
+partial ::= ["partial" <complexarg>:symbol [<arg>*:arguments]] => builder.add_partial(symbol, arguments, None)
 path ::= [ "path" [<pathseg>:segment]] => ("simple", segment)
  | [ "path" [<pathseg>+:segments] ] => ("complex", u"resolve(context, u'" + u"', u'".join(segments) + u"')" )
 complexarg ::= [ "path" [<pathseg>+:segments] ] => u"resolve(context, u'" + u"', u'".join(segments) + u"')"
@@ -732,7 +738,7 @@ class CodeBuilder:
             u", helpers=helpers, partials=partials, root=root))\n"
             ])
 
-    def add_partial(self, symbol, arguments):
+    def add_partial(self, symbol, arguments, nested):
         arg = ""
 
         overrides = None
@@ -758,13 +764,31 @@ class CodeBuilder:
             overrides_literal += u'}'
         self._result.grow([u"    overrides = %s\n" % overrides_literal])
 
+        if nested is not None:
+            name = nested.name
+
+            self._locals[name] = nested
+            self._result.grow([
+                u"    partials['@partial-block'] = %s\n" % self._wrap_nested(name)
+
+            ])
+
+
         self._result.grow([
             u"    partialName = %s\n" % symbol,
-            u"    if partialName not in partials:\n",
+            u"    if partialName in partials:\n",
+            u"        inner = partials[partialName]\n",
+            u"    elif '@partial-block' in partials:\n",
+            u"        inner = partials['@partial-block']\n",
+            u"    else:\n",
             u"        raise PybarsError('The partial %s could not be found' % partialName)\n",
-            u"    inner = partials[partialName]\n",
             u"    scope = Scope(%s, context, root, overrides=overrides)\n" % self._lookup_arg(arg)])
         self._invoke_template("inner", "scope")
+
+        if nested is not None:
+            self._result.grow([
+                u"    del partials['@partial-block']\n"
+            ])
 
 
 class Compiler:

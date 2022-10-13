@@ -2747,3 +2747,39 @@ class TestAcceptance(TestCase):
         text = u"Hola {{name}}!"
         context = {'name': u"Samira"}
         self.assertRender(text, context, u"Hola Samira!")
+
+    def test_partial_block_fallback(self):
+        template = u"Hello {{#> non_existent_partial}}World{{/non_existent_partial}}!"
+        context = {}
+        result = u"Hello World!"
+        self.assertRender(template, context, result)
+
+    def test_basic_partial_block(self):
+        partials = {
+            'name_partial': u"{{person.name}} and {{> @partial-block}}"
+        }
+
+        template = u"Hello {{#> name_partial person=person}}world{{/name_partial}}"
+        context = {
+            'person': {
+                'name': u"Samira"
+            }
+        }
+        result = u"Hello Samira and world"
+
+        self.assertRender(template, context, result, None, partials)
+
+    def test_partial_block_scoping(self):
+        partials = {
+            'name_partial': u"{{person.name}} and {{> @partial-block}}"
+        }
+
+        template = u"Hello {{#> name_partial person=person}}world{{/name_partial}}{{> @partial-block}}"
+        context = {
+            'person': {
+                'name': u"Samira"
+            }
+        }
+        result = u"Hello Samira and world"
+
+        self.assertRender(template, context, result, None, partials, "The partial @partial-block could not be found")
