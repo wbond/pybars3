@@ -828,12 +828,13 @@ class Compiler:
             print('')
 
         if position < len(source):
-            line_num = source.count('\n') + 1
             beginning_of_line = source.rfind('\n', 0, position)
             if beginning_of_line == -1:
                 char_num = position
+                line_num = 1
             else:
                 char_num = position - beginning_of_line
+                line_num = source[:beginning_of_line+1].count('\n') + 1
             word = self._extract_word(source, position)
             raise PybarsError("Error at character %s of line %s near %s" % (char_num, line_num, word))
 
