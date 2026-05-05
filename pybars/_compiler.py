@@ -781,8 +781,7 @@ class Compiler:
         self._helpers = {}
         self.template_counter = 1
         self._builder = CodeBuilder()
-        self._compiler = OMeta.makeGrammar(
-            compile_grammar, {'builder': self._builder})
+        self._compiler = OMeta.makeGrammar(compile_grammar, {'builder': self._builder})
 
     def _extract_word(self, source, position):
         """
