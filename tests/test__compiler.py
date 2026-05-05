@@ -22,6 +22,7 @@ except NameError:
     str_class = str
 
 import sys
+import threading
 
 from unittest import TestCase
 
@@ -134,3 +135,34 @@ class TestCompiler(TestCase):
         # recompile and check that a new path is used
         self.assertEqual(result, compiler.compile(template, path=path)(context))
         self.assertTrue(sys.modules.get('pybars._templates._project_widgets_templates_1') is not None)
+
+    def test_distinct_compilers_are_thread_safe(self):
+        templates = [
+            (u"Hello {{name}}!", {'name': 'world'}, u"Hello world!"),
+            (u"{{#each items}}{{this}},{{/each}}",
+             {'items': [1, 2, 3]}, u"1,2,3,"),
+            (u"{{#if flag}}yes{{else}}no{{/if}}",
+             {'flag': True}, u"yes"),
+            (u"{{a.b.c}}", {'a': {'b': {'c': 'deep'}}}, u"deep"),
+        ]
+
+        errors = []
+        barrier = threading.Barrier(8)
+
+        def worker():
+            try:
+                barrier.wait()
+                for _ in range(10):
+                    for src, ctx, expected in templates:
+                        fn = Compiler().compile(src)
+                        self.assertEqual(expected, str_class(fn(ctx)))
+            except Exception as e:
+                errors.append(e)
+
+        threads = [threading.Thread(target=worker) for _ in range(8)]
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
+
+        self.assertEqual([], errors)

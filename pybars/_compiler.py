@@ -776,12 +776,12 @@ class Compiler:
     """
 
     _handlebars = OMeta.makeGrammar(handlebars_grammar, {}, 'handlebars')
-    _builder = CodeBuilder()
-    _compiler = OMeta.makeGrammar(compile_grammar, {'builder': _builder})
 
     def __init__(self):
         self._helpers = {}
         self.template_counter = 1
+        self._builder = CodeBuilder()
+        self._compiler = OMeta.makeGrammar(compile_grammar, {'builder': self._builder})
 
     def _extract_word(self, source, position):
         """
