@@ -1,0 +1,22 @@
+[package]
+name = "pybars3-compiler-fuzz"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "0.4"
+pybars3-compiler = { path = "../compiler" }
+
+# Not a member of the main workspace: cargo-fuzz needs nightly.
+[workspace]
+
+[[bin]]
+name = "precompile"
+path = "fuzz_targets/precompile.rs"
+test = false
+doc = false
+bench = false

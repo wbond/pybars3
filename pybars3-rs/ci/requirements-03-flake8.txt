@@ -1,0 +1,4 @@
+flake8 == 7.5.0 ; python_version >= '3.11'
+mccabe == 0.7.0 ; python_version >= '3.11'
+pycodestyle == 2.15.0 ; python_version >= '3.11'
+pyflakes == 4.1.0 ; python_version >= '3.11'

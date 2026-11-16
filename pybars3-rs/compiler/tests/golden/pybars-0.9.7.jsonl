@@ -1,0 +1,1033 @@
+{"source": "", "code_fnv1a": "1a2c5a8f2a8b724f", "code_len": 779}
+{"source": "Hello {{name}}!", "code_fnv1a": "13daa3caad980f53", "code_len": 1114}
+{"source": "hello {{name", "code_fnv1a": "eb14cae071c94a75", "code_len": 807}
+{"source": "abc {{foo", "code_fnv1a": "8ca5caea9954d171", "code_len": 805}
+{"source": "abc {{#if a}} xyz", "code_fnv1a": "8ca5caea9954d171", "code_len": 805}
+{"source": "{{value}\nmore\nlines", "error": "Error at character 7 of line 3 near {{value}"}
+{"source": "line1\nline2 {{/x}}\nline3", "error": "Error at character 9 of line 3 near {{/x}}"}
+{"source": "{{#if\ta}}x{{/if}}", "code_fnv1a": "064738896fd768f8", "code_len": 1481}
+{"source": "{{foo ab='x\\\\y'}}", "code_fnv1a": "82003f37bc62dc3b", "code_len": 1086}
+{"source": "{{a-b}}", "code_fnv1a": "6a51fc0030bf6ba3", "code_len": 1060}
+{"source": "{{foo x=-12}}", "error": "Error at character 7 of line 1 near x=-12}}"}
+{"source": "{{x}}\r\n", "code_fnv1a": "fe22bcd6a762b42f", "code_len": 1078}
+{"source": "\r\nx{{a}}\r\ny", "code_fnv1a": "e5a6e5a47cdc0843", "code_len": 1148}
+{"source": "{{#if a}}x{{else}y{{/if}}", "error": "Error at character 16 of line 1 near {{else}"}
+{"source": "{{#if a}}{{#if b}}{{#each xs}}{{name}}{{/each}}{{/if}}{{/if}}", "code_fnv1a": "f90d53637cbc0ac2", "code_len": 3105}
+{"source": "{{#if a}}x{{else}}y{{/if}}", "code_fnv1a": "1b359031d4e88903", "code_len": 1681}
+{"source": "{{#if a}}x{{else}}{{/if}}", "code_fnv1a": "c91d619aaa0ae094", "code_len": 1658}
+{"source": "{{^if a}}x{{/if}}", "code_fnv1a": "77e34ec404fe146e", "code_len": 1481}
+{"source": "{{> part ab=1 cd=resolve(context, u'x')}}", "error": "Error at character 24 of line 1 near cd=resolve(context,"}
+{"source": "{{> part a=1 b=2}}{{> part 1 2}}", "error": "Error at character 10 of line 1 near a=1"}
+{"source": "{{> part 1 2}}", "error": "An extra positional argument was passed to a partial"}
+{"source": "{{{{raw}}}}{{x}}{{{{/raw}}}}", "code_fnv1a": "7db14b9d69c356c6", "code_len": 1144}
+{"source": "{{! comment }}{{!-- long --}}", "code_fnv1a": "1a2c5a8f2a8b724f", "code_len": 779}
+{"source": "{{foo (bar (baz 1))}}", "code_fnv1a": "427ae13b2f074fcb", "code_len": 1234}
+{"source": "{{foo (a.b x)}}", "code_fnv1a": "c3a7162a58b52fdf", "code_len": 1190}
+{"source": "{{foo -12}}", "code_fnv1a": "1aad833fa3944ac9", "code_len": 1070}
+{"source": "{{foo a=1}}", "error": "Error at character 7 of line 1 near a=1}}"}
+{"source": "{{foo trueish}}", "error": "Error at character 13 of line 1 near trueish}}"}
+{"source": "{{foo 12abc}}", "error": "Error at character 8 of line 1 near 12abc}}"}
+{"source": "{{a.[b'c]}}", "code_fnv1a": "097e831fabf955a2", "code_len": 931}
+{"source": "{{user.profile.[a.b.c.d}}", "code_fnv1a": "c236e0222fd62159", "code_len": 982}
+{"source": "{{[}}", "code_fnv1a": "1a2c5a8f2a8b724f", "code_len": 779}
+{"source": "{{foo \u00b2}}", "fallback": "int_conversion"}
+{"source": "{{foo \u0663}}", "code_fnv1a": "0a5a661d24050d43", "code_len": 1066}
+{"source": "{{foo -\u00b212}}", "fallback": "int_conversion"}
+{"source": "{{foo \ud839\udcf3}}", "code_fnv1a": "0a5a661d24050d43", "code_len": 1066}
+{"source": "{{foo 11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111}}", "fallback": "int_conversion"}
+{"source": "{{foo 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000}}", "fallback": "int_conversion"}
+{"source": "{{foo 1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111\u00b2}}", "fallback": "int_conversion"}
+{"source": "{{#if a}}\nbody\n{{/if}}\n", "code_fnv1a": "7c0ef31dc1d8100a", "code_len": 1508}
+{"source": "  {{#if a}}  \n  body\n  {{/if}}  \n", "code_fnv1a": "a55dcd49b4a46954", "code_len": 1532}
+{"source": "text {{#if a}} y {{/if}} z", "code_fnv1a": "d4660626ff787c36", "code_len": 1578}
+{"source": "{{^if a}}\nbody\n{{/if}}\n", "code_fnv1a": "de548ae4b9fc8d34", "code_len": 1532}
+{"source": "{{#if a}}\nx\n{{else}}\ny\n{{/if}}\n", "code_fnv1a": "f78ff804de9c0e0d", "code_len": 1707}
+{"source": "{{a_b}}{{a-b}}{{a@b}}", "code_fnv1a": "0edeb47dc4b65d50", "code_len": 1622}
+{"source": "{{this}}{{../a}}{{@../index}}", "code_fnv1a": "6a164b7f18d129c3", "code_len": 1281}
+{"source": "{{> part aa=1 aa=2}}", "code_fnv1a": "fe17f7bdcd2cf87d", "code_len": 1119}
+{"source": "{{> part aa=(missing) bb=1 aa=2}}", "code_fnv1a": "62a0d027a48696d4", "code_len": 1128}
+{"source": "{{> part aa=(missing) [aa]=2}}", "code_fnv1a": "fe17f7bdcd2cf87d", "code_len": 1119}
+{"source": "{{> part \u00e9_1=v}}", "code_fnv1a": "ba49dd7223fb6826", "code_len": 1142}
+{"source": "{{x.[a[a[a[a[a[a[a[a[a[a[a[a[a[a[a[a[a[a[a[a[a[a[a[a[a[a[a[a[a[a[a[a }}", "code_fnv1a": "a5d667d9fd9af088", "code_len": 1115}
+{"source": "{{x.[a\u0000b]}}", "code_fnv1a": "8a88d16712a2e582", "code_len": 931}
+{"source": "caf\u00e9 \u2028 \u0085 \ud83d\ude00 \ud83e\udee9 \udb40\udc01", "code_fnv1a": "4b5d167f3e6fe10c", "code_len": 845}
+{"source": "{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}x{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}", "code_fnv1a": "38e23f8d5019392c", "code_len": 13723}
+{"source": "{{#if order.shipped}}Order {{order.id}} for {{user.name}} shipped on {{order.date}}{{/if}}\n{{#ifEquals user.role \"admin\"}}admin{{else}}customer{{/ifEquals}}\n{{^gift}}Track it at https://example.com/track with {{carrier.name}}{{/gift}}\n", "code_fnv1a": "130430e3b5fce514", "code_len": 3986}
+{"source": "a {{~b~}} c", "code_fnv1a": "582c64e0f636e517", "code_len": 1100}
+{"source": "a \t\n {{~b}}", "code_fnv1a": "18465bf4dd6ae072", "code_len": 1077}
+{"source": "{{a~}}  \n b", "code_fnv1a": "45451a6a52d81e98", "code_len": 1077}
+{"source": "{{~~}}", "error": "Error at character 2 of line 1 near {{}}"}
+{"source": "x\u3000{{~y}}\u0085", "code_fnv1a": "dfd5092bf32b4a53", "code_len": 1103}
+{"source": "x\n{{#if a}}\ny\n{{/if}}\nz", "code_fnv1a": "ebf64b1ee3b8a73d", "code_len": 1531}
+{"source": "x\n  {{#a}} {{#b}} \r\ny{{/b}}{{/a}}", "code_fnv1a": "05a55f809f800b48", "code_len": 2133}
+{"source": "x\n{{#if a}}\n{{else}}\ny{{/if}}", "code_fnv1a": "f6a5bfcbfc88d0d5", "code_len": 1683}
+{"source": "x\n{{#a\nb}}\ny{{/a}}", "code_fnv1a": "82f41dbabcb2e730", "code_len": 1504}
+{"source": "  {{#a}}  \nb{{/a}}", "code_fnv1a": "f9bb27c432a6c3e8", "code_len": 1455}
+{"source": "a\n  {{/b}}  ", "error": "Error at character 3 of line 1 near {{/b}}"}
+{"source": "a\n{{/b}}\n", "error": "Error at character 3 of line 2 near {{/b}}"}
+{"source": "a\r\n{{/b}}\r\n", "error": "Error at character 3 of line 2 near {{/b}}"}
+{"source": "{{#a}}\n{{! note }}\n{{/a}}\n", "code_fnv1a": "e5c194fa2fe0ac6e", "code_len": 1432}
+{"source": "{{a}}\n  {{~b}", "error": "Error at character 8 of line 1 near {{b}"}
+{"source": "line1\n  {{~/x}}\nline3", "error": "Error at character 7 of line 2 near {{/x}}"}
+{"source": "{{#unless foo}}bar{{/unless}}", "code_fnv1a": "b0bf2c903641ee5e", "code_len": 1493}
+{"source": "{{#foo}}bar{{/foo}}", "code_fnv1a": "45bd938fd7d6bc1d", "code_len": 1461}
+{"source": "{{foo}}", "code_fnv1a": "9fb8b32b4c52ac33", "code_len": 1060}
+{"source": "Dudes: {{>dude}} {{another_dude}}", "code_fnv1a": "9007c795d1780c49", "code_len": 1472}
+{"source": "{{name}}", "code_fnv1a": "6b3241cdb738208e", "code_len": 1063}
+{"source": "{{arr.[0]}}, {{arr.[1]}}", "code_fnv1a": "1014fd986b64fddc", "code_len": 1107}
+{"source": "{{^foo}}bar{{/foo}}", "code_fnv1a": "9c6669a007233577", "code_len": 1461}
+{"source": "{{hello}}", "code_fnv1a": "2a63a90be439c51b", "code_len": 1066}
+{"source": "Hello {{name}}. You have just won ${{value}}!{{#in_ca}} Well, ${{taxed_value}}, after taxes.{{/in_ca}}", "code_fnv1a": "ca17060eeb92aabf", "code_len": 2498}
+{"source": "{{#goodbye}} {{cruel world}}{{/goodbye}} {{this.goodbye}}", "code_fnv1a": "56e926c4386f0f2e", "code_len": 1988}
+{"source": "{{this.goodbye}} {{cruel world}} {{cruel this.goodbye}}", "code_fnv1a": "13bfd055aa0f9190", "code_len": 1690}
+{"source": "{{{typeof hello}}}", "code_fnv1a": "1bf01eb4a874faaf", "code_len": 1126}
+{"source": "{{#goodbyes}}{{text}}! {{/goodbyes}}cruel {{world}}!", "code_fnv1a": "ca2eda0a45bedfd0", "code_len": 2092}
+{"source": "{{array.length}}", "code_fnv1a": "71bb7aaa1a1842a2", "code_len": 938}
+{"source": "{{hello.world}}", "code_fnv1a": "583fc473e0c2c575", "code_len": 937}
+{"source": "{{echo \"\\x\"}}", "code_fnv1a": "92de34233e0a6f98", "code_len": 1077}
+{"source": "{{echo \"\\\\\"\"}}", "code_fnv1a": "1429c7e6082c0b40", "code_len": 1079}
+{"source": "Goodbye\n{{cruel}}\n{{world}}!", "code_fnv1a": "ec5302406dd8437a", "code_len": 1431}
+{"source": "Dudes: {{#dudes}}{{> dude}}{{/dudes}}", "code_fnv1a": "d534b4b85e07b7e4", "code_len": 1802}
+{"source": "{{name}} ({{url}}) ", "code_fnv1a": "e37983d4cc8c4c0c", "code_len": 1414}
+{"source": "\u0648\u062f\u0627\u0639\u0627 \u0623\u064a\u0647\u0627 {{\u0627\u0644\u0639\u0627\u0644\u0645}} {{\u0627\u0644\u0642\u0627\u0633\u064a}}!", "code_fnv1a": "677929c342d18735", "code_len": 1483}
+{"source": "{{#awesome}}inner{{/awesome}}", "code_fnv1a": "6e157071a006e14a", "code_len": 1471}
+{"source": "{{#empty}}shouldn't render{{/empty}}", "code_fnv1a": "2320a11e5d24e61a", "code_len": 1478}
+{"source": "{{#list people}}{{name}}{{^}}<em>Nobody's here</em>{{/list}}", "code_fnv1a": "3ef3b61ea83b3491", "code_len": 1972}
+{"source": "{{#list people}}{{name}}{{else}}<em>Nobody's here</em>{{/list}}", "code_fnv1a": "3ef3b61ea83b3491", "code_len": 1972}
+{"source": "{{#list people}}Hello{{^}}{{message}}{{/list}}", "code_fnv1a": "85eb18b6e0920015", "code_len": 1964}
+{"source": "{{#form yehuda/cat}}<p>{{name}}</p>{{/form}}", "code_fnv1a": "dc85f2b3193f1d93", "code_len": 1815}
+{"source": "{{#form yehuda}}<p>{{name}}</p>{{/form}}", "code_fnv1a": "99aeec11a567c13b", "code_len": 1802}
+{"source": "<ul>{{#people}}<li>{{#link}}{{name}}{{/link}}</li>{{/people}}</ul>", "code_fnv1a": "a45c4c9cce28471e", "code_len": 2491}
+{"source": "{{#form}}<p>{{name}}</p>{{/form}}", "code_fnv1a": "2e4317707021d616", "code_len": 1773}
+{"source": "{{#para nested}}Goodbye {{#if ../world}}cruel {{../world}}{{/if}}{{/para}}", "code_fnv1a": "d7eb3c34c19f7ab0", "code_len": 2377}
+{"source": "{{#goodbye cruel=\"CRUEL\" times=12}}world{{/goodbye}}", "code_fnv1a": "44709089e8e1b3e7", "code_len": 1496}
+{"source": "{{#goodbye cruel=\"CRUEL\" _print=true}}world{{/goodbye}}", "code_fnv1a": "228fdfccc97d6e08", "code_len": 1499}
+{"source": "{{#goodbye cruel=\"CRUEL\" _print=false}}world{{/goodbye}}", "code_fnv1a": "ead4333ee9415ec7", "code_len": 1500}
+{"source": "{{#goodbye}} {{cruel world}}{{/goodbye}}", "code_fnv1a": "75e1ea61ebed7971", "code_len": 1810}
+{"source": "{{#people}}{{name}}{{^}}{{none}}{{/people}}", "code_fnv1a": "42578fe92a414829", "code_len": 2187}
+{"source": "Message: {{#goodbye cruel world}}{{greeting}} {{adj}} {{noun}}{{/goodbye}}", "code_fnv1a": "f68806ab935571ba", "code_len": 2438}
+{"source": "  {{#if var}}\n    {{var}}\n  {{/if}}", "code_fnv1a": "c421b318b769db9f", "code_len": 1767}
+{"source": "{{#if var}}    \n    {{var}}\n  {{/if}}    ", "code_fnv1a": "c421b318b769db9f", "code_len": 1767}
+{"source": "{{#if var}}\n    {{var}}\n{{/if}}    ", "code_fnv1a": "c421b318b769db9f", "code_len": 1767}
+{"source": "{{#if var}}\n    {{var}}\n{{/if}}", "code_fnv1a": "c421b318b769db9f", "code_len": 1767}
+{"source": "{{#if var}}    \r\n    {{var}}\r\n  {{/if}}    ", "code_fnv1a": "c421b318b769db9f", "code_len": 1767}
+{"source": "\n{{#if var}}\n    {{var}}\n{{/if}}", "code_fnv1a": "bc289e8f704484eb", "code_len": 1791}
+{"source": " {{#if var}}{{#if var}} \n    {{var}}\n {{/if}} {{/if}}\n {{#if var}} {{#if var}} \n    {{var}}\n {{/if}}{{/if}} ", "code_fnv1a": "79efc245b92c4a51", "code_len": 4141}
+{"source": "{{#goodbyes}}{{text}} cruel {{../name}}! {{/goodbyes}}", "code_fnv1a": "d2b6e5abc6ba71e0", "code_len": 1960}
+{"source": "{{#outer}}Goodbye {{#inner}}cruel {{../../omg}}{{/inner}}{{/outer}}", "code_fnv1a": "bae6da0de537a578", "code_len": 2326}
+{"source": "{{#goodbye}}GOODBYE {{/goodbye}}cruel {{world}}!", "code_fnv1a": "504d2a8c685ac9c3", "code_len": 1812}
+{"source": "<strong>This is a slightly more complicated {{thing}}.</strong>.\n{{! Just ignore this business. }}\nCheck this out:\n{{#hasThings}}\n<ul>\n{{#things}}\n<li class={{className}}>{{word}}</li>\n{{/things}}</ul>.\n{{/hasThings}}\n{{^hasThings}}\n\n<small>Nothing to check out...</small>\n{{/hasThings}}", "code_fnv1a": "1086285dc58c2579", "code_len": 4040}
+{"source": "{{#books}}{{title}}{{author.name}}{{/books}}", "code_fnv1a": "3639cacce0b2ed40", "code_len": 1885}
+{"source": "{{echo \"\\\\\")\n\n        raise AssertionError('Code Injected!')\n#\"}}", "code_fnv1a": "6d9a6951509e1cfe", "code_len": 1187}
+{"source": "{{! Goodbye}}Goodbye\n{{cruel}}\n{{world}}!", "code_fnv1a": "ec5302406dd8437a", "code_len": 1431}
+{"source": "{{person/name}}", "code_fnv1a": "2ec5207866f2e487", "code_len": 937}
+{"source": "{{#each .}}{{text}}! {{/each}}cruel world!", "code_fnv1a": "03978ebc75bd0153", "code_len": 1803}
+{"source": "test: {{.}}", "code_fnv1a": "d3ea080955274ae6", "code_len": 1000}
+{"source": "a{{missing}}b", "code_fnv1a": "6c9ece3127548e90", "code_len": 1118}
+{"source": "a{{missing something}}b", "code_fnv1a": "35b365d0af1ebff0", "code_len": 1182}
+{"source": "Dudes: {{#dudes}}{{> (partial)}}{{/dudes}}", "code_fnv1a": "6b77916832164a48", "code_len": 1840}
+{"source": "It is {{> (whichPartial)}} items", "code_fnv1a": "38f804cc0ae92e38", "code_len": 1233}
+{"source": "1 1 1", "code_fnv1a": "b1946122cb615d66", "code_len": 806}
+{"source": "2 2 2", "code_fnv1a": "9a9b44ee7f47cb65", "code_len": 806}
+{"source": "Dudes: {{#dudes}}{{> (partial) @root.joke}} {{/dudes}}", "code_fnv1a": "095b6b81a6eaccb7", "code_len": 1896}
+{"source": "{{note}}", "code_fnv1a": "0428e3219f3f3057", "code_len": 1063}
+{"source": "It is literal call: {{> (whichPartial 'One')}}. And from context: {{> (whichPartial suffix)}}", "code_fnv1a": "3efedc3d1871223b", "code_len": 1651}
+{"source": "{{#each goodbyes}}{{text}}! {{/each}}cruel {{world}}!", "code_fnv1a": "f3e69682cdc5c1cf", "code_len": 2115}
+{"source": "Goodbye {{#each things}}cruel{{/each}} world!", "code_fnv1a": "25af33b1364b658d", "code_len": 1575}
+{"source": "Goodbye {{^each things}}cruel{{/each}} world!", "code_fnv1a": "bbe434131aa6e3db", "code_len": 1575}
+{"source": "Goodbye {{#each things}}happy {{^}}cruel {{/each}}world!", "code_fnv1a": "c8d21d70a8a552a3", "code_len": 1758}
+{"source": "{{#each name}}{{capitalize this}} {{/each}}", "code_fnv1a": "40918ad89bc3b296", "code_len": 1836}
+{"source": "{{#each goodbyes}}{{@index}}. {{text}}! {{/each}}cruel {{world}}!", "code_fnv1a": "484ca6eed1925ea3", "code_len": 2429}
+{"source": "{{#each goodbyes}}{{@index}}. {{text}}! {{#each ../goodbyes}}{{@index}} {{/each}}After {{@index}} {{/each}}{{@index}}cruel {{world}}!", "code_fnv1a": "cd125994fb980c5f", "code_len": 4076}
+{"source": "{{#each goodbyes}}{{@key}}. {{text}}! {{/each}}cruel {{world}}!", "code_fnv1a": "c6a5063330c77b42", "code_len": 2423}
+{"source": "{{#each people}}{{#each foods}}{{../name}}({{@../index}}) likes {{name}}({{@index}}), {{/each}}{{/each}}", "code_fnv1a": "97e586da7ff493d1", "code_len": 3141}
+{"source": "{{#goodbyes}}{{/goodbyes}}cruel {{world}}!", "code_fnv1a": "4df2b03144874414", "code_len": 1784}
+{"source": "Message: {{{hello \"\\\"world\\\"\"}}}", "code_fnv1a": "3d4341c6f4cc1bd1", "code_len": 1124}
+{"source": "{{{awesome}}}", "code_fnv1a": "2298404130eadb2d", "code_len": 1073}
+{"source": "{{&awesome}}", "code_fnv1a": "2298404130eadb2d", "code_len": 1073}
+{"source": "{{awesome}}", "code_fnv1a": "9b4e8aab05bda384", "code_len": 1072}
+{"source": "Awesome's", "code_fnv1a": "62948dbf32dd2a08", "code_len": 810}
+{"source": "Awesome\\", "code_fnv1a": "fa814bcdbcf53fba", "code_len": 810}
+{"source": "Awesome\\\\ foo", "code_fnv1a": "620f61b3088fe5a6", "code_len": 816}
+{"source": "Awesome {{foo}}", "code_fnv1a": "3813774ea148614c", "code_len": 1090}
+{"source": " \" \" ", "code_fnv1a": "418def1f3cf996b1", "code_len": 828}
+{"source": "{{#if projects.[0].name}}{{projects.[0].name}}{{/if}}\n{{#if projects.1.name}}{{projects.1.name}}{{/if}}{{projects.2.name}}", "code_fnv1a": "d30256b6ea11a878", "code_len": 2738}
+{"source": "{{#if a.0.1}}{{a.0.1.name}}{{/if}}|{{a.1.0.name}}|{{a.0.0.name}}|{{a.0.3.name}}", "code_fnv1a": "4d9be415a8ffd660", "code_len": 2249}
+{"source": "{{var}}", "code_fnv1a": "e1d5b53ddf4187ba", "code_len": 1060}
+{"source": "{{{var}}}", "code_fnv1a": "9209088798852e6b", "code_len": 1061}
+{"source": "{{awesome frank}}", "code_fnv1a": "bdeb4dcfe5efba28", "code_len": 1128}
+{"source": "{{{awesome frank}}}", "code_fnv1a": "b406f4f3333a1c19", "code_len": 1129}
+{"source": "{{#goodbyes}}{{../name}}{{/goodbyes}}", "code_fnv1a": "89d34fc0b826e903", "code_len": 1601}
+{"source": "{{#goodbyes}}{{{link ../prefix}}}{{/goodbyes}}", "code_fnv1a": "6fb5ffce51bdd7b5", "code_len": 1815}
+{"source": "{{#goodbyes}}{{#link ../prefix}}{{text}}{{/link}}{{/goodbyes}}", "code_fnv1a": "7d28ec47c1b2fd91", "code_len": 2431}
+{"source": "{{goodbye cruel=\"CRUEL\" world=\"WORLD\" times=12}}", "code_fnv1a": "98c9b1d01f810540", "code_len": 1152}
+{"source": "{{goodbye cruel=\"CRUEL\" world=\"WORLD\" _print=true}}", "code_fnv1a": "d77e6c2aba599bba", "code_len": 1158}
+{"source": "{{goodbye cruel=\"CRUEL\" world=\"WORLD\" _print=false}}", "code_fnv1a": "fea0dd104a85fa38", "code_len": 1160}
+{"source": "{{goodbye}} {{cruel world}}", "code_fnv1a": "f64fcdfc57f78dad", "code_len": 1438}
+{"source": "{{#if goodbye}}GOODBYE {{/if}}cruel {{world}}!", "code_fnv1a": "24f7ad20ff99d89d", "code_len": 1832}
+{"source": "{{hello}} {{link_to world}}", "code_fnv1a": "24baf185f4abc0b7", "code_len": 1438}
+{"source": "{{#if goodbye}}GOODBYE{{else}}Hello{{/if}} cruel {{world}}!", "code_fnv1a": "27f3c729b8561f5d", "code_len": 2058}
+{"source": "{{^if goodbye}}Hello{{else}}GOODBYE{{/if}}", "code_fnv1a": "9762f9226ff1cfb5", "code_len": 1697}
+{"source": "{{lookup}}", "code_fnv1a": "5a4cdc430d4de8e9", "code_len": 1069}
+{"source": "{{{lookup}}}", "code_fnv1a": "31851b5dd8ca0e32", "code_len": 1070}
+{"source": "{{#lookup}}Explicit{{/lookup}}", "code_fnv1a": "8dd3914dda514cdc", "code_len": 1472}
+{"source": "{{#foo}}{{/#foo}}", "error": "Error at character 11 of line 1 near {{/#foo}}"}
+{"source": "{{foo 0x=\"bar\"}}", "error": "Error at character 7 of line 1 near 0x=\"bar\"}}"}
+{"source": "{{#goodbyes}}{{this}}{{else}}Right On!{{/goodbyes}}\n{{^goodbyes}}Right On!{{else}}{{this}}{{/goodbyes}}", "code_fnv1a": "7960f887f92f2479", "code_len": 2939}
+{"source": "{{#goodbyes}}{{this}}{{/goodbyes}}{{^goodbyes}}Right On!{{/goodbyes}}", "code_fnv1a": "630fe3ab7254fe78", "code_len": 2337}
+{"source": "{{^set}}not set{{/set}} :: {{#set}}set{{/set}}", "code_fnv1a": "d4ce9190b1a50bd2", "code_len": 2195}
+{"source": "Message: {{{hello 'Alan\\'s world'}}}", "code_fnv1a": "ab92285917e70ba1", "code_len": 1132}
+{"source": "{{#truthy}}yep{{/truthy}}", "code_fnv1a": "bd265db80cc99978", "code_len": 1467}
+{"source": "{{#each .}}{{#each .}}{{text}}! {{/each}}cruel world!{{/each}}", "code_fnv1a": "550fb9cd4b433279", "code_len": 2485}
+{"source": "Goodbye {{[@alan]/expression}} world!", "code_fnv1a": "1a0d918f7a9fd7c7", "code_len": 1023}
+{"source": "Goodbye {{[foo bar]/expression}} world!", "code_fnv1a": "24f7a8b0fe5fee60", "code_len": 1025}
+{"source": "{{log blah}}", "code_fnv1a": "f5e97d930b4739f7", "code_len": 1114}
+{"source": "{{log '123'}}", "code_fnv1a": "e50bf9b43ca6112f", "code_len": 1074}
+{"source": "{{{{markdown}}}}**HTML** <a href='#'>link</a>{{{{/markdown}}}}", "code_fnv1a": "2fad87529c02a6af", "code_len": 1197}
+{"source": "{{foo}", "error": "Error at character 5 of line 1 near {{foo}"}
+{"source": "{{type \"string\"}} {{type 1}} {{type -1}}", "code_fnv1a": "2893c2644f43d3a3", "code_len": 1711}
+{"source": "{{echo \"string\"}} {{echo 1}} {{echo -1}}", "code_fnv1a": "ab9bceb0d9a4a41c", "code_len": 1711}
+{"source": "{{#form yehuda}}<p>{{name}}</p>{{#link}}Hello{{/link}}{{/form}}", "code_fnv1a": "fd73fa6ea5171fac", "code_len": 2488}
+{"source": "{{#goodbyes}}{{.././world}} {{/goodbyes}}", "code_fnv1a": "7de8483c2b7cbe2a", "code_len": 1635}
+{"source": "Goodbye {{alan/expression}} world!", "code_fnv1a": "57c940094fcbf239", "code_len": 1022}
+{"source": "{{{{a}}}} {{{{b}}}} {{{{/b}}}} {{{{/a}}}}", "code_fnv1a": "e01cf3c0957d4de1", "code_len": 1176}
+{"source": "{{#para (fold 'foo' (add val 1))}}{{foo}}{{/para}}", "code_fnv1a": "2402c46f2d0b7163", "code_len": 1840}
+{"source": "Alan's\nTest", "code_fnv1a": "fa9a2aec14744d89", "code_len": 813}
+{"source": "Alan's\rTest", "code_fnv1a": "b6b035c82b0d1f6d", "code_len": 813}
+{"source": "{{echo \"Hello,\nWorld!\"}}", "code_fnv1a": "f7996a03cc39c846", "code_len": 1099}
+{"source": "Message: {{{hello null}}}", "code_fnv1a": "47f39fcf28fca89f", "code_len": 1110}
+{"source": "{{#goodbyes}}{{text}} cruel {{@_parent.name}}! {{/goodbyes}}", "code_fnv1a": "4ddeca7a0f302ef1", "code_len": 1965}
+{"source": "Dudes: {{#dudes}}{{>dude}}{{/dudes}}", "code_fnv1a": "d534b4b85e07b7e4", "code_len": 1802}
+{"source": "{{name}} {{> url}} ", "code_fnv1a": "d10a76e0ab9e00b8", "code_len": 1441}
+{"source": "<a href='{{url}}'>{{url}}</a>", "code_fnv1a": "7e39dc1d4020af40", "code_len": 1422}
+{"source": "Dudes: {{#dudes}}{{>dude url=\"http://example\"}}{{/dudes}}", "code_fnv1a": "9e28bcf0ffe8d43d", "code_len": 1825}
+{"source": "Dudes: {{>dude dudes \"extra\"}}", "error": "An extra positional argument was passed to a partial"}
+{"source": "Dudes: {{>dude dudes}}", "code_fnv1a": "0736f7cd08d1a100", "code_len": 1160}
+{"source": "{{#this}}{{name}} ({{url}}) {{/this}}", "code_fnv1a": "76634fb3692cafd7", "code_len": 2073}
+{"source": "Dudes: {{> [dude]}}", "code_fnv1a": "0bd269662a37dea9", "code_len": 1141}
+{"source": "Dudes: {{> \"+404/asdf?.bar\"}}", "code_fnv1a": "0bc5fd9334818349", "code_len": 1151}
+{"source": "{{true}}", "code_fnv1a": "20e4fca93a32f467", "code_len": 1063}
+{"source": "{{false}}", "code_fnv1a": "1dc757bc3b923858", "code_len": 1066}
+{"source": "{{12}}", "code_fnv1a": "a5d77300ef7c2842", "code_len": 1057}
+{"source": "{{12.34}}", "code_fnv1a": "759e7a5d4ea4392d", "code_len": 931}
+{"source": "{{bar.awesome frank}}", "code_fnv1a": "a6b52bd11453c958", "code_len": 965}
+{"source": "{{foo-bar}}", "code_fnv1a": "123f5e1883365feb", "code_len": 1072}
+{"source": "{{foo.foo-bar}}", "code_fnv1a": "b0cf57bea04accb9", "code_len": 937}
+{"source": "{{foo/foo-bar}}", "code_fnv1a": "b0cf57bea04accb9", "code_len": 937}
+{"source": "{{[a.b]}} {{[a.b.c].name}}: {{#if [a.b]}}AB_OK{{/if}} {{#if [a.b.c].name}}ABC_OK{{/if}}", "code_fnv1a": "5ad03ca636109fec", "code_len": 2720}
+{"source": "Goodbye {{cruel}} {{world}}!", "code_fnv1a": "a7fcd331978f1048", "code_len": 1429}
+{"source": "Goodbye {{#iter}}{{cruel}} {{world}}{{/iter}}!", "code_fnv1a": "cab63b01781a71fb", "code_len": 2088}
+{"source": "{{{{raw}}}}{{escaped}}{{{{/raw}}}}", "code_fnv1a": "d2f539c549918c12", "code_len": 1156}
+{"source": "{{#valid}}{{{{raw}}}}{{escaped}}{{{{/raw}}}}{{/valid}}", "code_fnv1a": "09acea823a5fc0bb", "code_len": 1817}
+{"source": "{{^valid}}{{{{raw}}}}{{escaped}}{{{{/raw}}}}{{/valid}}", "code_fnv1a": "affec5a5b620f86d", "code_len": 1817}
+{"source": "{{{{raw}}}} {{test}} {{{{/raw}}}}", "code_fnv1a": "924b3e0b713312d0", "code_len": 1154}
+{"source": "{{{{raw \"sky\" \"is\" \"blue\"}}}}the {{{{/raw}}}}", "code_fnv1a": "e1b676238417a5dd", "code_len": 1163}
+{"source": "{{{{underline style=\"dotted\" width=18}}}} {{ Book Title }} {{{{/underline}}}}", "code_fnv1a": "9eea8d0a97187592", "code_len": 1202}
+{"source": "{{{{underline}}}} {{ Book Title }} {{{{/underline}}}}", "code_fnv1a": "fc56aac323240d24", "code_len": 1176}
+{"source": "this is a{{{{raw}}}} {{ .raw.block }}! {{{{/raw}}}}", "code_fnv1a": "2213f0fd1f84fb61", "code_len": 1203}
+{"source": "{{> whatever}}", "code_fnv1a": "b8bc51be0bc0f1c0", "code_len": 1116}
+{"source": "{{#each .}}{{test.text}}! {{/each}}", "code_fnv1a": "dd155f473855d56f", "code_len": 1641}
+{"source": "{{#outer}}Goodbye {{#inner}}cruel {{@root.top}}{{/inner}}{{/outer}}", "code_fnv1a": "c3b4c86a7793972c", "code_len": 2315}
+{"source": "<a href='{{url}}' target='{{@root.target}}'>{{url}}</a>", "code_fnv1a": "2b05558f97f03dbb", "code_len": 1613}
+{"source": "{{#each goodbyes}}{{lookup ../data .}}{{/each}}", "code_fnv1a": "85c78304e8c37161", "code_len": 1885}
+{"source": "{{#each goodbyes}}{{lookup ../data @index}}{{/each}}", "code_fnv1a": "72dfea2028f888b5", "code_len": 1897}
+{"source": "{{lookup thelist 3}}.{{lookup theobject \"qux\"}}.{{lookup thenumber 0}}", "code_fnv1a": "0a8f4df374d0ec13", "code_len": 1909}
+{"source": "{{#each goodbyes}}{{lookup ../bar .}}{{/each}}", "code_fnv1a": "182365978bb733a1", "code_len": 1883}
+{"source": "Message: {{hello \"world\" 12 true false}}", "code_fnv1a": "992e2ab37f683dfe", "code_len": 1149}
+{"source": "Message: {{goodbye cruel world}}", "code_fnv1a": "1bd156a263fce749", "code_len": 1215}
+{"source": "{{#para (fold 'foo' val)}}{{foo}}{{/para}}", "code_fnv1a": "9ba5eb03eee50a92", "code_len": 1795}
+{"source": "{{#para2 values_dict=(fold2 'foo' value=val)}}{{foo}}{{/para2}}", "code_fnv1a": "59124c021084b670", "code_len": 1816}
+{"source": "{{#para (fold2 'foo' value=val)}}{{foo}}{{/para}}", "code_fnv1a": "811da2a8c8a01fe4", "code_len": 1802}
+{"source": "Hi {{name}}!", "code_fnv1a": "7582c317dd2023b8", "code_len": 1111}
+{"source": "Hola {{name}}!", "code_fnv1a": "bde23f513d52029b", "code_len": 1113}
+{"source": "{{#outer}}{{#inner}}{{helper}}{{/inner}}{{/outer}}", "code_fnv1a": "37b6fa5cb6a1f283", "code_len": 2391}
+{"source": "{{#goodbyes}}{{foo this}}{{/goodbyes}}", "code_fnv1a": "634d07ddc3bc9f02", "code_len": 1773}
+{"source": "{{#hellos}}{{foo this/text}}{{/hellos}}", "code_fnv1a": "28a654758eef54bc", "code_len": 1797}
+{"source": "{{#hellos}}{{this/text}}{{/hellos}}", "code_fnv1a": "9c03d8146b1519c7", "code_len": 1594}
+{"source": "{{#goodbyes}}{{this}}{{/goodbyes}}", "code_fnv1a": "eda352aea63bf1f9", "code_len": 1639}
+{"source": "Message: {{{hello undefined}}}", "code_fnv1a": "47f39fcf28fca89f", "code_len": 1110}
+{"source": "{{#\u0633\u0644\u0627\u0645\u0627\u062a}}{{\u0627\u0644\u0646\u0635}}! {{/\u0633\u0644\u0627\u0645\u0627\u062a}}cruel {{world}}!", "code_fnv1a": "e7feb9ef6ffd2bbb", "code_len": 2112}
+{"source": "{{#\u0648\u062f\u0627\u0639\u0627}}GOODBYE {{/\u0648\u062f\u0627\u0639\u0627}}cruel {{world}}!", "code_fnv1a": "a83fe3d06e15c10f", "code_len": 1818}
+{"source": "{{! \u0645\u0639 \u0627\u0644\u0633\u0644\u0627\u0645\u0647}}Goodbye\n{{cruel}}\n{{world}}!", "code_fnv1a": "ec5302406dd8437a", "code_len": 1431}
+{"source": "{{#\u0633\u0644\u0627\u0645\u0627\u062a}}{{this}}{{else}}Right On!{{/\u0633\u0644\u0627\u0645\u0627\u062a}}\n{{^\u0633\u0644\u0627\u0645\u0627\u062a}}Right On!{{else}}{{this}}{{/\u0633\u0644\u0627\u0645\u0627\u062a}}", "code_fnv1a": "8f8f433ce400c6c9", "code_len": 2955}
+{"source": "{{#\u0633\u0644\u0627\u0645\u0627\u062a}}{{this}}{{/\u0633\u0644\u0627\u0645\u0627\u062a}}{{^\u0633\u0644\u0627\u0645\u0627\u062a}}Right On!{{/\u0633\u0644\u0627\u0645\u0627\u062a}}", "code_fnv1a": "05b3937a015ed988", "code_len": 2353}
+{"source": "Goodbye {{[@\u0627\u0633\u062d\u0642]/expression}} world!", "code_fnv1a": "8f0208654a73ace9", "code_len": 1027}
+{"source": "Goodbye {{[\u0641\u0648\u0648 \u0628\u0627\u0631]/expression}} world!", "code_fnv1a": "4c8378791f204455", "code_len": 1031}
+{"source": "{{\u0628\u0627\u0631.\u0631\u0627\u0626\u0639 frank}}", "code_fnv1a": "1c9e1ff20183994f", "code_len": 969}
+{"source": "{{\u0641\u0648\u0648-\u0628\u0627\u0631}}", "code_fnv1a": "7da7c3f4e35667cc", "code_len": 1090}
+{"source": "{{\u0641\u0648\u0648.\u0641\u0648\u0648-\u0628\u0627\u0631}}", "code_fnv1a": "8de14e3c4f47acca", "code_len": 946}
+{"source": "{{\u0641\u0648\u0648/\u0641\u0648\u0648-\u0628\u0627\u0631}}", "code_fnv1a": "8de14e3c4f47acca", "code_len": 946}
+{"source": "{{#unless goodbye}}Hello{{else}}GOODBYE{{/unless}} cruel world", "code_fnv1a": "f5a2d1477abf228c", "code_len": 1761}
+{"source": "Message: {{hello wo\"a\"}}", "error": "Error at character 19 of line 1 near wo\"a\"}}"}
+{"source": "Goodbye\n  \n \t{{~cruel~}} \n \t  {{world}}!", "code_fnv1a": "0e79a411a0a0a268", "code_len": 1405}
+{"source": "{{#with person}}{{first}} {{last}}{{/with}}", "code_fnv1a": "1bbf513046667506", "code_len": 2061}
+{"source": "num1: {{num1}}, num2: {{num2}}", "code_fnv1a": "ff620610857ac9ab", "code_len": 1405}
+{"source": "num: {{.}}", "code_fnv1a": "855a9e80468f1d78", "code_len": 999}
+{"source": "num: {{num1/num2}}", "code_fnv1a": "535370d8f226b6e8", "code_len": 962}
+{"source": "            <div class=\"entry\">\n              <h1>{{title}}</h1>\n              <div class=\"body\">\n                {{{body}}}\n              </div>\n            </div>\n        ", "code_fnv1a": "1531368d9dc828b1", "code_len": 1643}
+{"source": "{{foo.[bar baz]}}", "code_fnv1a": "344ce753b96226f1", "code_len": 937}
+{"source": "{{#list people}}{{firstName}} {{lastName}}{{/list}}", "code_fnv1a": "7a3510a33858f30c", "code_len": 2085}
+{"source": "{{#if a}}x{{/if}}", "code_fnv1a": "064738896fd768f8", "code_len": 1481}
+{"source": "{{#if a}}{{#if a}}x{{/if}}{{/if}}", "code_fnv1a": "a099ed94e4817223", "code_len": 2160}
+{"source": "{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}x{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}", "code_fnv1a": "dd2f3bc9d92af11c", "code_len": 4197}
+{"source": "{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}x{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}", "code_fnv1a": "034bfe05da64cd73", "code_len": 8956}
+{"source": "{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}x{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}", "code_fnv1a": "df87837d50948b07", "code_len": 13042}
+{"source": "{{#if a}}x{{else}}{{#if a}}x{{else}}y{{/if}}{{/if}}", "code_fnv1a": "a2527085df1ce9c4", "code_len": 2560}
+{"source": "{{#if a}}x{{else}}{{#if a}}x{{else}}{{#if a}}x{{else}}{{#if a}}x{{else}}{{#if a}}x{{else}}y{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}", "code_fnv1a": "479ba175a7d6bbff", "code_len": 5199}
+{"source": "{{#if a}}x{{else}}{{#if a}}x{{else}}{{#if a}}x{{else}}{{#if a}}x{{else}}{{#if a}}x{{else}}{{#if a}}x{{else}}{{#if a}}x{{else}}{{#if a}}x{{else}}{{#if a}}x{{else}}{{#if a}}x{{else}}{{#if a}}x{{else}}{{#if a}}x{{else}}y{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}", "code_fnv1a": "1efebbbb22e899e2", "code_len": 11380}
+{"source": "{{#if a}}x{{else}}{{#if a}}x{{else}}{{#if a}}x{{else}}{{#if a}}x{{else}}{{#if a}}x{{else}}{{#if a}}x{{else}}{{#if a}}x{{else}}{{#if a}}x{{else}}{{#if a}}x{{else}}{{#if a}}x{{else}}{{#if a}}x{{else}}{{#if a}}x{{else}}{{#if a}}x{{else}}{{#if a}}x{{else}}{{#if a}}x{{else}}{{#if a}}x{{else}}{{#if a}}x{{else}}{{#if a}}x{{else}}y{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}", "code_fnv1a": "b80c65fc78b1d30c", "code_len": 16678}
+{"source": "{{^if a}}{{^if a}}x{{/if}}{{/if}}", "code_fnv1a": "121ad715cc3f85ad", "code_len": 2160}
+{"source": "{{^if a}}{{^if a}}{{^if a}}{{^if a}}{{^if a}}x{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}", "code_fnv1a": "1e0490080de6290e", "code_len": 4197}
+{"source": "{{^if a}}{{^if a}}{{^if a}}{{^if a}}{{^if a}}{{^if a}}{{^if a}}{{^if a}}{{^if a}}{{^if a}}{{^if a}}{{^if a}}x{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}", "code_fnv1a": "e5d1b7ae84254e85", "code_len": 8956}
+{"source": "{{^if a}}{{^if a}}{{^if a}}{{^if a}}{{^if a}}{{^if a}}{{^if a}}{{^if a}}{{^if a}}{{^if a}}{{^if a}}{{^if a}}{{^if a}}{{^if a}}{{^if a}}{{^if a}}{{^if a}}{{^if a}}x{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}", "code_fnv1a": "f064cf06597189ab", "code_len": 13042}
+{"source": "{{#if a}}\nx\n{{/if}}\n", "code_fnv1a": "c001115c44de9998", "code_len": 1505}
+{"source": "{{#if a}}\n{{#if a}}\nx\n{{/if}}\n{{/if}}\n", "code_fnv1a": "64027171eb68f661", "code_len": 2162}
+{"source": "{{#if a}}\n{{#if a}}\n{{#if a}}\n{{#if a}}\n{{#if a}}\nx\n{{/if}}\n{{/if}}\n{{/if}}\n{{/if}}\n{{/if}}\n", "code_fnv1a": "d6b5d6866445d97e", "code_len": 4199}
+{"source": "{{#if a}}\n{{#if a}}\n{{#if a}}\n{{#if a}}\n{{#if a}}\n{{#if a}}\n{{#if a}}\n{{#if a}}\n{{#if a}}\n{{#if a}}\n{{#if a}}\n{{#if a}}\nx\n{{/if}}\n{{/if}}\n{{/if}}\n{{/if}}\n{{/if}}\n{{/if}}\n{{/if}}\n{{/if}}\n{{/if}}\n{{/if}}\n{{/if}}\n{{/if}}\n", "code_fnv1a": "16efc9f07304a05d", "code_len": 8958}
+{"source": "{{#if a}}\n{{#if a}}\n{{#if a}}\n{{#if a}}\n{{#if a}}\n{{#if a}}\n{{#if a}}\n{{#if a}}\n{{#if a}}\n{{#if a}}\n{{#if a}}\n{{#if a}}\n{{#if a}}\n{{#if a}}\n{{#if a}}\n{{#if a}}\n{{#if a}}\n{{#if a}}\nx\n{{/if}}\n{{/if}}\n{{/if}}\n{{/if}}\n{{/if}}\n{{/if}}\n{{/if}}\n{{/if}}\n{{/if}}\n{{/if}}\n{{/if}}\n{{/if}}\n{{/if}}\n{{/if}}\n{{/if}}\n{{/if}}\n{{/if}}\n{{/if}}\n", "code_fnv1a": "b3c39d334193e5c1", "code_len": 13044}
+{"source": "{{foo (bar a)}}", "code_fnv1a": "44e965bfcbe854ef", "code_len": 1192}
+{"source": "{{foo (bar (bar a))}}", "code_fnv1a": "79bc89a548a8e23f", "code_len": 1276}
+{"source": "{{foo (bar (bar (bar (bar (bar a)))))}}", "code_fnv1a": "20272fabb2a775e7", "code_len": 1528}
+{"source": "{{foo (bar (bar (bar (bar (bar (bar (bar (bar (bar (bar (bar (bar a))))))))))))}}", "code_fnv1a": "0106cabf76df392b", "code_len": 2116}
+{"source": "{{foo (bar (bar (bar (bar (bar (bar (bar (bar (bar (bar (bar (bar (bar (bar (bar (bar (bar (bar a))))))))))))))))))}}", "code_fnv1a": "2705ee644e94fdbf", "code_len": 2620}
+{"source": "{{foo (bar kk=a)}}", "code_fnv1a": "8fb3faa47d0f3c1b", "code_len": 1198}
+{"source": "{{foo (bar kk=(bar kk=a))}}", "code_fnv1a": "c6b4d972838991a7", "code_len": 1288}
+{"source": "{{foo (bar kk=(bar kk=(bar kk=(bar kk=(bar kk=a)))))}}", "code_fnv1a": "1537c18598581d23", "code_len": 1558}
+{"source": "{{foo (bar kk=(bar kk=(bar kk=(bar kk=(bar kk=(bar kk=(bar kk=(bar kk=(bar kk=(bar kk=(bar kk=(bar kk=a))))))))))))}}", "code_fnv1a": "cfa3236e58fbc5ab", "code_len": 2188}
+{"source": "{{foo (bar kk=(bar kk=(bar kk=(bar kk=(bar kk=(bar kk=(bar kk=(bar kk=(bar kk=(bar kk=(bar kk=(bar kk=(bar kk=(bar kk=(bar kk=(bar kk=(bar kk=(bar kk=a))))))))))))))))))}}", "code_fnv1a": "3ff040ca34f6f347", "code_len": 2728}
+{"source": "{{> (bar a)}}", "code_fnv1a": "fc46e046aac36b8c", "code_len": 1170}
+{"source": "{{> (bar (bar a))}}", "code_fnv1a": "b5a81d9db1cdf294", "code_len": 1212}
+{"source": "{{> (bar (bar (bar (bar (bar a)))))}}", "code_fnv1a": "5129dc1abbe1d934", "code_len": 1338}
+{"source": "{{> (bar (bar (bar (bar (bar (bar (bar (bar (bar (bar (bar (bar a))))))))))))}}", "code_fnv1a": "611b149c653f7fd8", "code_len": 1632}
+{"source": "{{> (bar (bar (bar (bar (bar (bar (bar (bar (bar (bar (bar (bar (bar (bar (bar (bar (bar (bar a))))))))))))))))))}}", "code_fnv1a": "03ba08e270a43654", "code_len": 1884}
+{"source": "{{#if a}}x", "code_fnv1a": "1a2c5a8f2a8b724f", "code_len": 779}
+{"source": "{{#if a}}{{#if a}}x", "code_fnv1a": "1a2c5a8f2a8b724f", "code_len": 779}
+{"source": "{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}x", "code_fnv1a": "1a2c5a8f2a8b724f", "code_len": 779}
+{"source": "{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}x", "code_fnv1a": "1a2c5a8f2a8b724f", "code_len": 779}
+{"source": "{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}{{#if a}}x", "code_fnv1a": "1a2c5a8f2a8b724f", "code_len": 779}
+{"source": "{{#each xs}}{{foo (bar (baz a))}}{{/each}}", "code_fnv1a": "1c72bfb472bf277c", "code_len": 1960}
+{"source": "{{#each xs}}{{foo (bar (baz a))}}{{#each xs}}{{foo (bar (baz a))}}{{/each}}{{/each}}", "code_fnv1a": "3ab709d4e22438f5", "code_len": 3141}
+{"source": "{{#each xs}}{{foo (bar (baz a))}}{{#each xs}}{{foo (bar (baz a))}}{{#each xs}}{{foo (bar (baz a))}}{{#each xs}}{{foo (bar (baz a))}}{{#each xs}}{{foo (bar (baz a))}}{{/each}}{{/each}}{{/each}}{{/each}}{{/each}}", "code_fnv1a": "1d94a14a90b9dc9c", "code_len": 6684}
+{"source": "{{#each xs}}{{foo (bar (baz a))}}{{#each xs}}{{foo (bar (baz a))}}{{#each xs}}{{foo (bar (baz a))}}{{#each xs}}{{foo (bar (baz a))}}{{#each xs}}{{foo (bar (baz a))}}{{#each xs}}{{foo (bar (baz a))}}{{#each xs}}{{foo (bar (baz a))}}{{#each xs}}{{foo (bar (baz a))}}{{#each xs}}{{foo (bar (baz a))}}{{#each xs}}{{foo (bar (baz a))}}{{#each xs}}{{foo (bar (baz a))}}{{#each xs}}{{foo (bar (baz a))}}{{/each}}{{/each}}{{/each}}{{/each}}{{/each}}{{/each}}{{/each}}{{/each}}{{/each}}{{/each}}{{/each}}{{/each}}", "code_fnv1a": "a34b59579755513d", "code_len": 14957}
+{"source": "{{a}} ", "code_fnv1a": "b58bf5123cfb7f26", "code_len": 1077}
+{"source": "{{a}} {{a}} ", "code_fnv1a": "80c37be02e72b27f", "code_len": 1375}
+{"source": "{{a}} {{a}} {{a}} {{a}} {{a}} ", "code_fnv1a": "09deb4c6ad9759c6", "code_len": 2269}
+{"source": "{{a}} {{a}} {{a}} {{a}} {{a}} {{a}} {{a}} {{a}} {{a}} {{a}} {{a}} {{a}} ", "code_fnv1a": "cc2243bad1ffd56f", "code_len": 4355}
+{"source": "{{a}} {{a}} {{a}} {{a}} {{a}} {{a}} {{a}} {{a}} {{a}} {{a}} {{a}} {{a}} {{a}} {{a}} {{a}} {{a}} {{a}} {{a}} ", "code_fnv1a": "943c1a435e6e98ff", "code_len": 6143}
+{"source": "{{else}}\n{{format \"price*2\"}}{{!}}", "error": "Error at character 7 of line 2 near {{else}}"}
+{"source": "support@example.com @alice {{name}}{{/if}}", "error": "Error at character 37 of line 1 near {{/if}}"}
+{"source": "{{#if order.gift}}\n**{{order.message.text}}**\n{{/if}}\n{{a.b}}{{{{! comment }}{{#if a}}{{#if b}}x{{/if}}{{/if}}{{ }}{{> partial ab=(missing) cd=1 ab=2}}", "error": "Error at character 19 of line 2 near {{!"}
+{"source": " ~}}{{> partial arg}}{{foo\ud83d\ude00 a_b=true}}\n  {{/if}}  \u00a0", "error": "Error at character 25 of line 2 near {{foo\ud83d\ude00"}
+{"source": "{{foo (bar baz=1)}}{{>\u00a0partial ab\\1}}{{a/b}}", "error": "Error at character 33 of line 1 near ab\\1}}"}
+{"source": "\u00e9{{^if a}}x{{/if}}{{> partial ab=(missing) [ab]=2}}a}}{\u0bcd{{name}})}{{#if}{{/if}}", "error": "Error at character 71 of line 1 near {{#if}"}
+{"source": "\u00e9{{foZo ab=-12}}{{#if a-}{{name}}{{{{raw}}}}{{x}}{{{{/raw}}}}", "error": "Error at character 24 of line 1 near a-}"}
+{"source": "{{> partialab=(missing) cd=1 ab=2}}{{{{> partial ab=1}}{{!-- long comment --}}{{foo ab='y\\\\'}} ~}}", "error": "Error at character 39 of line 1 near {{>"}
+{"source": "{{foo ab=null}}{{/if}}support@example.com @alice {{foo ab=\"x\"}}{{foo ab=}}{{foo a=1}}{{foo ab==1}}{{> (dynamic) ab=1}}", "error": "Error at character 17 of line 1 near {{/if}}"}
+{"source": "{{#each xs}}{{name}}{{/each}}\n{{#if a}}\n{{> partial ab=(mis\u3000ing) cd=1 ab=2}}{{~{{if}}{{> partial}}", "error": "Error at character 30 of line 2 near ing)"}
+{"source": "{{!-- long comment --}}", "code_fnv1a": "1a2c5a8f2a8b724f", "code_len": 779}
+{"source": "{{&!ame}>}{{/}}{{#if a}}x{{/if}}{{foo ab=nul-}}", "error": "Error at character 3 of line 1 near {{&!ame}"}
+{"source": "{{{{}}{{\u00aa{raw}}}}{{x}}{{{{/raw}}}}{{ Z}}{{foo (bar)}}{{foo ab=\"x\"}}{{text", "error": "Error at character 4 of line 1 near {{}}"}
+{"source": "{{#if@order.shipped}}Order {{order.id}} shipped t~o {{address.city}}{{/if}}{{#each xs}}{{name}}{{/each}}{{foo ab=}}{{> partial ab=1 ab=2}}{{{name}}}{{name}}\n  {{/if}}  \n", "error": "Error at character 11 of line 2 near {{#if@order.shipped}}"}
+{"source": "{{{{foo (bar baz=1)}}{> par\u000btial}{{a.[b.c]}}", "error": "Error at character 20 of line 1 near baz=1)}}"}
+{"source": "  {{^if a}}x{{/if}}{{#if a}}{{#if b}}x{{/if}}{{/if}}", "code_fnv1a": "1d376ca7a4791c83", "code_len": 2886}
+{"source": "{{#if a}}{{#if b}}x{{/if}}{{/if}}{{foo (bar baz=1)}}{{foo ab==1}", "error": "Error at character 61 of line 1 near ab==1}"}
+{"source": "\ud83d\ude00", "code_fnv1a": "fc0491f28729cdfa", "code_len": 805}
+{"source": ">", "code_fnv1a": "8eaa0387302be591", "code_len": 802}
+{"source": " ~}}support@example.com @alice {{{name}}}{{#if order.shipped}}Order {{order.id}} shipped to {{address.city}}{{/if}}{{#if a}}x{{/if}}", "code_fnv1a": "7f9c8dd8274a86ed", "code_len": 2938}
+{"source": "{{#if a}}x{{/if}}{{&name}}{{foo (bar baz=1)}}{{format \"price*2\"}}{{foo =1}}{{{{raw}}}}{{x}}{{{{/raw}}}}{{{{@index}}", "error": "Error at character 71 of line 1 near =1}}"}
+{"source": "{{> partial ab\u0085=(missing) \ud83e\udee9[ab]=2}}{{#if }}x{{/if}}", "error": "Error at character 15 of line 1 near =(missing)"}
+{"source": " ~}}{{}}{{.\u00aa/a}", "error": "Error at character 5 of line 1 near {{}}"}
+{"source": "\\", "code_fnv1a": "0e0a1465ce752705", "code_len": 803}
+{"source": "[", "code_fnv1a": "85ca210a70004858", "code_len": 802}
+{"source": "\u00e9{{@index}}{/if}}{{} partial ab=(missing) [ab]=2}}{{name}}{{#}}", "error": "Error at character 19 of line 1 near {{}"}
+{"source": "{{#if order.shipped}}Order {{order.id}} shipped to {{address.city\uffff}{{/if}}>}}{{foo ab=undefined}}", "error": "Error at character 65 of line 1 near {{address.city\uffff}"}
+{"source": "{{> partial ab=1}}{{foo ab=\"x\"}}{{foo ab=1}}", "code_fnv1a": "32f28b78bcfc29cd", "code_len": 1712}
+{"source": "\r\n{{> partial ab=(missing) [ab]=2}}{{{{raw}}}}{{x}}{{{{/raw}}}}{{#if a}}{{^items}}Your cart is empty, see [the shop](https://example.com/shp){{/items}}{{~#if a~}}x{{~/if~}}text", "code_fnv1a": "d7ba4e7bdf306499", "code_len": 1511}
+{"source": "{{foo ab=-12}}{{~nae}}", "code_fnv1a": "39ffe8e79f38e85b", "code_len": 1357}
+{"source": "{{foo ab=null}}{{~name}}{{foo =1}}  {{> (dynamic) ab=1}}{{{{raw}}}}{{x}}{{{{/raw}}}}", "error": "Error at character 29 of line 1 near =1}}"}
+{"source": "{{a/b}}\n  {{/i{f}}  \n", "error": "Error at character 5 of line 3 near {{/i{f}}"}
+{"source": "{{foo ab\u00b2unde(in]d}}", "error": "Error at character 13 of line 1 near ab\u00b2unde(in]d}}"}
+{"source": "{{#if order.gift}}\n**{{order.message.text}}**\n{{/if}}\n{{> partial arg}}{{\u0663oo ab=\"x\"}{{{name}}}a\r{{foo (bar)}}{{^if a}}x{{/if}}", "error": "Error at character 37 of line 2 near ab=\"x\"}"}
+{"source": "{{foo =1}}{{> partial arg}}{{name~}}{{foo ab=\"x\"}}{{foo#=1}}", "error": "Error at character 6 of line 1 near =1}}"}
+{"source": "^0", "code_fnv1a": "02b9529534ca425f", "code_len": 803}
+{"source": "{{foo ab=\"x\"}}{{foo ab=undefined}}{{>}}{{{{\rraw}}}}{{x}}{{{{/raw}}}}{{~name}}", "error": "Error at character 38 of line 1 near {{>}}"}
+{"source": "{{^items}}Your cart is empty, see [the shop](https://example.com/shop){{/items}}{{> partial ab=(missing) [ab]=2}}\n{{#if a}}\n{{a.[b]}}", "code_fnv1a": "01ae3af983a10549", "code_len": 1889}
+{"source": "{{a.[b.c]}}{{foo ab=\"x\"}}{{foo ab=}}support@example.com @alice {{#each xs}}{{name}}{{/each}}{{foo ab=true}}{{this}}", "error": "Error at character 34 of line 1 near ab=}}"}
+{"source": "_", "code_fnv1a": "a7b611b65749a3bc", "code_len": 802}
+{"source": "{{foo (bar baz=1)}}{{^if a}}x{{/if}}{{> partial ab=1 ab=2}}{{@index}}\r\n{{^items}}Your cart is empty, see [he shop](https://example.com/shop){{/items}}{{> partial ab=(missing) cd=1 ab=2}}", "code_fnv1a": "97b3fae61a5be4bd", "code_len": 3611}
+{"source": "\n{{foo ab=undefined}}  {{^if a}}x{{/i_f}}{{f\f\u0bcdo ab==1}}{{}}", "error": "Error at character 39 of line 2 near {{/i_f}}"}
+{"source": "{{ }}\u00bc{{foo ab\"x\"}}{{#if a}}{{&name}", "error": "Error at character 3 of line 1 near }}"}
+{"source": "{{foo =1}}a}}{{foo ab==1}}", "error": "Error at character 6 of line 1 near =1}}"}
+{"source": "{{a{{name}}{{> part)al rg}\udb40\udc01}", "error": "Error at character 3 of line 1 near {{a{{name}}"}
+{"source": "text{{{{raw}}}}{{x}}{{{{/raw}}}}{{a/b'}}{{ (dynam\u200bic) ab=1}}", "error": "Error at character 37 of line 1 near {{a/b'}}"}
+{"source": "{{&foo ab=\u0000-12}}\t{{!note}}\t\r\n{{#if a}}{{#if b}}x{{/if}}{{/if}}support@example.com @alice ", "error": "Error at character 10 of line 2 near ab=\u0000-12}}"}
+{"source": "{{#if a}}x{{/if}}{{#if a}}{{#if b}}x{{/if}}{{/if}}{{~text{{^items}}Your cart is empty, see [the shop](https://example.com/shop){{/items}}{{>}}", "error": "Error at character 56 of line 1 near {{text{{^items}}"}
+{"source": "{{!-- lo\u00a0ng comment' --}}{{foo (bar)}}{{~name}}{{~{{#ifEquals user.role \"admin\"}}@admins{{/ifEquals}}{{foo ab=-12}}{{{{raw}}}}{{x}}{{{{/raw}}}}", "error": "Error at character 50 of line 1 near {{#ifEquals"}
+{"source": "{{/if}}{{{name}}}{{{{^items}}Your cart is empty, see [the shop](https://example.com/shop){{/items}}{{^if a}}x{{/if}}", "error": "Error at character 2 of line 1 near {{/if}}"}
+{"source": "{{foo ab=1}}", "code_fnv1a": "29c583ce7c1f2a43", "code_len": 1072}
+{"source": "{{foo ab=}}{{#if a}}{{#if b}}x{{/if}}{{/if}}{{foo ab=x\"}}{{#}}{{#each xs}}{{name}}{/each}}{{> partial arg}}", "error": "Error at character 9 of line 1 near ab=}}"}
+{"source": "{{foo ab=true}}{{foo ab=-12}}", "code_fnv1a": "6bc6edf556a00455", "code_len": 1375}
+{"source": "{{foo (bar baz=1)}}{{> (dynamic) ab=1}}{{^if a}}x{{/if}}{{#if a}}{{#if a}}x{{/if}}{{foo ab=1}}", "code_fnv1a": "e81652bf0b154b51", "code_len": 2238}
+{"source": "{{foo ab='y\\\\'}}{{else}}\n{{/}}{@index}}\t{{#if order.gift}}\n**{{order.mesage.text}Z**\n{{/if}}\n{{a", "code_fnv1a": "1a2c5a8f2a8b724f", "code_len": 779}
+{"source": "{{a.b}}{{a/b}}{{}}{{#if a}}\n{{else if b}}\n{{foo ab=}}{{#}}", "error": "Error at character 16 of line 2 near {{}}"}
+{"source": "{{(b}}", "error": "Error at character 2 of line 1 near {{(b}}"}
+{"source": "{{this}}{{^items}}Your cart is empty, see [the shop](https://example.com/shop){{\u0bcditems}}a\r{{#if a}}{#if b}}x{{/if}}{{/if}}{{foo (bar baz=1)}}{{foo ab=undefined}}{{foo =1}}{{a.b}}", "error": "Error at character 80 of line 1 near {{\u0bcditems}}"}
+{"source": "{{^items}}Your cart is empty, see [the shop](https://example.com/shop){{/items}}{{foo a=1}}\n  {{/if}}  \n{{#ifEquals user(role \"admin\"}}@admins{{/ifEquals}}{{#if a}}x{{else}}y{{/if}}", "error": "Error at character 87 of line 2 near a=1}}"}
+{"source": "{{~#if a~}}x{{~/if~}}{{foo ab=null}}{{else}}\n{{#if =order.shipped}}Order {{order.id}} shippe# to {{address.city}}{{/if}}{{!}\f}\r\n", "error": "Error at character 39 of line 3 near {{else}}"}
+{"source": "{{!-- long comment --}}\n  {{=if}}  \n", "error": "Error at character 27 of line 2 near {{=if}}"}
+{"source": "{{foo ab=}}{{!}}{{name~}}\tsupport@example.com @alice {{#each xs}}{{name}}{{/each}} ~}}", "error": "Error at character 9 of line 1 near ab=}}"}
+{"source": "{\fa.[b.c]}}", "code_fnv1a": "999e8b18e24441eb", "code_len": 815}
+{"source": "{{>}}text{{else}}\n{{foo (bar)}}{{|a.[b]}}{{^if a}}x{{/if\u0085}{{> partial}}{{!-- long comment -}}", "error": "Error at character 4 of line 2 near {{>}}"}
+{"source": "\u0085Z", "code_fnv1a": "b5b6d33fd110ba06", "code_len": 806}
+{"source": "\n{{#if a}}\n ~}}{{foo\u007f a=1}}{{this}}text{{\uffff~#if a~}}x{{~/if~}}{{> partial ab=1}}  ", "error": "Error at character 18 of line 2 near {{foo\u007f"}
+{"source": "[a\r{{\ud83e\udee9!}}", "error": "Error at character 5 of line 1 near {{\ud83e\udee9!}}"}
+{"source": "{{\u00a0{name}}}\t{{!note}}\t\r\n{{/if}}", "error": "Error at character 3 of line 1 near {name}}"}
+{"source": "{{#if order.gft}}\n**{{order.message.text}}**\n{{/if}}\n{{a.[b]}}{{! comment }}{{#if}}{{/if}}{{@../a}}{{foo ab=-12}}{{a/b}}{{>}}", "error": "Error at character 79 of line 2 near {{>}}"}
+{"source": "{{a.b}}{{^if a}}x{{/if}}\t{{!note}}\t\r\n{{>}}{{foo (bar)}}{{\u0301@index}}{{ }}{{a/b}[", "error": "Error at character 5 of line 2 near {{>}}"}
+{"source": "  {{foo (\u672c\u200bbar baz=1)}}{{../a}}", "error": "Error at character 10 of line 1 near (\u672c\u200bbar"}
+{"source": "}}{{#each @xs}}{{name}}{>{/ech}}", "code_fnv1a": "30ed737131dd2f6f", "code_len": 803}
+{"source": "{{#if}}{{/if}}{{}}\r\n{{#if a}}", "error": "Error at character 16 of line 2 near {{}}"}
+{"source": "{{! comment }}{{! comment }}{{foo a=1}}{{foo =1}}{{> partial arg}}{{a.[b]}}{{> partial ab=(missing) cd=1 ab=2}}\n{{#if a}}\n", "error": "Error at character 35 of line 2 near a=1}}"}
+{"source": "{/&i'}}", "code_fnv1a": "729fafe272d85189", "code_len": 808}
+{"source": "\u2160", "code_fnv1a": "64673735b717f9ee", "code_len": 804}
+{"source": "\u000b", "code_fnv1a": "42a06eab08a842d7", "code_len": 805}
+{"source": "{{foo ab=true}}{{foo ab=\"x\"}}\r\n{{foo ab=}}", "error": "Error at character 10 of line 2 near ab=}}"}
+{"source": "{{foo ab=\tx\"}}{{foo =}}{{foo ab=1}}  ", "error": "Error at character 10 of line 1 near x\"}}"}
+{"source": "{{foo ab==1}}{{#if order.shipped}}Order {{order.id}} shiped to {{address.city}}{{/if\n}{{> partial ab=1 ab=2}}{{@index}}", "error": "Error at character 9 of line 2 near ab==1}}"}
+{"source": "}}{{> partial}}", "code_fnv1a": "8ac85446ee3198d9", "code_len": 1139}
+{"source": "  {{> part\uffffial arg}}{{> partial ab=1 a\u200bb=2}}{{@../a}}", "error": "Error at character 38 of line 1 near a\u200bb=2}}"}
+{"source": ".", "code_fnv1a": "7270c2c647c01da1", "code_len": 802}
+{"source": "{{^if a}\u0000x{{/if}{{#}}", "error": "Error at character 7 of line 1 near a}"}
+{"source": "{{foo ab='y\\\\'}}{{>}}{{#if order.gift}}\n**{{order.message.text}}**\n{{/if}}\n{{#if}}{{/if}}", "code_fnv1a": "1a2c5a8f2a8b724f", "code_len": 779}
+{"source": "{{^if a}}x{{/if}}{{@../a}}{{> partial ab=(missing) [ab]=2}}{{#if order.gift}}\n**{{ord\\er.message.text}}**\n{{/if}}\n", "error": "Error at character 8 of line 3 near {{ord\\er.message.text}}"}
+{"source": "{{../a}}{{ }}{{> partial ab=1 ab=2}}{{&name}}support@\tZexample.com @alice {{#}}{{@../a}}{{../a}}", "error": "Error at character 11 of line 1 near }}"}
+{"source": "{{> partial ab=1}}{{this}}\n{{else if b}}\n{{format \"price*2\"}}{{!}}{{^if a}}x{{/if}}{{#if order.gift}}\n**{{order.message.text}}**\n{{/if}}\n{{if a}}{{#if b}}x{{/if}}{{/if}}", "error": "Error at character 35 of line 4 near {{/if}}"}
+{"source": "a\r{{#if order.gi~ft}}\n*\u00a0*{{order.message.text}}**\n{{/if}}\n{{foo ab='y\\\\'}}{{> partial ab=(missing) cd=1 ab=2}}{{@index}}{{@../a}}\t", "error": "Error at character 16 of line 3 near order.gi~ft}}"}
+{"source": "text\n\r{{> partial}}", "code_fnv1a": "54d27d1ac6c3370a", "code_len": 1145}
+{"source": "{{ comment }}{{a.b}}{{a.[b.c]}}{{fooab=undefined}}{{a/b}", "error": "Error at character 38 of line 1 near {{fooab=undefined}}"}
+{"source": "{{> partial ab=1 ab=2}}{{foo a=1}}{{a.[b.c]}}{{> partial ab=1 ab=2}}{\udb40\udc01{foo (bar)}}}}{{f{oo ab=1}}", "error": "Error at character 30 of line 1 near a=1}}"}
+{"source": "{#{na&me}}/", "code_fnv1a": "01eb12a06ac7c0bc", "code_len": 812}
+{"source": "{{{{a.[b.c]\u0663}}\t{{!note}}\t\r\n{{> partial ab=(missing) cd=1 ab=2}}{\n{~#if a~}}x{{~/if~}}{{foo a=1}\uffff", "error": "Error at character 5 of line 3 near {{a.[b.c]\u0663}}"}
+{"source": "{{#if order.shipped}}Order {{order.id}/} shipped to {{address.city}}{{/if}}{{name~}}{{a.[.c]}}{{foo ab=}}{{@../a}}a\r{{@../a}}{{~", "error": "Error at character 37 of line 1 near {{order.id}"}
+{"source": "{{~{{> (dynamic) ab=1}}}}", "error": "Error at character 4 of line 1 near {{>"}
+{"source": "{{foo ab=1}}{{foo ab=true}}{{#}}{{&name}}{{this}}{{&name}}", "error": "Error at character 30 of line 1 near {{#}}"}
+{"source": "{{foo (bar baz=1)}}", "code_fnv1a": "c74c67ccc796f1cf", "code_len": 1158}
+{"source": "{{foo aZ=true}}\r\n", "code_fnv1a": "f74a4b39c3f4a509", "code_len": 1102}
+{"source": "{{{{raw}}}}{{x}{{{{/raw}}}}{{#if a}}{{#if b}}x{{/if}}{{/if}}  {{^it\uffffms}}Your cart is empty, see /[the shop](https://example.com/shop){{/items}}\r\n", "error": "Error at character 67 of line 2 near {{^it\uffffms}}"}
+{"source": "\n  {{@/if}}  \n{{> partial ab=1 ab=2}}\n  {{/if}}  \n{{#if order.shipped\u2000}Order {{order.id}} shipped to {{address.city}}{{/if}}", "error": "Error at character 3 of line 4 near {{/if}}"}
+{"source": "  {{name}", "error": "Error at character 8 of line 1 near {{name}"}
+{"source": "\n{{#if a}}\n{{#each xs}}{{name}}{{/each}}{{> partial ab=(missing) cd=1 ab=2}}{{#if a}}{{#if b}}x{{/if}}{{/if}}\n{{\ud83d\ude00@index}}", "error": "Error at character 3 of line 3 near {{\ud83d\ude00@index}}"}
+{"source": "{{this}}{{#if a}}{{#if b}}x{{/if}}{{/if}}\r\n{{a{{#if a}}x{{/if}}{{}}{_fo (br)}}", "error": "Error at character 4 of line 2 near {{a{{#if"}
+{"source": "\n  {/if}}  \n\n  {{/if}}  \n{{.foo ab=-12}}", "error": "Error at character 3 of line 4 near {{/if}}"}
+{"source": "\r\n{{ese}}\n", "code_fnv1a": "9aef73ef2d6eb6c8", "code_len": 1108}
+{"source": "{{ partial ab=1}}{{#each xs}}{{name}}{{/each}}", "code_fnv1a": "ac54eb2ae9fb70d6", "code_len": 2052}
+{"source": "{{#each xs}}{{name}}{{/each}}{{#if a}}x{{~/if}}{{^items}}Your-cart is empty, see [the shop](https://example.com/shop){{/items}}{{{{raw}}}}{{x}}{{{{/raw}}}}\r\n{{foo (bar)}}", "code_fnv1a": "2788684f20aba103", "code_len": 3946}
+{"source": "{{#each xs}}{{name}}{{/each}}{{foo ab=}}{{#if order.gift}}\n**{{order.m]ssage.text}}**\n{{/if}}\n{{#if a}}{{#if b}}x{{/if}}{{/if}}{{> partial ab=(mssing) [ab]=2}}{{>}}", "error": "Error at character 38 of line 3 near ab=}}"}
+{"source": "a}}{{#if order.gif}}\n**{{order.message.\u00b2ext}}**\n{{/if}}\n{{foo (bar)}}{{a\t{{!note}}\t\r\n", "error": "Error at character 25 of line 4 near {{!note}}"}
+{"source": "{{#if a}}x{{else}\u0085y{{/if}}{{foo ab==1}}\n{{#if order.gift}}\n**{{order.message.text}}**\n{{/if}}\n{{{name}\u672c\u6587}", "error": "Error at character 16 of line 3 near {{else}"}
+{"source": " ~}}{{a/b}}  {{#if order.gift}}\n**{{order.me=ssage/text}}**\n{{/if}]}\n", "error": "Error at character 13 of line 4 near {{order.me=ssage/text}}"}
+{"source": "{{ }}{{foo ab=}}{{..a}}{{}}{{#}}a\r{{{name}}}", "error": "Error at character 3 of line 1 near }}"}
+{"source": "  \r\n\t{{> p}ar\ftial}}{{foo ab=-12}}", "code_fnv1a": "008771666d30bb0a", "code_len": 1486}
+{"source": "{{foo a=1}}{{foo ab=tru\u0000e}}\n{{else if b}}\n){#each xs}}{{name}}{{/each}}{{> partial ab=1}}{{~{{foo ab=-12}}", "error": "Error at character 7 of line 2 near a=1}}"}
+{"source": " ~}}\n{{else if b}}\n{{!-- long comment --}}{{#if a}}x{{else}}y{{/i\u00a0f}}{{> partial}}{{foo ab=undefined}}\n", "error": "Error at character 62 of line 2 near {{/i"}
+{"source": "\n", "code_fnv1a": "e0cf754e36bf78cb", "code_len": 803}
+{"source": "{{a/b}}\t{{a.[b]}}{{> (dynamic) ab=1}}{{#if order.shipped}}Order {{order.id}} shipped to {{address.city}}{{/if}}", "code_fnv1a": "626e513a9c87d983", "code_len": 2579}
+{"source": "\u00e9{\u000b&name}}", "code_fnv1a": "c0948d55b3032263", "code_len": 815}
+{"source": "{{ }}{{foo =1}}{{#}}{{foo ab=null}}{{foo (bar baz=1)}}{{@../a}}{{#ifEquals user.role \"admin\"}}@admins{{/ifEquals}}a}}", "error": "Error at character 3 of line 1 near }}"}
+{"source": "{{^items}}Your cart is empty, see [the shop](https://example.com/shop){{/items}}{{#if order.gift}}\n**{{order.message.text}}**\n{{/if}}\n{{#if}}{{/if}}\n{{else if b}}\n", "code_fnv1a": "21e89cf242d2dd3a", "code_len": 3504}
+{"source": "{{foo (bar)}}{{a{{else}}\n", "error": "Error at character 16 of line 2 near {{a{{else}}"}
+{"source": "{{!-- long ommen --}}{{foo ab=null}}  \n{{#if order.shipped}}Order {{order.id}} shpped to {{address.city}}{{/if}}", "code_fnv1a": "d706527c44215bcf", "code_len": 2223}
+{"source": "{{foo ab=\"x\"}}{{~name}}\r\n{{{{raw}}}}{{x}}{{{{/raw}}}}{{}}{{foo ab='y\\\\\ud83d\ude00}}{{foo (bar)}}", "error": "Error at character 31 of line 2 near {{}}"}
+{"source": "{{./a}}}&}}", "code_fnv1a": "ad3c676dcdcb57a5", "code_len": 954}
+{"source": "\ud83e\udee9", "code_fnv1a": "e6dc6742e73c08ec", "code_len": 811}
+{"source": "{{ }}{{foo ab=true}}{{#if order.gift}}\u200b**{{order.message\uffff.text}}**\n{{/if}}\n\n  {{/if}}  \n{{> p-rtial}}{{#}}", "error": "Error at character 3 of line 3 near }}"}
+{"source": "{foo ab='y\ud839\udcf3\\\\'}}{{@index}}\t{{name}}", "code_fnv1a": "92df8ba3f5311ba8", "code_len": 1420}
+{"source": "support@example.com @a\u672c\u6587lice {{!-- long comment --}}{{a/b}}{{~name}}{{> p\ud83d\ude00artial ab=1 ab=2}}{{{{raw}}}}{{x}}{{{{/ra\u0085w}}}}{{> partial ab=1 ab=2}}", "code_fnv1a": "68f739f4e986783c", "code_len": 1615}
+{"source": "{{}} ~}}{{@index}}{{\n> partial ab=1 ab=2}}{{foo ab=null}}{{/}}{{> (ynamic) ab=1}}", "error": "Error at character 2 of line 2 near {{}}"}
+{"source": " ~}}{{&\u0301nam-e}}", "error": "Error at character 6 of line 1 near {{&\u0301nam-e}}"}
+{"source": "{{#f'}{{/if}}", "error": "Error at character 4 of line 1 near {{#f'}"}
+{"source": "{{foo ab='y\\\\'}}{{> partial ab=(missing) [a=2}}{{foo ab=true}} ~}}", "code_fnv1a": "1a2c5a8f2a8b724f", "code_len": 779}
+{"source": "{{fo\u00a0 ab=1}}\n{{#if ^a}}\n", "error": "Error at character 6 of line 2 near ab=1}}"}
+{"source": "{{^items}}Your cart is empty, see [the shop](https://example.com/shop){{/items}}\n  {{/if}}  \n{{ }}{{/}}", "error": "Error at character 3 of line 2 near {{/if}}"}
+{"source": "{{> partial ab=(missing) [ab]=2}}{{{{raw}}}}{{\u00aax}}{{{{/raw}}}}{{> (dynamic) ab=1}}{{foo (bar baz=1)}}{{a.[b]}}{{!}}", "code_fnv1a": "122d60a4911c0ab1", "code_len": 2398}
+{"source": "{){../a>}}", "code_fnv1a": "0134a8e15f216cc8", "code_len": 811}
+{"source": "{{else}}\n{{#if a}}x{{/if}}\t{{foo ab='y\\\\'}}", "error": "Error at character 7 of line 2 near {{else}}"}
+{"source": "{{&name}}{{fomat \"price*2\"}{~", "error": "Error at character 26 of line 1 near \"price*2\"}"}
+{"source": "{foo-ab=null}}{{^items}}Your cart is empty, see [the shop](ttps://example.com/shop){{/items}}", "code_fnv1a": "43dcc82e9c7ad62f", "code_len": 1557}
+{"source": "{{{{raw}}}}{{x}}{{{{/raw}}}}text", "code_fnv1a": "3253ed7909dc5299", "code_len": 1170}
+{"source": "{{{{#if order.shipp\ud83e\udee9ed}}Order {{order.id}} shipped to {'{address.city}}{{/if}}{{> partial ab=(missing) [ab]=2}}{{#if a}}x{{else}}y{{/i}}", "error": "Error at character 4 of line 1 near {{#if"}
+{"source": "(", "code_fnv1a": "6a188c8124a9b0f3", "code_len": 802}
+{"source": "{{forma\u0000t \"price*2\"}}{{~\n  {{/if}} ) \n{{#each xs}}{{name}}{{/each}}a\r{{name}}{{a.b}}\n{{#if a}}\u3000", "error": "Error at character 7 of line 4 near {{forma\u0000t"}
+{"source": "a\r\u2000{{foo ab=undefined}}{{^if \u0085a}}x{{/if}}{{> partial ab=(missing) [ab]=2}}{{@../a}}{{> partial arg}}{{foo (bar baz=1)}}", "error": "Error at character 30 of line 1 near a}}"}
+{"source": "\t{{.[b.c]}}{{name}}{{^items}}Your cart is empty, see [the shop](https://example.com/shop){/items}}", "code_fnv1a": "d29a47238a2f0726", "code_len": 1233}
+{"source": "{{foo ab=\"x\"}}{{{{#if ord\udb40\udc01er.shipped}}Order {{order.id}} shipped to {{address.city}}{{/if}}{{^items}}Your cart is empty, see [the shop](https://example.com/shop){{/items}}{{#if a}}{{#if b}}x{{/if}}{{/if}}{{a/b}}", "error": "Error at character 18 of line 1 near {{#if"}
+{"source": "{{foo =1}}{{a/b}}{{a", "error": "Error at character 6 of line 1 near =1}}"}
+{"source": "{{foo ab==1}}a}}{{format \"price*2\"}}{{foo ab=1}}{{#if}}{{/if}}", "error": "Error at character 9 of line 1 near ab==1}}"}
+{"source": "{{~name}}\t{{!not}}\t\r\n\n{{else if b}}\n\r\n", "code_fnv1a": "c0d687860543b095", "code_len": 1565}
+{"source": "{{!-- long comment --}}{{~#if a~}}x{{~/if~}}{{#if order.gift}}\n**{{order.message.text}}**\n{{/if}}\n\u00e9{{~#if a~}}x{{~/if~}}{{#if order.shipped}}Order {{order.id}} shipped {to {{address.city}}{{/if}}{{! comment }}", "code_fnv1a": "6f4c70f2f5fa758f", "code_len": 4251}
+{"source": "{{/if}}text\n{{else i\u000b b}}\n{{^if a}x{{/if}}\r", "error": "Error at character 2 of line 3 near {{/if}}"}
+{"source": "support@example.com @alice a\r{{\u0301foo ab=undefined}}", "error": "Error at character 31 of line 1 near {{\u0301foo"}
+{"source": "{{{{ra\ud839\udcf3[w}}}}{{x}}{{{{/raw}}}}{{@index}}\n{{#if a}}\n\n  {{/if}}  \n{{foo ab='y\\\\'}\u00a0}", "error": "Error at character 7 of line 3 near {{ra\ud839\udcf3[w}}"}
+{"source": "{{#if order.shipped}}Order {{order.id}} shipped to {{address.city}}{{/if}}{{foo (bar baz=1)}}{{#if a}}x{{/if}}", "code_fnv1a": "e9b4b741b3acf4ed", "code_len": 2958}
+{"source": "{{#if order.gift}}\n**{{order.message.text}}**\n{{/if}}\n{{@index}}{{foo ab==1}}text{{^items}}Your cart is empty, see [the shop](https://example.com/shop){{/items}}{{foo ab==1}}a}}", "error": "Error at character 27 of line 2 near ab==1}}"}
+{"source": "{{^items}}Your cart is empty,#see [the shop](https://example.c\u2160m/shop){{/items}}\u00e9{{{name}}}{{! comment }}", "code_fnv1a": "1daf1e031f83159f", "code_len": 1833}
+{"source": "{{>}}", "error": "Error at character 4 of line 1 near {{>}}"}
+{"source": "}", "code_fnv1a": "ec7763767b7fd7aa", "code_len": 802}
+{"source": "{{#if a}}{{}}  {{!-- lng co\u00bcment --}}{{foo (bar baz=1)}}{{~", "error": "Error at character 11 of line 1 near {{}}"}
+{"source": "{{f\u2000oo =}}text\t", "error": "Error at character 4 of line 1 near oo"}
+{"source": "{{foo ab=\"x\"}}", "code_fnv1a": "6a868bf26f836cb3", "code_len": 1076}
+{"source": "{{>}{{this}}{{a.[b.c]}}{\u0085{!-- long comme]nt --}}", "code_fnv1a": "472d1510b7681a43", "code_len": 1317}
+{"source": "{{foo ab=}}{{foo ab=null}}{{~{{>}}", "error": "Error at character 9 of line 1 near ab=}}"}
+{"source": "\u00e9\ud83e\udee9{{~", "code_fnv1a": "9c1fcdeac9bc37c4", "code_len": 813}
+{"source": "\u200b", "code_fnv1a": "3c8fe1ec79de7c5c", "code_len": 807}
+{"source": "\ud83e\udee9\u001f", "code_fnv1a": "90fef47be0aedd89", "code_len": 815}
+{"source": "support@example.com @alice {{a.[b]}}{{> partial ab=1}}{{#if a}}{{> partial ab=1 ab=2}}]{{a.b}}", "code_fnv1a": "7ab2f6134290ac5a", "code_len": 1321}
+{"source": "{{name}}\r\n{{> partal ab=missing) [aba=2}}{{&name}}{{foo (bar)}}\t{{!note}}\t\r\n", "error": "Error at character 22 of line 3 near ab=missing)"}
+{"source": "{{@../a}}{{@../a}}{{fo ab=}}{{~{{a.[b]}}{{#if a}}x{{else}}y{{/if}}{{ }}", "error": "Error at character 26 of line 1 near ab=}}"}
+{"source": "{{\\}}", "error": "Error at character 2 of line 1 near {{\\}}"}
+{"source": "a}}{{foo ab=\"x\"\u00bc}}{{{name}}}{{~name}}{{! comment }}{{format \"price*2\"}}text", "error": "Error at character 15 of line 1 near ab=\"x\"\u00bc}}"}
+{"source": "{{#if a}}x{{/f}}{{aa}}", "error": "Error at character 14 of line 1 near {{/f}}"}
+{"source": "{{#}}{\u0000{!}}{{a/b}}{{#if a}}x{{/if}}{{foo ab=undefi>ed}}{{a.[b]}}{{foo (bar)}}", "error": "Error at character 3 of line 1 near {{#}}"}
+{"source": "\n@(", "code_fnv1a": "a2a48d1297399dc1", "code_len": 827}
+{"source": "\r\n{{!}}s^pport@example.com @al>\u2000ce ", "code_fnv1a": "0f94beeb12ed5218", "code_len": 858}
+{"source": "{{~#if a~}}x{{~/if~}}{{/if\u00bc}}{{~na\nme}}{{>}}", "error": "Error at character 19 of line 2 near {{/if\u00bc}}"}
+{"source": "\r\n{{^items}}Your cart is empty, see [the shop](https://example.com/shop){{/items}}{{foo ab=true}}{{{{raw}}}}{{x}}{{{{/raw}}}}", "code_fnv1a": "8bafe82514d95abd", "code_len": 2210}
+{"source": "\u672c\u6587", "code_fnv1a": "e510bd9340de0a80", "code_len": 807}
+{"source": "^", "code_fnv1a": "b902e631c75adc31", "code_len": 802}
+{"source": "_{~{{foo (bar baz=1)}}{{foo ab=undefined}}{{#ifEquals user.role \"admin\"}}@admins{{/ifEquals}}", "code_fnv1a": "cae7e61efd57f8c5", "code_len": 2228}
+{"source": "{{foo ab=\"]x\"}}{{> patial ab=(mi&ssing) [ab]=2}}{{", "error": "Error at character 32 of line 1 near ab=(mi&ssing)"}
+{"source": "]{a.[b.c]}}", "code_fnv1a": "f1ede88b63016139", "code_len": 812}
+{"source": "{{!-- long. comment \u0000--}}\t{{{{r=aw}}}}{{x}}{{{{/raw}}}}", "error": "Error at character 31 of line 1 near {{r=aw}}"}
+{"source": "{{asupport@example.com @alice {{f}oo ab=-12}}{{}oo a=1}}{{> (dynamic) ab=1}}suppor{@example.com @alice {{>}}{{#if a}}", "error": "Error at character 30 of line 1 near {{f}"}
+{"source": "{{/if}}", "error": "Error at character 2 of line 1 near {{/if}}"}
+{"source": "{{/}}{&name}}{{! comment }}{{foo a=1}}\n{{oo ab=}}{{foo ab=1}}{{fo (bar)}}", "error": "Error at character 2 of line 2 near {{/}}"}
+{"source": "{{&nam@}}{{#}}{{~#if a~}}x{{~/if~}}{{{raw}}}}{{x}}{{{{/raw}}}}{{>\u007f partial arg}}}}", "error": "Error at character 12 of line 1 near {{#}}"}
+{"source": "{{foo ab=-1\u001f\t}}", "code_fnv1a": "e0467a4d35c41205", "code_len": 1074}
+{"source": "\t  {{this}}{{a.[bc]}}{{\u007foo =1}}{{!}}{{> partial}}#", "error": "Error at character 23 of line 1 near {{\u007foo"}
+{"source": "{{foo \u0000ab=1}}", "error": "Error at character 6 of line 1 near \u0000ab=1}}"}
+{"source": "{\u2000", "code_fnv1a": "25947dae51d8ec8b", "code_len": 808}
+{"source": "{{#}}{{> partial arg}}{{> partial -ab=1}}{{#if a}}{{#if b}}x{{/f}}{{/if}}{{format \"price*2\"}}{{else}}\n", "error": "Error at character 3 of line 2 near {{#}}"}
+{"source": "\t{{!note}}\t\r\n{{a{{^items}}Your cart is empty, see [the shop](https://example.com/shop){{/items}}{{#if ord\u2028\u2160r.shipped}}Order {{order.id}} shipped to {{address.city}}{{/if}}{{^if a}}x{{/if}}{{foo ab='y\\\\'}}{{#if a}}", "error": "Error at character 12 of line 1 near {{a{{^items}}"}
+{"source": "{{\t{{!n\u0bcdte}}\t\r\na\r{{@../a}}{{foo ab==1}}{{{{raw}}}}{{x}}{{{{/r\u0663aw}}}}", "error": "Error at character 3 of line 2 near {{!n\u0bcdte}}"}
+{"source": "support@example.com @alice {{foo ab=true}}{{#if order.gift}}\n**{{order.message.text}}**\n{{/if}}\n{{^items}}Your cart is_empty, see [the shop](https://example.com/shop){{items}}{{!-- long comment --}}{{^if a}}x{{/if}}{{else}}\n", "code_fnv1a": "7898f15ded4a91ed", "code_len": 2072}
+{"source": "{{#ifEquals user.role \"admin\"}}@admins\u2000/ifEquals}}{{#ifEquals user.role \"admin\"}}@admins{{/ifEquals}}{{&name}}{{#if order.gift}}\n**{{order.message.text}}**\n{{/if}}\n{{../a}}{{!}}{{{{foo ab=true}}", "error": "Error at character 37 of line 3 near ab=true}}"}
+{"source": "{{foo ab=-12}}", "code_fnv1a": "8e514a18ce6b08db", "code_len": 1076}
+{"source": "}}{{foo (bar baz=1)}} ~}}\n{{#if a}}\n\n{{#if a}}\n{{{{raw}}}}{{x}}{{{{/raw}}}}{{this}}{{> partial ab=(missing) cd=1 ab=2}}", "code_fnv1a": "3475693e6b61fb5b", "code_len": 1229}
+{"source": "{{a.b}}\t{{&name}}{{> partial arg}}", "code_fnv1a": "58bb4e94dc290ad2", "code_len": 1591}
+{"source": "{{#if order.gift}}\n**{{order.messae.text}}**\n{{/if}}\n{{/if}}", "error": "Error at character 10 of line 2 near {{/if}}"}
+{"source": "{{foo ab='y\\\\'}}{{foo ab=\"x\"}}{{foo ab=-12}}{{/}}{{ }}", "code_fnv1a": "1a2c5a8f2a8b724f", "code_len": 779}
+{"source": "{{^items}}Your cart is empty, see [the shop](https://example.com/shop){{/items}}{{> partial ab=1}}{{#}}{{aa}}{{}}", "error": "Error at character 101 of line 1 near {{#}}"}
+{"source": "\n{{#if a}}x{{else}}y{{/if}}{{foo ab=true}}\n{{this}}", "code_fnv1a": "325e770c8fc9ccac", "code_len": 2221}
+{"source": "{{foo ab=1}}{{#if a}}x{{else}}y{{/if}}{{/if}}\n  {{/if}}  \n{{foo ab=undefined}}{{> partial arg}}{{#if a}}x{{/if}}{{foo ab=\"x\"}}", "error": "Error at character 40 of line 2 near {{/if}}"}
+{"source": " ~}}{{> partial ab=1 ab=2}\uffff}\n  {{/if}}  \n{{name}}{{_!}}{{@..a}}\u00e9", "error": "Error at character 24 of line 2 near ab=2}"}
+{"source": "{{&name|}{{#if a}}", "error": "Error at character 7 of line 1 near {{&name|}"}
+{"source": "{{foo ab=true}}", "code_fnv1a": "4100e6e57987439d", "code_len": 1078}
+{"source": "{{> partial ab=(missing) cd=1 ab=2}}{{foo \u00001}}a\r{{> partial}}{{@../a}}  \n{{ese if b}}\n{{&name}}", "error": "Error at character 42 of line 3 near \u00001}}"}
+{"source": "\u00bc]", "code_fnv1a": "18515c6c5368ea40", "code_len": 804}
+{"source": "{{foo (baar baz=1)}}{{foo (bar)}}", "code_fnv1a": "bbae5fb8d72203cf", "code_len": 1525}
+{"source": "text{{> (ynamic) ab=1}}{{#ea\u001fch xs}}{{name}}{{&each}}{{>}}{{/}}{{else}}\n{{foo =1}}", "error": "Error at character 29 of line 2 near ch"}
+{"source": "_{{else}}\na}}{{a.[b]}}{{!-- long comment --}}{{this}}{{! comment }}{{#if a}}{{#if b}}x{{/if}}{{/if}}", "error": "Error at character 8 of line 2 near {{else}}"}
+{"source": "{{foo ab==1}}{{foo ab=\"x\"}}a{{#i\\f a}}{{#if \ud839\udcf3b}}x{{/if}}{{/if}}", "error": "Error at character 9 of line 1 near ab==1}}"}
+{"source": "{{@../a}}{{foo (ba baz=1)}}{{t\uff15is}}{{/if}\u3000", "error": "Error at character 37 of line 1 near {{/if}"}
+{"source": "\u672c\u6587~}}", "code_fnv1a": "3cdb9d3a54514d06", "code_len": 809}
+{"source": ")\u0663\u00b2", "code_fnv1a": "3e6c39635a93858e", "code_len": 806}
+{"source": "\t{{../a}}\n  {{/if}}  \n{{#}}{{> partial}}{{if a}}{{> partial arg}}\t", "error": "Error at character 3 of line 2 near {{/if}}"}
+{"source": "{{> partial}}{{{name}}}{{&name}}{{foo a=1}}  {{{{raw}}}}{{x}}{{{{/raw}}}}{{name~}}", "error": "Error at character 39 of line 1 near a=1}}"}
+{"source": "support@example.com @alice {{foo a=1}}support@example.com @alice {{a.[b.c]}}{{#if order.shipped}}Order {{order.id}} shipped to {{address.city}}{{/if}}", "error": "Error at character 34 of line 1 near a=1}}"}
+{"source": "{{foo =1}}{]> partial}}{{this}}{{foo (bar baz=1)}}{{^if a}}x{{/if}}  ", "error": "Error at character 6 of line 1 near =1}}"}
+{"source": "{{> partial arg}}{{fo ab=1}}{{#ifEquals user.role \"admin\"}}@admins{{/ifEquals}}", "code_fnv1a": "ca3c65bf38692518", "code_len": 2168}
+{"source": "{{#if order.gift}}\n**{{rder.message.t\u2000ext}}**\n{{/if}}\n{{> partial ab=1}{{", "error": "Error at character 37 of line 2 near ext}}"}
+{"source": "\n  {{/if}}  \nsupport@example.com @ali\u2160ce {{foo a=1}}{{/}}{{@index\uff15}{{> (dynamic) ab=1}}{{> (dynamic) ab=1}}{{foo ab=true}}", "error": "Error at character 3 of line 2 near {{/if}}"}
+{"source": "support@example.com @alice {{#if a}}{{foo (bar)}}\r\n{{@index}}{{foo =1}}{{a/b}}", "error": "Error at character 17 of line 2 near =1}}"}
+{"source": " \u2160}}{{~#if a~}}x{{~/if~}}{{{name}}}support@e\u0085ample.com @alice  ~}}", "code_fnv1a": "331467152722efde", "code_len": 1871}
+{"source": "{{> partial ab=(missi|ng) [ab]=2}]}{foo ab=1}}{{a.[b.c]}}{{name}}", "error": "Error at character 21 of line 1 near ab=(missi|ng)"}
+{"source": "{{> partial}}{{&name}}{{../a}}{{> partial ab=1}}{{format \"price*2\"}}{{> partial ab=1 ab=2}}{{#if a}}x{{else}}y{{/if}}", "code_fnv1a": "74a5a0ff8d0f1c56", "code_len": 3452}
+{"source": " ~}}{{foo ab=undefined}}{{/}}{{foo ab=-12}}{{@index}}\u00e9{{a.b}}  ", "error": "Error at character 25 of line 1 near {{/}}"}
+{"source": "{{#if a}}x{{/if}}{{../a}}{{#if a}}{{#if b}}x{>{/f}}{{/if}}", "code_fnv1a": "d9a914a0ff649b57", "code_len": 1633}
+{"source": "{{! comment }}{{#if order.shipped}}Order {{order.id}} shipped to {{address.city}}{{/if}} ~}}{{foo (bar baz=!1)}}{{name~}}{{> partial ab=(missing) cd=1 ab=2}}", "error": "Error at character 106 of line 1 near baz=!1)}}"}
+{"source": "{{this}}{{foo ab=undefined}}{{#each xs}}{{name}}{{/each}", "error": "Error at character 55 of line 1 near {{/each}"}
+{"source": "{{!}}{{ }}\n{{#if a}}\n{{foo =\udb40\udc01}}{{a/b}}{{foo ab=1}}", "error": "Error at character 8 of line 2 near }}"}
+{"source": "{{!}}\f", "code_fnv1a": "6343e67328e4f3da", "code_len": 805}
+{"source": "{{format \"price*\"}}{{@../a}}", "code_fnv1a": "b0b316b5afb31ee9", "code_len": 1242}
+{"source": "a\\>", "code_fnv1a": "61e14ee7e8918e68", "code_len": 805}
+{"source": "{{foo ab='y\\\\'}}{{foo ab=undefined}}{{foo ab=true}}", "code_fnv1a": "1a2c5a8f2a8b724f", "code_len": 779}
+{"source": "\n{{#if a\ud83d\ude00}\n", "error": "Error at character 8 of line 3 near a\ud83d\ude00}"}
+{"source": "  \t\ud83d\ude00{!note}}\t\r\n{{#if a}}{{name}}\t{{foo (bar)}}{{n\u007fme~}}", "error": "Error at character 35 of line 2 near {{n\u007fme}}"}
+{"source": "{{foo ab=1}}\t{{!note}}\t\r\na\r", "code_fnv1a": "4c626e573355d594", "code_len": 1169}
+{"source": "{{a.b}}{\"{ifEquals user.role \"admin\"}}\uff15@admins{{/ifEquals}}\r\n{{~{{#if}}{{/if}}{{~", "error": "Error at character 48 of line 1 near {{/ifEquals}}"}
+{"source": "{{{{else}}\n{{foo ab=\"x\"}} ~}}{{ }}{{!}}{{^items}}Your cart is empty, see [the shop](https://example.com/shop){{/items}}{{foo ab=\u00aatrue}}", "error": "Error at character 9 of line 2 near {{else}}"}
+{"source": "{{~name}}{{!-- long comment --}}{{!-- lon comment --}}", "code_fnv1a": "6b3241cdb738208e", "code_len": 1063}
+{"source": "{{foo ab=null}}\u00e9{{0&name}", "error": "Error at character 19 of line 1 near {{0&name}"}
+{"source": "{{@../a}}{{> partial ab=(missing) [ab]=2}}{{{{foo a=1}}{{#if a}}{{#if b}}x{{/i\uffff}}{{/if}}{{foo =\u001f1}}{{foo ab=\"x\"}}", "error": "Error at character 51 of line 1 near a=1}}"}
+{"source": "{{ }}", "error": "Error at character 3 of line 1 near }}"}
+{"source": "{{#}}{{#if order.gift}}\n**{{order.message.text}}**\n{{/if}}\n\n{{else i\u0663 b}}\n\n{{else if b}}\n{{name~}}{{foo ab=undefined}}{{#if a}}x{{/if}}", "error": "Error at character 3 of line 6 near {{#}}"}
+{"source": "{{)\\./a}}\r\n", "error": "Error at character 2 of line 2 near {{)\\./a}}"}
+{"source": "{@index}}{{a{{> (dynamic) ab=1}}{{{{raw}}}}{{x}}{{{{/raw}}}}", "error": "Error at character 12 of line 1 near {{a{{>"}
+{"source": "{{~name}}{{#each xs}}{{name}}{{/each}}{{fo =1}}{{&name}}{{ele}}\n{{! com~ment }}\n{{else if b}}\n{{{name}}}", "error": "Error at character 42 of line 2 near =1}}"}
+{"source": "a}}{\u0663fo\uff15 ab==1}}}", "code_fnv1a": "6ed227e73ea877bb", "code_len": 821}
+{"source": "a\r", "code_fnv1a": "1fad3040a97386fc", "code_len": 804}
+{"source": "{{#each xs}}{{name}}{{/each}} ~}}\n{{#if a}}\n", "code_fnv1a": "98f14f8564c3b4c9", "code_len": 1794}
+{"source": "\u0301", "code_fnv1a": "03a81e3a8662d49c", "code_len": 803}
+{"source": "{{#each xs}}{{name}}{{/each}}{{> partial ab=1 ab=2}}{{a/b}}{{@../a}}\n  {{/i}}  \n\t{{!note}}\t\n\n  {{/aif}}  \n", "error": "Error at character 3 of line 3 near {{/i}}"}
+{"source": "{{&name}\u0085{{#if order.shipped}}Order {{order.id}} shipped to {{address.city}}{{/if}}{{> partial ab=(missing) [ab]=2}}{{#if a}}", "error": "Error at character 7 of line 1 near {{&name}"}
+{"source": "{{> partial}}}}{{^items}}Your cart is empty, see [the shop](https://example.com/shop){{/items}}{{#if a}}x{{else}}y{{/if}}{{#if a}}{{#if b}}x{{/if}}{{/if}}", "code_fnv1a": "7af3c5cf0d7bc4dd", "code_len": 4165}
+{"source": "{{~n>a}}", "error": "Error at character 3 of line 1 near {{n>a}}"}
+{"source": "_\n", "code_fnv1a": "c0bdce4c81f5e402", "code_len": 804}
+{"source": "{{foo ab=null}}{{this}}{{foo ab=null}}{{{{raw}}}}{{x}}{{{{/raw}}}}", "code_fnv1a": "994feb9421b383a7", "code_len": 1935}
+{"source": "{{foo ab=true}}{{#if a}}x{{/if}}{{foo ab=-12}}{{a{{name~}}{{}}{{#if}}{{/if}}", "error": "Error at character 49 of line 1 near {{a{{name}}"}
+{"source": "{{foo ab=}}", "error": "Error at character 9 of line 1 near ab=}}"}
+{"source": "{{> partial ab=1}}{{#each s}}{{name}}{{/each}\n\u00e9", "error": "Error at character 44 of line 2 near {{/each}"}
+{"source": "{{{{raw}}}}{{x}}{{{{/raw}}}}{{> partial arg}}{{> parti\u200bal ab=1}}{{foo ab='y\\\\'}}{{{{raw}}}}{{x}}{{{{/raw}}}}", "code_fnv1a": "a0da6a1cd0c59153", "code_len": 1843}
+{"source": "{{/}}{{a{{a.b.\u00a0]}}{{> partial arg}}", "error": "Error at character 2 of line 1 near {{/}}"}
+{"source": "]", "code_fnv1a": "7039c7db2013ec0a", "code_len": 802}
+{"source": "{{foo ab=undefined}}{{> partialab=(missing) cd=1 ab=2}}{{! comment }}{{&name}}{{#if a}}x{{else}}y{{/if}}", "code_fnv1a": "6961af6f35c5d8d1", "code_len": 2629}
+{"source": "\t{{!note}}\t\r\n\n{{foo (bar)}}{{> (dynamic) ab=1}}}{{! comment }}{{! comment }}", "code_fnv1a": "7dc97971f96f223d", "code_len": 1569}
+{"source": "{{#ifEquals user.role \"admin\"}}@admin\ns{{/ifEqu\u001fals}}{{> partial ab=(missing) [ab]=2}}{{@index}}a}}{{#if order.gift}}\n**{{order.message.text}}**\n{{/if}}\n{{foo] ab=-12}}", "error": "Error at character 10 of line 4 near {{/ifEqu"}
+{"source": "}}{{foo ab=null}}{{!-- long comment --}}{{#f a}}{{#if b}\u200bx{{/if}}{{/if}}{{> partial ab=(missing) cd=1 ab=2}}{{foo =1}}support@example.com @alice {{/}{", "error": "Error at character 55 of line 1 near b}"}
+{"source": "support@example.com @alice {{{{> partial ab=1 ab=2}}{{}}a}}\n{{else if b}}\na}}{{> partial ab=1 ab=2}}", "error": "Error at character 31 of line 2 near {{>"}
+{"source": "{{../\u00b2a}}  {{!-- long comment --}}{{", "code_fnv1a": "a8370ecaa3dfe8c2", "code_len": 957}
+{"source": "{{{name}}}{{/if}}{{> partial ab=1 b=2}}{{foo ab=undefined}}{{a/b}}\u00e9\u00e9{{format \"price*2\"}}", "error": "Error at character 12 of line 1 near {{/if}}"}
+{"source": "{{#}}{{> partial arg}}{{foo ab=-12}}{{../a}}{{#ifEq~als user.role \"admin\"}}@admins{{/ifEquals}}{{fo ab=-12}}", "error": "Error at character 3 of line 1 near {{#}}"}
+{"source": "{\n> partil}}{{foo (bar)}}{{foo ab=-12}}{{#if order.shipped}}Order {{order.id}} shipped to {{address.city}}{{/if}}", "code_fnv1a": "ebeb21526f46efaf", "code_len": 2574}
+{"source": "{{foo =1}}", "error": "Error at character 6 of line 1 near =1}}"}
+{"source": "{{> partia[l ab=(missing) cd=1 ab=2}}{{#if}}{{/#if}}{{foo ab=\"x\"}}", "error": "Error at character 47 of line 1 near {{/#if}}"}
+{"source": "\uffff", "code_fnv1a": "415ab80e7e9d0020", "code_len": 807}
+{"source": "\u0301}", "code_fnv1a": "148393a41c68765d", "code_len": 804}
+{"source": " ~}}{{> p\u0000artil arg}}{{foo ab=\"x\"}}}}", "code_fnv1a": "03494af9e448107c", "code_len": 1500}
+{"source": "{{> (dynamic) ab=1}}{{#if a}}{{#if b}}x{{/if}}{{/if}}{{> partial arg}}{{> partial arg}}{{#if}}{{/if}}", "code_fnv1a": "9814e685e13b7152", "code_len": 3899}
+{"source": "{{name~}}{{#if a}}x{{else}}\u007fy{{/if}}{{foo a=1}}\n", "error": "Error at character 42 of line 2 near a=1}}"}
+{"source": "{{foo ab==1}}{{foo ab=true}}a\r{{foo ab==1}}\n{{#if a}}\n", "error": "Error at character 9 of line 2 near ab==1}}"}
+{"source": "\t}}{{~\ud83d\ude00name}}\t{{\u0663note}}\t\r\n", "error": "Error at character 5 of line 2 near {{\ud83d\ude00name}}"}
+{"source": "{{/}}{{}}\t{{#if}}{{/if}}{{#ifEquals user.rol~ \"admin\"}}@admins{{/ifEqals}}{{~{{@index}}{{foo ab=}}", "error": "Error at character 2 of line 1 near {{/}}"}
+{"source": "{{#if}}{{/if}}{{foo (bar baz=1)}}\n{{else if b}}\n{{foo (bar baz=1)}}{{{{raw}}}}{{x}}{{{{/raw}}}}{{~#if a~}}x{{~/if~}}{{foo ab=undefined}}{{> (dynamic) ab=1}}", "code_fnv1a": "513737a462e16c40", "code_len": 4342}
+{"source": "{{#each s}}{{name}}{{/each}}a}}{{>}}{{format \"price*2\"}}{{a.b}}{{#if a}}x{{else}}y{{/if}}{{ }}{{foo ab=true}}", "error": "Error at character 35 of line 1 near {{>}}"}
+{"source": "{{~#if a~}}x{{~/if~}}}}{{~#if a~}}x{{~/if~}}{{foo ab='y\\\\'}}{{#ifEquals user.role \"admin\"}}@admins{{/ifEquals}}{{#if order.shipped}}Order {{order.id}} shipped to {{address.city}}{{/if}}{{!-- l\u3000ong comment --}}", "code_fnv1a": "b82caad7dddbcd4d", "code_len": 2207}
+{"source": "{{> partial ab=1 ab=2}}{{fo\u00bc ab=\"x\"}}{{^if a}}x{{/if}}\n{{else if b}}\n\n  {{/if}}  \n", "error": "Error at character 16 of line 3 near {{/if}}"}
+{"source": "{{> partial arg}}{{#if order.shipped}}Order {{order.id}} shipped to {{address.city}}{{/if}}{{~#if a~}}x{{~/if~}}{{#}}", "error": "Error at character 111 of line 1 near {{#}}"}
+{"source": "\u00e9{{}}{}}\n  {{\uffffif}}  \n\"{{a.[b.c]}}", "error": "Error at character 3 of line 3 near {{}}"}
+{"source": "{a{a\ud83d\ude00.[b.\u3000]}}", "code_fnv1a": "722cb379220d369e", "code_len": 822}
+{"source": "{{> partial ab=1 ab=2}{\u000ba.[b.c]}}~}}", "error": "Error at character 21 of line 1 near ab=2}"}
+{"source": "{{foo =1}}{{> part\f^l ab=1}}", "error": "Error at character 6 of line 1 near =1}}"}
+{"source": "{@a/b}@\ud839\udcf3", "code_fnv1a": "32dde596a3f3ac81", "code_len": 812}
+{"source": "{{~#[f ~}}x{{~/i\u672c\u6587f~}}", "error": "Error at character 16 of line 1 near {{/i\u672c\u6587f}}"}
+{"source": ">\udb40\udc01/", "code_fnv1a": "76e08df82fb42a07", "code_len": 813}
+{"source": "{&nam_e}}", "code_fnv1a": "852f092fb470c1a0", "code_len": 810}
+{"source": "\r", "code_fnv1a": "07a1f64f97bd3307", "code_len": 803}
+{"source": "{{foo ab=-12}\uffff}{{foo (bar baz=1)}}{{foo =1}}{{#if a}}{{#if b}}x{{/if}}{{/if}}", "error": "Error at character 12 of line 1 near ab=-12}"}
+{"source": "{\ud839\udcf3> part|al ab=1}}{{/}}{{", "error": "Error at character 20 of line 1 near {{/}}"}
+{"source": "{{foo =1}\uffff}{{#}}{{> partial ab=(missi&g) [ab]=2}}{{foo ab='y\\\\'}}  {{{{foo =1}}", "error": "Error at character 6 of line 1 near =1}"}
+{"source": "{{-- long comment -\udb40\udc01}}\ud83e\udee9", "error": "Error at character 19 of line 1 near -\udb40\udc01}}"}
+{"source": "{{ }}{{}}{{../a}}\r\n\t]{{!not\ud83e\udee9}}\t\r\n{{this}}{{#if order.shipped}}Order {{order.id}} shipped to {{address.|ity}}{{/if}}", "error": "Error at character 3 of line 3 near }}"}
+{"source": "{{foo ab==1}}{{a.b}}{{#if a}}x{{else}}y{{/if}}{{a/b}}", "error": "Error at character 9 of line 1 near ab==1}}"}
+{"source": "{{this}}", "code_fnv1a": "dcd4b53ce870e8f6", "code_len": 972}
+{"source": "a\rtext", "code_fnv1a": "b26366209ce787a5", "code_len": 808}
+{"source": "{{>}}{{fo ab=u\"dfined}}{{@index}}  {{a", "error": "Error at character 4 of line 1 near {{>}}"}
+{"source": "{{#if a}}{{#if b}}x{{/if}\ud83d\ude00}{{/if}}{{> partial ab=(missing) [ab]=2}}{{foo a=1}}{{foo (bar)}}}}{{foo ab=undefined}}{{#if a}}x{{else}}y{{/if}}{{foo ab=}}", "error": "Error at character 24 of line 1 near {{/if}"}
+{"source": "{{~na/me\u007f}", "error": "Error at character 7 of line 1 near {{na/me\u007f}"}
+{"source": "a}}{{> partial}}{{#if a}}x{{else}}y{{/if}}", "code_fnv1a": "ee923517f90d866a", "code_len": 2042}
+{"source": "{[{this}}", "code_fnv1a": "e14de8d0fa099e84", "code_len": 810}
+{"source": "{{foo ab=undefined}}{{else}}\n{{foo ab=12}}", "error": "Error at character 27 of line 2 near {{else}}"}
+{"source": "{{> partial ab=1 ab=2}}{{else}}\n\n{{else\u0000if b}}\n}}{{~name}}{{#if a}}x{{else}}y{{/if}}{{else}}\n", "error": "Error at character 30 of line 5 near {{else}}"}
+{"source": "{{f\u200bo a=1}}{{#if a}}{{#if b}}\u001f{{/if}}{{/if}}{{> (dynamic) ab=1}}{{> partial ab=(missing) [ab]=2}}  {{> parti\uffffal ab=1 ab=2}}", "error": "Error at character 3 of line 1 near {{f\u200bo"}
+{"source": "{{. partial ab=1}}{{@index}\n  {{/i=f}}  \n{{a{{}}  ", "error": "Error at character 26 of line 2 near {{@index}"}
+{"source": "{{~{{fo ab==1}}{{foo =1}}{{#each xs}}{{name}}{{/eac.h}}{{> partial ab=(missing) cd=1 ab=2}}{{else}}\n", "error": "Error at character 10 of line 2 near ab==1}}"}
+{"source": "{{#if order.gift}}\n**{{order.message.text}}**\n{{/if}}\n{{foo ab=true}}{{foo ab=\"x\"}/{{~{{foo (bar baz=1)}}{{foo ab=-12}}{{! comment }}{{^if a}}x{{/if}}", "error": "Error at character 35 of line 2 near ab=\"x\"}"}
+{"source": "support@example.com @alice \n  {{/if}}  \n{{a.[b]}}{{a/b}}{{{{raw}}}}{{x}}{{{{/raw}}}}\u00e9", "error": "Error at character 3 of line 2 near {{/if}}"}
+{"source": "{{@index}}{{^if a}}x{{/if}}a\r\n{{#if a}}\n{{> partial arg}}\t\n } {{/if}}  \n", "code_fnv1a": "7f0b29608affa62d", "code_len": 2973}
+{"source": "{{a.b}}", "code_fnv1a": "285c5da1bec73ddc", "code_len": 929}
+{"source": "{{fo[ (bar baz=1)}}{{#ifEquals user.r\nole \"admin\"}}@admins{{/ifEquas}}{{#}}{{#if a}}x{{else}}y{{/if}}", "code_fnv1a": "1a2c5a8f2a8b724f", "code_len": 779}
+{"source": "{{{{raw}}}}{{x}}{{{\ud839\udcf3{\u00b2/raw}}}}{{else}}\n{{\u0000&name}}", "code_fnv1a": "1a2c5a8f2a8b724f", "code_len": 779}
+{"source": "{{this}}{{^items}}Your cart is empty, see [the shop](https://example.com/shop){{/items}}", "code_fnv1a": "fcbda550543c1931", "code_len": 1715}
+{"source": "{}{name}}}", "code_fnv1a": "b3cea2fc2b198864", "code_len": 811}
+{"source": "{{{name}}}{{foo ab=\"\u2160x\"}}}}{{name~}}{{@../a}}", "code_fnv1a": "e744c2df777b4d0f", "code_len": 1828}
+{"source": "{{>}}{/if}}", "error": "Error at character 4 of line 1 near {{>}}"}
+{"source": "{{{{> par{tial ab=1}}a\r}}{@index}}", "error": "Error at character 4 of line 1 near {{>"}
+{"source": "@ ~}}{{>}}{{> partial}}{{#if a}}", "error": "Error at character 8 of line 1 near {{>}}"}
+{"source": "{{foo ab=\"x\"}}{{{name}}}{{a.b}}{{format \"price*2\"}}\n{{#if a}}\n{{#}}{{! comment }}", "error": "Error at character 13 of line 2 near {{#}}"}
+{"source": "{{#ifEquals user.role ^\"admin\"}}@admins{{/ifEquals}}{{foo ab=}}{{#}}{{../a}}{{@../a}}\n{{else if b}}\n{{! comment }}a\r", "error": "Error at character 23 of line 2 near ^\"admin\"}}"}
+{"source": "{{foo ab='y\\\\'}}", "code_fnv1a": "1a2c5a8f2a8b724f", "code_len": 779}
+{"source": "\u0000", "code_fnv1a": "9ab9e173420b5af1", "code_len": 805}
+{"source": "{{fo\udb40\udc01o ab=true}}{{! comment }}{{else}}\n{{../a}}{{foo ab=1}}{{foo ab=null}}}}a})", "error": "Error at character 4 of line 2 near {{fo\udb40\udc01o"}
+{"source": "{{foo a=}}\n\n{{#if a}}\n  {{~#if a~}}x{{~/if~}}a}}{{a.[b]}}{{foo =1}}", "error": "Error at character 7 of line 3 near a=}}"}
+{"source": "{{#}}{{~name}}{{foo (ba baz=1)}\\}", "error": "Error at character 3 of line 1 near {{#}}"}
+{"source": "{{/}}{{a/b}}{{> partial arg}}{{#if a}}{{#if b}}x{{/if}}{{/if}}", "error": "Error at character 2 of line 1 near {{/}}"}
+{"source": "{{> partial arg}}{{> partial_ab=1}}{{foo ab=\"x\"}}{{a/b}}", "code_fnv1a": "e5567a073be55164", "code_len": 1920}
+{"source": "{{foo ab=-12}}{{else}}\n~{> (ynamic) ab=1}}{{/}}{{{{#if a}}{{#if b}}x{{/if}}{{/if}}", "error": "Error at character 21 of line 2 near {{else}}"}
+{"source": "{{&name}}{{@ind\t\uffffex}}{@../a}}", "error": "Error at character 16 of line 1 near \uffffex}}"}
+{"source": "{{> partial}}{{!-- long comment --}}\n{{els\u00a0 if b}}\n", "error": "Error at character 8 of line 3 near if"}
+{"source": "  a}}support@example.com @alice a\r{{foo ab=undefined}}{{@../a}}", "code_fnv1a": "82c359648a059cda", "code_len": 1310}
+{"source": "{{foo ab='y\\\\'}}\u00e9{{foo (bar)}}a\r{{! comment }}{{#ifEquals user.role \"admin\"}}@admins{{/ifEquals}}{{#if a}}{{#if b^}}x{{/if}}{{/if}}", "code_fnv1a": "1a2c5a8f2a8b724f", "code_len": 779}
+{"source": "{{foo ab=null}}{{^items}}Your cart is empty, see [the shop](htZps://example.com/shop){{/items}}{{> partil ab=(missing) cd=1 ab=2}}{{foo ab=undefined}}{{#if a}}x{{else}}y{{/if}}", "code_fnv1a": "d6a4d53a5c59dcb8", "code_len": 3373}
+{"source": "{{foo ab=undefined}}{{> partial ab=(missing) [ab]=2}}a}}", "code_fnv1a": "4d9b9a5922bc9991", "code_len": 1446}
+{"source": "\t{{foo ab=-12}}{{#if a}}x{{/if}}{{a{{{{raw}}}}{{x}}{{{{/raw}}}}\n  {{/if}}  \n{{#if a}}x{{/if}}", "error": "Error at character 35 of line 2 near {{a{{{{raw}}"}
+{"source": "{a../a}}{{foo a=1}}{{!}}{{^if a}}x{{/if}}{{#each xs}}{{name}}{{/ea\uffffh}}", "error": "Error at character 15 of line 1 near a=1}}"}
+{"source": "{{/}}\u00e9{{foo ab=\"x\"}}{{ }}{{> partial arg}}{{#each xs}}{{name}}{{/each}}{{f\uff15o ab=}}", "error": "Error at character 2 of line 1 near {{/}}"}
+{"source": "{{oo ab==1}}{{> partal ab=1ab=2}}", "error": "Error at character 8 of line 1 near ab==1}}"}
+{"source": "{{foo ab=}}{{#if order.gift}}\n**{{order.message.text}}**\n{{/if}}\n{{foo ab='y\\\\'}\u2160}", "error": "Error at character 9 of line 3 near ab=}}"}
+{"source": "{{#if a}}{{foo ab=true}}{{> partial a\\g}}", "error": "Error at character 37 of line 1 near a\\g}}"}
+{"source": "{{^items}}Your cart is empty, see [the shop](https://example.cm/shop){{/itms}}{{!-- long comment --}}\n{{#if a}}\n{{> partial ab=1 ab=2}}{{> (dynamic) ab=1}}{{{name}}}", "error": "Error at character 76 of line 2 near {{/itms}}"}
+{"source": "{{foo aa]=-12}}{{this}}{{a.[b.c]}\f}", "error": "Error at character 32 of line 1 near {{a.[b.c]}"}
+{"source": "{{foo (bar\u00b2}}{{fooa=1}}}}", "error": "Error at character 11 of line 1 near (bar\u00b2}}"}
+{"source": "\"", "code_fnv1a": "356a0f43e6237655", "code_len": 802}
+{"source": "{{a{{foo ab=1}}\n{{else if b}}\n", "error": "Error at character 3 of line 2 near {{a{{foo"}
+{"source": "{{!-- long comment --}}{{#if a}}{{#if b}}x{{/if}}{{/if}}{{.../a}}{{> partial}}{{a.0[b.c]}}{{#if a}}{{> partial arg(}", "error": "Error at character 114 of line 1 near arg(}"}
+{"source": "{{a]{-this}}", "error": "Error at character 4 of line 1 near {{a]{-this}}"}
+{"source": "\n{{elseif b}}\n{{#if}}{{/if}}{{@index}}{{~name}}{{> patial a[b=1}}a\r", "code_fnv1a": "62e45794a6fe3217", "code_len": 2394}
+{"source": "{{foo ab='y\\\\'}}{{a.[b]}}{{foo ab='y\\\\'}}{{{name&}}", "error": "Error at character 35 of line 1 near ab='y\\\\'}}"}
+{"source": "{{~name}}{{#ifa= a}}{{foo a=1}}", "error": "Error at character 14 of line 1 near {{#ifa="}
+{"source": "\n  {{/if}}  \n  {{@../a}}\n{{else if b}}\n{{foo ab=1}}{{foo (bar)}}", "error": "Error at character 3 of line 3 near {{/if}}"}
+{"source": "{{^if a}}x{{/if=}{{#if}}{{/{f}", "error": "Error at character 15 of line 1 near {{/if=}"}
+{"source": "{{> partial ab=1}}{{! comment }}{{> partial ab=1 ab=2}}{{foo =1}}{{> partial ab=1 ab=2}}support@e]xample.com @alice {{#each xs}}{{name}}{{/each}}{{> partial ab=1}}", "error": "Error at character 61 of line 1 near =1}}"}
+{"source": "{{foo ab=}}  {{foo =1}}{{#ifEquals user.role \"admin\"}}@admins{{/ifEquals}}  {{foo (bar)}}{{foo =1}}", "error": "Error at character 9 of line 1 near ab=}}"}
+{"source": "{{foo ab=\"x}}{{a.[b]}}}}{{@../a}}{{foo ab=undefined}}{{{name}}}{{/if}}", "code_fnv1a": "1a2c5a8f2a8b724f", "code_len": 779}
+{"source": "{{#if order.gift}}\n**{{order.message.text}}**\n{{/if}}\n{{}}", "error": "Error at character 10 of line 2 near {{}}"}
+{"source": "{{foo (bar baz=1)}}support@ex\uffffample.com @a=i\u0085ce {{foo ab=1}}{{{{raw}}}}{{x}}{{{{/raw}}}}", "code_fnv1a": "d4ce794f18c8d291", "code_len": 1875}
+{"source": "{{foo ab=1}}{{/}}{{@../a}}{{> partial}}{{#if orde@r.shipped}}Order {{order.id}} shipped to {{address.city}{{/f}}", "error": "Error at character 14 of line 1 near {{/}}"}
+{"source": "{{foo ab=-1}}{{a{\u2160{~", "error": "Error at character 16 of line 1 near {{a{\u2160{~"}
+{"source": "\t{{> (dynamic) ab=1}}\n  {{/if}}  \n{{! com\ud839\udcf3ment }}{{> partial ab=1 ab=2}}{{#if a}}", "error": "Error at character 3 of line 2 near {{/if}}"}
+{"source": "\\}", "code_fnv1a": "bd97053a8c62a5ea", "code_len": 804}
+{"source": "{{#if}}{{/if}}\t{{!note}}\t\r\n{{this}}{{#if}}{{/if}} ~}}{{#if a}}x{{else}}y{{/if}}{{{name}}}", "code_fnv1a": "00795b8a8b5ec18e", "code_len": 3588}
+{"source": "{{name~}}{{/}}{{name~}}{{foo (bar)}}{{{name}}}", "error": "Error at character 10 of line 1 near {{/}}"}
+{"source": "{{foo ab='y\\\\'}}{{foo ab==1}}{{> parti(al}}{{foo ab=-12}}{#}}", "code_fnv1a": "1a2c5a8f2a8b724f", "code_len": 779}
+{"source": "{{#each xs}}{{name}}{{/each}}\n  {{/if}}  \n\t{{!note}}\t\r\n{{a/b}}\n{{#if a}}\u001f\n{{foo{ ab==1}}", "error": "Error at character 3 of line 4 near {{/if}}"}
+{"source": "\n{{else if b}}\n{{foo ab='\\\\'}}{{#if a}}x{{else}}y{{/]if}}{{foo ab=-12}}{{&name}\u3000}", "code_fnv1a": "795a7539b585cec8", "code_len": 1185}
+{"source": "{{../a}}\n {{#each xs}}{{name}}{{&/each}}\n  {{/if}}  \n{{~name}}{{~#if a~}}x{\u0301~/if~}}{{~#if a~}}x{{~/if~}}", "error": "Error at character 25 of line 3 near {{&/each}}"}
+{"source": "{{#}}{{#}}{{foo ab=}}\n{{else if b}}\nsupport@exampl\fe.com @alice {{!-- long comment --}}{{a.[b]}}{{~\u0663", "error": "Error at character 3 of line 2 near {{#}}"}
+{"source": "{{#if order.shipped}}Order {{order.id}} shipped to {{address.city}}{{/if}}{{#if a}}{{foo ab='y\\\\'}}\t ~}}text{{", "code_fnv1a": "46860949298d5f32", "code_len": 1877}
+{"source": "{{foo ab=}}{{foo (bar baz=1)}}{{foo ab=\u007f}}{{#if order.shipped}}Order {{order.id}} shipped to {{address.city}}{{/if}}{{\u0301/if}}{{#if a}}", "error": "Error at character 9 of line 1 near ab=}}"}
+{"source": "{{~#if a~}}x{{~/if~}}{{#if}}{{/if}}", "code_fnv1a": "15cab895967c4b6f", "code_len": 2136}
+{"source": "{{{{#if a}}x{{/if}}{{oo (bar)}}{{foo ab='y\\\\'}}\n{{foo =1}}", "error": "Error at character 4 of line 2 near {{#if"}
+{"source": "{{> (dynamic) ab=1}}{{}}{{name~}}{{> partial ab=(missing) cd=1 ab\u2160=2}}{{#if order.gift}}\n**{{order.message.text}}**\n{{/if}}\n", "error": "Error at character 22 of line 3 near {{}}"}
+{"source": "{{../a}}{{foo (bar baz=1)}}{{a.[b]}}{a.[b[]}}{{> partial arg}}", "code_fnv1a": "e576603308514b98", "code_len": 1844}
+{"source": "{{foo ab=undefined}}{{foo (bar)}}{{! comment }}{{!-- long comment --}}{{/if}}\t{{!\u00bcnote}}\t\r\nsupport@example.com @alic {{~", "error": "Error at character 72 of line 2 near {{/if}}"}
+{"source": "{{/}}{{foo ab=}}{{{raw}}}}{{x}}{{{{/raw}}}}text", "error": "Error at character 2 of line 1 near {{/}}"}
+{"source": "\n  {{/if}}  \n\t{{name~}}{{{{raw}}}}{{x}}{{{{/raw}}}}{{/}}{{a.[b.c]}}{{@../a}}", "error": "Error at character 3 of line 2 near {{/if}}"}
+{"source": "{{../a}}{{foo ab=null}}{\uffff{\u0663foo ab=\"x\"}}{{fo ab=-12}}\n{{else if b}}\n{{/}}{{else}}\n", "error": "Error at character 16 of line 3 near {{/}}"}
+{"source": "\n{{else if b}}\n{{!}}{{!}}{{#if a}}x{{else}}y{{\\/if}}\n{{> partial ab=1}}{{>}}\n", "error": "Error at character 45 of line 4 near {{\\/if}}"}
+{"source": "{{{name}}}{{!}}\n{{#if a}}\n{{a{{\\oo a=1}}{{{name}}}{{> partial ab=(missing) [ab]=2}}{{@../a}}", "error": "Error at character 13 of line 2 near {{a{{\\oo"}
+{"source": "{{foo ab=undefined}}{{>}}\n  {{/if}}  \n{{foo ab=1}}{{name}}{{foo ab=null}}{{foo ab=1}}", "error": "Error at character 24 of line 2 near {{>}}"}
+{"source": "{{^if a}}x{{/if}}!{foo =1}}{{if order.ift}}\n**{{order.message.text}}**\n{{/if}}\n{{foo ab==1}}{{/}}", "error": "Error at character 3 of line 3 near {{/if}}"}
+{"source": "a\r{{a/b}}{({ partial arg}/}{{!}}  {{/if}}{{}}{{#if a}}", "error": "Error at character 36 of line 1 near {{/if}}"}
+{"source": "{{{nae}}}{{\"foo ab=null}}{{name~}}{{&name}}", "error": "Error at character 11 of line 1 near {{\"foo"}
+{"source": "{{foo ab=1}}{{{../a}}{{@index}}{{#if}}{{/if}}", "error": "Error at character 20 of line 1 near {{../a}}"}
+{"source": "{{../a}}{{{name}}}", "code_fnv1a": "3d7688284a2e5c02", "code_len": 1216}
+{"source": "{{../a}}{{fooab=null\\}", "error": "Error at character 15 of line 1 near {{fooab=null\\}"}
+{"source": "{{#if a}}x{{/if}}{{~name}}{{!}}{{format \"price*2\"}}{{name~}}{{a\n", "code_fnv1a": "c5a4e6462509ec85", "code_len": 2361}
+{"source": "{&{#if a}\f}x{{else}}y{{/if}}{{/(if}}", "error": "Error at character 19 of line 1 near {{else}}"}
+{"source": "{{a.b}}{{!-- long >comment --}}{{a.b}} ~}}{{foo ab==1}}\r\n", "error": "Error at character 50 of line 2 near ab==1}}"}
+{"source": "{{foo ab=undef'ined}}{{foo =1}}{{foo ab='y\\\\'}}", "error": "Error at character 14 of line 1 near ab=undef'ined}}"}
+{"source": "{{foo ab=null}}{{foo (bar baz=1)}}{{foo ab=null}}{{#if order.gift}}\n**{{order.message.text}}**\n{{/if=}}\n", "error": "Error at character 32 of line 3 near {{/if=}}"}
+{"source": "{{foo =1(}{{/if}}{{a.b}\u00a0}{{> partial}}{{this}}{{fo~ ab=null}}{{foo ab=\"x\"}}{{name~}}", "error": "Error at character 6 of line 1 near =1(}"}
+{"source": "{{#if a}}x{{else}\ty{{/if}}{{/}}{{#}}{{#}}{{!-- long comment --}}{{name}}{{a/b}}\n{{#if a}}\n", "error": "Error at character 16 of line 2 near {{else}"}
+{"source": "{{}oo ab='y\\\\'}}{{a/b}}{{^if a}}x{{/if}}{{ }}{{foo ab=true}}{{foo ab=undefined}}", "error": "Error at character 2 of line 1 near {{}"}
+{"source": "0", "code_fnv1a": "d6e90d6c8017881b", "code_len": 802}
+{"source": "{{a.[b]}}{{#ifEquals user.role \"admin\"}}@admins{{/ifEquls}}{{/}}\n{{else if b}}\n{{a.[b.c}}", "error": "Error at character 57 of line 2 near {{/ifEquls}}"}
+{"source": " ~}}{{/if}}{{this}}a\r{{/if}}{{else}}\n{{/}}", "error": "Error at character 5 of line 2 near {{/if}}"}
+{"source": "{{a.[b.c]}}{{#if a}}}}{{> partial ab=(missing) cd=1 ab=2}}{{{name}}}{{this}", "error": "Error at character 74 of line 1 near {{this}"}
+{"source": "\n{{foo a=1}}{{foo ab=true}}", "error": "Error at character 8 of line 2 near a=1}}"}
+{"source": "{{^items}}Your cart is empty, see [the shop](https://example.com/shop){{/items}}{{foo (bar)}{{#if order.ift}}\n**{{order.message.text}}**\n{{/if}}\n{{> partial ab=(missing) [ab]=2}}", "error": "Error at character 91 of line 3 near (bar)}"}
+{"source": " ~}}{{}}{{a.[b.c]}}\u00e9{{> (dynamic) ab=1}}{{foo ab=null}}", "error": "Error at character 5 of line 1 near {{}}"}
+{"source": "{{> partia\u0bcd\u0085 ab=1}}{{!}}{{#ifEquals user.role \"admin\"}}@admins{{ifEquals}}{{^if a}}x{{/if}}\t{{!note}}\t\r\n{{foo ab=undefined}}", "code_fnv1a": "80f92f5ab9b7c7c2", "code_len": 1126}
+{"source": "{{thi#s}}a}}0\t{{!}}\na}}", "error": "Error at character 5 of line 2 near {{thi#s}}"}
+{"source": "\u2000", "code_fnv1a": "ed9135176abb9dba", "code_len": 807}
+{"source": "{{}}", "error": "Error at character 2 of line 1 near {{}}"}
+{"source": "\u0085", "code_fnv1a": "045c9698b51ecdc0", "code_len": 805}
+{"source": "{{0if a}}{{#if b}}x{{/if}}{{/if}}{{~{{#ifEquals user.role \"admin\"}}@admins{{/ifEquals}}", "error": "Error at character 28 of line 1 near {{/if}}"}
+{"source": "{{@ind{ex}}{{foo ab=}}{{>}}{{#f a}{x{{/if}}", "error": "Error at character 6 of line 1 near {{@ind{ex}}"}
+{"source": ")", "code_fnv1a": "d911cad78e149ad6", "code_len": 802}
+{"source": "{{{{raw}}}}{{x}}{{{{/raw}}\r}}{{!}}{{name}}{{foo =1}}{{a{{form\u0301at \"price*2\"}}", "code_fnv1a": "1a2c5a8f2a8b724f", "code_len": 779}
+{"source": "{{thi@}}{{a/b\ud839\udcf3}{{/}}text", "error": "Error at character 14 of line 1 near {{a/b\ud839\udcf3}"}
+{"source": "{{foo =1}}{{~{{@index}}{{&foo ab=\"x\"}}", "error": "Error at character 6 of line 1 near =1}}"}
+{"source": "\n{{else if b}}\n{{/if}}{{/if}}{{foo =1}}{{this}}\r\n{{> partial ab=(missing) [ab]=2}}", "error": "Error at character 16 of line 3 near {{/if}}"}
+{"source": "{a}}{{\udb40\udc01if}}{{/i}}", "error": "Error at character 6 of line 1 near {{\udb40\udc01if}}"}
+{"source": "{{ }}{#if a}}{{#if b}}x{{/if}}\ud839\udcf3{{/if}}{{> partial ab=(missing) [ab]=2}}\n{{#if a}}\n{{@../a}}{{> \u0085artial arg}}", "error": "Error at character 3 of line 2 near }}"}
+{"source": "\ud839\udcf3", "code_fnv1a": "99d2d5728e967955", "code_len": 805}
+{"source": "{{ }}{{~#if a~}}x{{~/if~}}\n  {\u0085{/if}}  \n{{foo ab=\"x\"}}{{~foo ab=undefined}}", "error": "Error at character 3 of line 2 near }}"}
+{"source": "{{format \"price*2\"}}", "code_fnv1a": "c5cc7a29dbb527c2", "code_len": 1091}
+{"source": "\n{{{this}}{{!}}{{..~/a}\uffff}", "error": "Error at character 9 of line 2 near {{this}}"}
+{"source": "{{foo ab=}}{{>}}\n{_#i)f a}}\n{{", "error": "Error at character 9 of line 3 near ab=}}"}
+{"source": "{{ths}}\t{{!note}}\t\r\n{{format \"price*2\"}}{{#if a}}x{{/if>}}{{foo \udb40\udc01ab=undefined}}{{> partial ab=(missing) [ab]=2}}{{/}}", "error": "Error at character 36 of line 2 near {{/if>}}"}
+{"source": "{{foo (\u0085bar baz=1)}}", "code_fnv1a": "c74c67ccc796f1cf", "code_len": 1158}
+{"source": "{{#if a}}{{a.[b]}}\r\n\n{{#if a}}\n{{{{!-- long comment --}}{{#if a}\u200b", "error": "Error at character 14 of line 3 near {{!--"}
+{"source": "{{#if a}}\u200b  ", "code_fnv1a": "1a2c5a8f2a8b724f", "code_len": 779}
+{"source": "\u00e9{{#ifEquals user.role \"admin\"}}@admins{{/ifEquals}}{{> partial ab=1 ab=2}}", "code_fnv1a": "6d0f6d20817b8946", "code_len": 1892}
+{"source": "{{foo ab=\"x\"}}{{#if a}}x{{/if&}{{", "error": "Error at character 29 of line 1 near {{/if&}"}
+{"source": "text\n{{else if b}}\n{{#if~}{{/if}}{{}}{{#}}{{format \"price*2\"}}\r\n", "error": "Error at character 19 of line 3 near {{#if~}"}
+{"source": "{{foo ab=null}}{{#if}}{{/if}}{{foo a=1}}{{a/b}}", "error": "Error at character 36 of line 1 near a=1}}"}
+{"source": "{{a.b}}{{@../a}}{{~name}}{{a.[b]}}{{foo ab=\"1}}", "code_fnv1a": "27c21eb0c5b49d2b", "code_len": 1516}
+{"source": "{{foo \nab=-12}}{{> partial}}{{this}}{{!}}{{a{{!-- 0long comment --}}", "error": "Error at character 38 of line 2 near {{a{{!--"}
+{"source": "{{#if}}{{/if}}{{#.each x\u00aa}}{{name}}{{/each}}", "error": "Error at character 17 of line 1 near {{#.each"}
+{"source": "{{~{{a{{#if order.shipped}}Order {{order.id}} shipped to {{address.city}}{{/if}}", "error": "Error at character 5 of line 1 near {{a{{#if"}
+{"source": "{{> partial ab=(missing) [ab\ud83d\ude00]=2}}{{name~}}", "error": "Error at character 30 of line 1 near [ab\ud83d\ude00]=2}}"}
+{"source": "{{{{r.w}}}}{{x}}{{{{/raw}}}", "error": "Error at character 5 of line 1 near {{r.w}}"}
+{"source": "{{ }}{{foo a=1}}{{foo a=1}}{{@index}}", "error": "Error at character 3 of line 1 near }}"}
+{"source": "\u000b{{^if a}}x{{/if}}", "code_fnv1a": "037af0312d6c4ab2", "code_len": 1507}
+{"source": "{{a\t{{o)o ab=undefined}}", "error": "Error at character 4 of line 1 near {{o)o"}
+{"source": "\u2000-", "code_fnv1a": "97b9d623de02bacf", "code_len": 808}
+{"source": "a}}\t{{!note}}\t\r\n ~}}}}\uffff{{}}{{a.b}}{{fo\uff15o #ab=-12}}", "error": "Error at character 9 of line 2 near {{}}"}
+{"source": "{{foo ab=true}}{{this}}a\r\r\"\n}}{{^if a}}x{{/if}}", "code_fnv1a": "9312a88d054bb72a", "code_len": 2005}
+{"source": "{\u0085foo ab=1}}", "code_fnv1a": "274094b453a60f18", "code_len": 816}
+{"source": "'", "code_fnv1a": "e8a220553c9952ec", "code_len": 802}
+{"source": "{{foo ab=null}}  {{@../a}}{{../a}}{{format \"price*2\"}}{{foo ab=\u03011}}{{ }}", "error": "Error at character 63 of line 1 near ab=\u03011}}"}
+{"source": "{{{name}}}\r\n{{foo ab=\"x\"}}{{! comment }}{{this}}{{! comment }}", "code_fnv1a": "fd4e016645b1989e", "code_len": 1578}
+{"source": "{{a{{> partial\u2028 ab=1}}{{^items}}Y\u200bour cart is empty, see [the shop](https://example.com/shop){{/items}}{{ ~}}", "error": "Error at character 3 of line 1 near {{a{{>"}
+{"source": " ~}}\r\n{{!-- long omment --}}", "code_fnv1a": "9ed99363fc6ceb3b", "code_len": 826}
+{"source": "{{> part.al ab=(\u00b2missing) [ab]=2}}{{a.b}}{{foo ab=1}{{~name}}", "error": "Error at character 51 of line 1 near ab=1}"}
+{"source": "{{{{> (dynamic) ab=1}}{{#if a}}x{{else}}y{{/if}}{{#if order.gift}}\n**{{order.message.text}}*\n{{/if}}\n{{foo ab=null}}{{else}}\n{{name~}}  ", "error": "Error at character 4 of line 4 near {{>"}
+{"source": " ~}", "code_fnv1a": "e0162b88ff543632", "code_len": 826}
+{"source": "\n{{#if a}}\n{{format \"price*2\"}}{{!-- long comment --}}{{^if a}}x{{/if}}{{@index}}", "code_fnv1a": "e0cf754e36bf78cb", "code_len": 803}
+{"source": "{{#if a}}{{#if }}x{{/i\ud83d\ude00f}}{{/if}}{{!}}\n{{else if b}}\n{{> partial arg}}{{>}}{{/if}}", "error": "Error at character 22 of line 2 near {{/i\ud83d\ude00f}}"}
+{"source": "{{#if a}}{{#if b}}x}{{/if}}{{/if}}{{else}}\n\u00e9", "error": "Error at character 41 of line 2 near {{else}}"}
+{"source": "ext{{!}}>{#}\n", "code_fnv1a": "7f09cbb767d161ef", "code_len": 832}
+{"source": "\u0663text{{> partial}}  {{foo ab=1}}{{@../a}}", "code_fnv1a": "9c2dc9e043832023", "code_len": 1613}
+{"source": "{{> partial ab=(missing) cd=1 ab=2}}{{#if a}}\t{{!note}}\t\r\n{{foo (bar)}}{{&name}}{{foo ab=\"x\"}}", "code_fnv1a": "78de636603fedfc2", "code_len": 1131}
+{"source": "{{#if order.shipped}}Order {{order.id}} sh~pped to {{address.city}}{{/if}}{{this}}{{!-- long comment --}}\n  {{/if}}  \n{{else}}\n", "error": "Error at character 3 of line 2 near {{/if}}"}
+{"source": "\udb40\udc01", "code_fnv1a": "794c96ed6f766c7c", "code_len": 811}
+{"source": "{{> partial}}", "code_fnv1a": "b24d70f35b31d0b9", "code_len": 1115}
+{"source": "a\r{{format \"price*2\"}}{{> partial ab=(missing) [ab]=2}}{{{{raw}}}}{{x}}{{{{/ra}}}}{{#if a}}x{{else}}y{{/if}}", "code_fnv1a": "6b3095a1e52fa1d4", "code_len": 1459}
+{"source": "{{^items}}Your cart is empty, see [the shop](https://example.com/shop){{/items}}{{foo b=\u30001}}{{foo ab=true}{{{name}}}", "error": "Error at character 87 of line 1 near b="}
+{"source": "\uff15&", "code_fnv1a": "dfe114e83a528135", "code_len": 805}
+{"source": "{{~#if a~}}x{{~/if~}}{{{{!-- long comment --}}{{this}\u0000", "error": "Error at character 21 of line 1 near {{!--"}
+{"source": "{{else}}\n ~}}{{format \"price*2\"}}{{#if order.gift}}\n**{{order.message.text}}**\n{{/if}}\n{{foo ab=undefined}}{{foo ab='y\\\\'}}{{a/b}}", "error": "Error at character 7 of line 4 near {{else}}"}
+{"source": "text{{foo ab=}}{{foo ab=null}}{{~\u00e9{{foo a\u200b=1\u0000}}{{/if}}", "error": "Error at character 13 of line 1 near ab=}}"}
+{"source": "{{&name}}{{fooab==1}}{{@../a}}\n{{#if a}}\n{{this}}{{#ifEquals user.role \"admin\"}}@ad#mins{{/ifEquals}}", "error": "Error at character 16 of line 2 near {{fooab==1}}"}
+{"source": "{{#if order.shipped}}Order {{order^.id}} shipped to {{address.city}}{{/i\u0000}}{{>}}", "error": "Error at character 35 of line 1 near {{order^.id}}"}
+{"source": "{{!-- long comment --}}{{\r\n{{else}}\n{{foo ab='y\r\\\\'}}{{~name}}{{@0../a}}", "error": "Error at character 1 of line 2 near {{else}}"}
+{"source": "\uffff{{ }}{{foo=1}}", "error": "Error at character 4 of line 1 near }}"}
+{"source": "{{foo ab=}}{{foo ab==1} \u200b{{@index}}{{foo a=1}}{{/}}{foo =1}}{{!}}", "error": "Error at character 9 of line 1 near ab=}}"}
+{"source": "\n{{#if a}}\n{{ }}support@exmple.com @alice {{#if a}}x{{/if}}{{foo (bar baz=1)}}", "error": "Error at character 13 of line 2 near }}"}
+{"source": "{{foo =1}}\u00aa{#if order.gift}}\n**{{order.message.text}}**\n{{/if}}\n{a\r{{", "error": "Error at character 6 of line 3 near =1}}"}
+{"source": "support@example.com @alice {{foo ab==1}}{{a/b}}{{foo ab=-12}}{{#if a}}x{{else}}y{{/if}}", "error": "Error at character 36 of line 1 near ab==1}}"}
+{"source": "\n{{> partial ab=(missing) cd=1 ab=2}}{{#if}}{{/if}}{{name~}}{#}}{{@../a}}{{!-- long comment --}}{{#if}}{{/if}}", "code_fnv1a": "4035d488575c1b32", "code_len": 2928}
+{"source": "{{foo ab=\"x\"}{{^items}}Your cart is empty, see [the shop](https://example.com/shop){{/items}}{{#if order.~gift}}\n**{{order.message.text}}**{{/if}}\n{{~name}}{{{name}}}{{#if order.shipped}}Order {{order.id}} shipped to {{address.city}}{{/if}}", "error": "Error at character 12 of line 2 near ab=\"x\"}"}
+{"source": "{{/}}{{#if a}}{{foo ab=1}}{{> partial ab=1}}{{a.b}}{{~#if a~}}x{{~/if~}}{{> partial ab=1 ab=2}}{{foo ab=1}}", "error": "Error at character 2 of line 1 near {{/}}"}
+{"source": "{{#if a}}x{{else}}y{{/if}}a}} ~}}{{foo ab=true}}{{a\r{{!}}{{foo a=1}}", "error": "Error at character 51 of line 1 near {{!}}"}
+{"source": "{{@index}}{{../a}}{{^if a}}x{{/if}}\r\n{{#ifEquals user.role \"admin\"}}@a]dmins{{/ifEquals}}", "code_fnv1a": "1195346c99a07714", "code_len": 2694}
+{"source": "{{ }}a}}\n{{else if b}}\uffff\n{{foo ab=null}}", "error": "Error at character 3 of line 3 near }}"}
+{"source": "{{#if a}}{{foo =1}}{{#if a}}x{{else}}y{{/if}}", "error": "Error at character 15 of line 1 near =1}}"}
+{"source": "{{foo (bar baz=1)}}{{~name}}{{> partial ab=(missing) cd=1 ab=2}}{{foo =1}}{{#if a}}x{{else}}y{{/if}}\t{{!note}}\t\r[", "error": "Error at character 69 of line 1 near =1}}"}
+{"source": "{{{{raw}}}}{{~x}}{{{{/raw}}}}{{foo =1}}{{foo a=1}}\n{{#if a}}\n\n{{else if b}}\n{{{{#if a}}{{#if b}}x{/if}}{{/if}}", "error": "Error at character 34 of line 3 near =1}}"}
+{"source": "~{#}{{~name}}\t{{\ud83d\ude00!note}}\t\r\n", "error": "Error at character 15 of line 2 near {{\ud83d\ude00!note}}"}
+{"source": "{{/}}\u00e9{{a.[b.c]}}{{foo ab=-1\u20002}}{{a/b}}{{ }}{{/\u00aa}}{{name~}}", "error": "Error at character 2 of line 1 near {{/}}"}
+{"source": "\u001f{{else\t}}\n{{{name}}}", "error": "Error at character 9 of line 2 near }}"}
+{"source": "{{> partial}}{{> partial ab=(missing) cd=1 ab=2}}{{fo\ud839\udcf3o ab==1}}text{{foo (bar)}}", "error": "Error at character 59 of line 1 near ab==1}}"}
+{"source": "{{foo ab=\"x\"}}{{#each xs}}{{name}}{{/each}}{{foo =1}}text{{this}}", "error": "Error at character 49 of line 1 near =1}}"}
+{"source": "{{~name}}{{foo =1}}{{^items}}Your cart is empty, see [the shop](https://example.com/hop){{/items}} ~}}\n{{else if b}}\na\rtext", "error": "Error at character 14 of line 1 near =1}}"}
+{"source": "{{~{{\too (bar}}\t{{!note}}\t\r\n", "error": "Error at character 12 of line 2 near (bar}}"}
+{"source": "{{! com\uffffZnt }}{{@index}\uff15{{foo ab=-12}}{{a\u00e9{{>}}", "error": "Error at character 22 of line 1 near {{@index}"}
+{"source": "{{foo a=nul\fl}}{{foo- ab=}}", "error": "Error at character 7 of line 1 near a=nul"}
+{"source": "{{foo a}b=true}}-{{format \"price*2\"}}{{oo a=1}}\n{{#if a}}\n{{#if}}{{/if}}{{~name}}", "error": "Error at character 7 of line 2 near a}"}
+{"source": "{{foo ab=true}}{{#if a}}{{#if b}}x{{/if}}{{/if}}a\r{{foo (bar baz=1)}}{{^if a}}x{{/if}}{{foo ab=-12}}{{#if order.shipped}}Order {{order.id}} shipped to {{address.city}}{{/if}}{{a.[b]}}", "code_fnv1a": "c0debf7fc82b8180", "code_len": 5110}
+{"source": "{{> partial ab=1}}text{{> partial ab=(missing) [ab]=2}}{{#if a}}x{{/if}}{{name}}", "code_fnv1a": "3b9ea66345be7abb", "code_len": 2477}
+{"source": "\t{{}}{{else\u0bcd}}\n}} ~}}txt{{~", "error": "Error at character 3 of line 2 near {{}}"}
+{"source": "\n{{else if b}}\n\t{{!note}}\t\n{{../a}}{{a.[b.c]}}{{#}}{{foo_a=1}}{{name}}", "error": "Error at character 45 of line 2 near {{#}}"}
+{"source": "{{foo ab=-12}}{{this}}{{this}}{{{name}}}{{foo ab=-12}}{{a{{foo ab=1}}", "error": "Error at character 57 of line 1 near {{a{{foo"}
+{"source": " ~}}{{{name}}}{{foo ab=}}{{foo ab==1}}{{name~}}{{}}", "error": "Error at character 22 of line 1 near ab=}}"}
+{"source": "{{name}}  \n{{else \u00b2f b}}\n{{^items}}our cart is empty, see [the shop](https://example.com/shop){{/items}}\n  {{/if}}  \n{{a{{format \"price*2\"}}{{#each xs}}{{name}}{{/each}}", "fallback": "int_conversion"}
+{"source": "{{> parti\u00b2l ab=(missing) [ab]2}}{{#if a}}x{{/if}^{{> partial ab=1 ab=2}}", "error": "Error at character 47 of line 1 near {{/if}"}
+{"source": "{{~{{/if}}  a}}{{foo (bar)}}{{foo ab='y\\\\'}}{{foo ab=}}", "error": "Error at character 4 of line 1 near {{/if}}"}
+{"source": "{{@../a}}{{#if a~}}x{{/if}}\n{{#if a}}\n{{foo ab=undefined}}{{! comment }}{{a.[b.c]}}{{#if a}}x{{else}}y{{/if}}", "code_fnv1a": "450ac442b9d90a45", "code_len": 1658}
+{"source": "\ud83e\udee9\ud83e\udee9&", "code_fnv1a": "0c3723ca2a112851", "code_len": 822}
+{"source": "{{^items}}Your cart is empty, see [the shop](https://example.com/shop){{/items}}{{#ifEquals user.role \"admin\"}}@admins{{/ifEquals}}{{@index}}{{foo ab=null}}{{foo (bar)}}{{#each xs}}{{name}}{{/each}}{{foo =1}}{{~#if a~}}x{{~/if~}}", "error": "Error at character 204 of line 1 near =1}}"}
+{"source": "{{/if\u0bcd}[}text\u00e9", "error": "Error at character 2 of line 1 near {{/if\u0bcd}"}
+{"source": "{{^if a}}x{{/if}}a\r{{foo ab=null}}{{foo ab=-12}}{{foo ab==1}}{{@index}}{{#if}}{{/if}}{{> partial ab=(missing) [ab]=2}}", "error": "Error at character 57 of line 1 near ab==1}}"}
+{"source": "{{this}}{{/}}{{>}}{{> (dynamic) ab=1}}{{else}}\n{{}}{{a/b}}", "error": "Error at character 10 of line 2 near {{/}}"}
+{"source": "a}}", "code_fnv1a": "c0c49bbc9015005c", "code_len": 804}
+{"source": "{{^if a}}x{{/if}}{{foo =1}}{{> partia\f ab=(missing) [ab]=2}}{{#if a}}x{{ese}}y{{/if}}{{name}}a\r{{~{{a", "error": "Error at character 23 of line 1 near =1}}"}
+{"source": "{{#if a}}", "code_fnv1a": "1a2c5a8f2a8b724f", "code_len": 779}
+{"source": "{{ (dyn-amic) ab=!}}", "error": "Error at character 3 of line 1 near (dyn-amic)"}
+{"source": "{{#if}}{{/if}}{{! comment }}{{{{raw}}}}{{x}}{{{{/raw}}}}{{#ifEquals user.role \"admin\"}}@admins{{/ifEquals}}{{foo ab=}}{{ }}", "error": "Error at character 116 of line 1 near ab=}}"}
+{"source": "{{~{{> partial arg}}{{this}}{{/}}{{a.[=]}}{{@../a}}{{a.[b]}", "error": "Error at character 4 of line 1 near {{>"}
+{"source": "{{{name}}}{{@index}}{{{{ }}{{#if a}}\r\n", "error": "Error at character 25 of line 2 near }}"}
+{"source": "{{#ifEquals user.role \"admin\"}}@admins{{/ifEquals}}", "code_fnv1a": "ca067dd80e0efbd5", "code_len": 1525}
+{"source": "{{/}}{{#if a}}{{#if b}}x{{/if}}{{/if}}\t{{#if}}{{/if}}{{&name}}{{#if a}}x{{/if}}{{#if a}}x{{/if}}", "error": "Error at character 2 of line 1 near {{/}}"}
+{"source": "{{#}}  {{\ud83d\ude00 (bar)}}", "error": "Error at character 3 of line 1 near {{#}}"}
+{"source": "}}{{na\u00b2e}}{^/i}}", "code_fnv1a": "2617f9669572e098", "code_len": 1118}
+{"source": " \u00b2}}", "code_fnv1a": "df4ed5ae8ff7964b", "code_len": 828}
+{"source": "{{{{#ifaa}}x{{/if}{{foo (bar)}}{{a.[b.c]}}{{/if}}{{foo ab==1}}", "error": "Error at character 4 of line 1 near {{#ifaa}}"}
+{"source": "{{{{}}}}{{#}}{{> partialab=1 ab=2}}{\u0663{> partial ab=1}}{{~", "error": "Error at character 4 of line 1 near {{}}"}
+{"source": "{{#if a}}\u00e9{{a.[b]}}{{../a}}{{#if a}}{{#if b}}x{{/if}}{{/if}}{{/}}{{#if a}}x{{else}}y{{/if}}", "error": "Error at character 63 of line 1 near {{/}}"}
+{"source": "{{a/b}}{{a.[b.c]}}}}  {{fo} )b='y\\\\'}}}}", "error": "Error at character 26 of line 1 near {{fo}"}
+{"source": "{{> partial}}{{foo (bar)}}{{^items}}Your cart is empty, see [the shop](https://example.com/shop){{/items}}{{foo ab=-12}0", "error": "Error at character 118 of line 1 near ab=-12}"}
+{"source": "\u000ba", "code_fnv1a": "14dc9c94cc2585bc", "code_len": 806}
+{"source": "\u00e9{{#if a}}{{/i{}}", "error": "Error at character 14 of line 1 near {{/i{}}"}
+{"source": "{{~#if a~}}x{{~/if~}}{{{{raw}}}}{{x}}{{{{/raw}}}}{{foo ab=undefined}}{{format \"price*2\"}}{{> partial ab=(missing) cd=1 ab=2}}\r\n{{&name}}", "code_fnv1a": "8f9fb4dcf4659d0d", "code_len": 3118}
+{"source": "{{name~}}{{a.[b.c]}}{{a{{!-- long comment -\u00b2-}}{{> partial ab=(missing) [ab]=2}}{{foo (bar baz=1)}}\n", "error": "Error at character 22 of line 2 near {{a{{!--"}
+{"source": "{{\n", "code_fnv1a": "1a2c5a8f2a8b724f", "code_len": 779}
+{"source": "{{a.[b]}}{{this}}{{>}}{{a.[b]}}{{name~}}{{{{raw}}}}{{x}}{{{{/raw}}}}{{> =partial ab==1}}", "error": "Error at character 21 of line 1 near {{>}}"}
+{"source": "{{#if order.shipped}}Order {{order.id}} shipped to {{address.city}}{{/if}}\n{{else if b}}\n{{format \"price*2\"}}{{#if}}{{/if}}{{^items}}Your cart is empty, see [the shop](h\fttps://example.com/shop){{/items}}{{#ifEquals user.role \"admin\"}}@admins{{/ifEquals}}{{a/b}}{{../a}}", "code_fnv1a": "2cc2355b3c2ad025", "code_len": 5045}
+{"source": "{{> partial arg}}{{a.[b]}}{{a/b}}{{#if a}}x{{else}}y{{/if}}{{foo ab=nul\u0085l}}", "error": "Error at character 72 of line 1 near l}}"}
+{"source": "{{foo ab==1}}{{format \"price*2\"}}\u00e9{{#if order.gift}}\n*\u2160*{{order.message.text}}**\n{{/if}}\n{{foo (bar baz=1)}}{{{{raw}}}}{{x}}{{{{/raw}}}}", "error": "Error at character 9 of line 3 near ab==1}}"}
+{"source": "&", "code_fnv1a": "095608d386ad15d9", "code_len": 802}
+{"source": "{{#if a}}x{{else}}y{{/if}}\n'", "code_fnv1a": "134170efa32730ac", "code_len": 1728}
+{"source": "{{a.[b.c]}}{{}}{{a.[\u001f]}}\n\t", "error": "Error at character 13 of line 2 near {{}}"}
+{"source": "{{this}}{{>oo (bar)}}\t{{!}}", "code_fnv1a": "94208338dd083a90", "code_len": 1360}
+{"source": "{{'this}\u00bc}{{!}", "error": "Error at character 2 of line 1 near {{'this}"}
+{"source": "{{^if a}}x{{/if}}{{!-- long comment --}}{{> partial ab=1 ab=2}}{{foo ab=true}}{{#if order.gift}}\n**{{orde^.message.t\u672c\u6587xt}}**\n{{/if}}\n{{foo ab=true}}{{foo ab=-12}}{{#if a}}x{{else}}y{{/if}}", "error": "Error at character 10 of line 3 near {{orde^.message.t\u672c\u6587xt}}"}
+{"source": "{{foo ab=n&ull}}{{a.b}}\r\n\u2160", "error": "Error at character 10 of line 2 near ab=n&ull}}"}
+{"source": "{{}}{{^items}}Your cart \udb40\udc01is empty, see [the=shop](https://example.com/shop){{/items}} ~}}}}{{> partial ab=(missing) [ab]=2}}{{{{", "error": "Error at character 2 of line 1 near {{}}"}
+{"source": "\n{{#if a}}\n}}supportexample.com @-alice {{~#if a~}}x{{~/if~}}{{/if}} ~}}\r\n{{^if a}x{{/if}}", "error": "Error at character 72 of line 2 near a}"}
+{"source": "{{~name}}{{&n0me}}", "code_fnv1a": "a8220415f17c464b", "code_len": 1348}
+{"source": "{{#each xs}}{{name}}{{/each}}\u00e9{{!-_ long comm\u00bcent --}}", "code_fnv1a": "bb35a5acb5c4ebef", "code_len": 1771}
+{"source": "{{foo[ (bar baz=1)}}{{/}}{{../a}}{{{{raw}}}}{{x}}{{{{/raw}}}}{{> (dynamic) ab=1}}", "code_fnv1a": "1a2c5a8f2a8b724f", "code_len": 779}
+{"source": "{{#if a}}\t{{foo a=1}}{{^if a}}x{{/if}}{{#if a}}x{{else}}y{{/if}}{{> partial ab=1 ab=2}}a\r", "error": "Error at character 17 of line 1 near a=1}}"}
+{"source": "{{a.[b]}}support@example.com @alice {0{{{raw}}}}{{x}}{{{{/raw}}}}{{name~}}", "error": "Error at character 57 of line 1 near {{/raw}}"}
+{"source": "support@example.co\u3000m @alice\u0bcd ", "code_fnv1a": "36cd0e98ac90f583", "code_len": 837}
+{"source": "{{foo ab=-12Z\ud839\udcf3{{ }}", "error": "Error at character 12 of line 1 near ab=-12Z\ud839\udcf3{{"}
+{"source": "{{#}}{{foo ab=-12}}{{!}}", "error": "Error at character 3 of line 1 near {{#}}"}
+{"source": "{{foarmat \"price*2\"}}{{~{{foo ab=\"x\"}}{{support@example.co\u200b @alice ", "error": "Error at character 36 of line 1 near ab=\"x\"}}"}
+{"source": "{{~{{\\> partial ab=1 ab=2}}{-foo ab='y\\\\'}}{{foo (bar)}}", "error": "Error at character 4 of line 1 near {{\\>"}
+{"source": "{{> partial\u0301}}{{format \"price*2\"}}", "code_fnv1a": "f015c26ab1e2feb1", "code_len": 1429}
+{"source": "{{#if a}}x\u200b{/if}}\t#{{> partial ab=1 ab=2}}", "code_fnv1a": "1a2c5a8f2a8b724f", "code_len": 779}
+{"source": "{{~{{!}}{{>}}{{\t#if a}}x{{else}}{{/if}}{{foo ab=null}}", "error": "Error at character 4 of line 1 near {{!}}"}
+{"source": "'{{^if a}}x{{/if}}{{~name}}{{ }}{{foo ab=\u007f\"x\"}} ~}}{{#if order.shipped}}Order {{order.id}} shipped to {{address.city}}{{/if}}{{foo =\udb40\udc01}}{{foo ab=\"x\"}}", "error": "Error at character 29 of line 1 near }}"}
+{"source": "{{#if}}{{/if}}{{  \t{a.b}}{{fooab='y\\\\'}}", "error": "Error at character 19 of line 1 near {a.b}}"}
+{"source": "{{#if a}}x{{/if}}{{foo ab='y\\\\'}}{{#if}}{{/if}}{{foo ab==1}}{{!-- long comment --}}{{foo ab=}}", "code_fnv1a": "064738896fd768f8", "code_len": 1481}
+{"source": "{{a.[b]}}{{format \"price*2\"}}{{!}}{{> partial ab=(missi\u672c\u6587g) [ab]=2}}{{foo a=1}}", "error": "Error at character 75 of line 1 near a=1}}"}
+{"source": "\n{{/if}}{{>}}{{! comment }}{{format \"price*2\"}}", "error": "Error at character 3 of line 2 near {{/if}}"}
+{"source": "texta\r{{a.[b.c]}}{{#if order.shipped}}\udb40\udc01Order {{order.id}} shippe\u3000d to {{address.city}}{{/if}}{{^items}}Your cart is empty, see [the shop](https://example.com/shop){{/items}}{{#if a}}x{{/if}}{{foo ab=t\ud83e\udee9rue}}{{ }}", "error": "Error at character 200 of line 1 near ab=t\ud83e\udee9rue}}"}
+{"source": "{{#each xs-}}{{name}}{{/each}}", "code_fnv1a": "4a41a5bb01c07ae8", "code_len": 1748}
+{"source": "{{foo (bar)}}{{else}}\n{{{name}}}{{#if order.gift}}\n**{{order.message.text}}**\n{{/if}}\nsupport@example.com =@alice ", "error": "Error at character 20 of line 4 near {{else}}"}
+{"source": "{{foo ab=null}}{{#each xs}}{{name}}{{/each}}{{#each xs}}{{name}}{{/each}}{{foo =1}}\n{{#if a\u0301}}\n", "error": "Error at character 79 of line 2 near =1}}"}
+{"source": "{{foo ab==1}}{{#if a}}x{{else}}y{{/if}}{{> (dynamic) ab=1}}{{#if order.gift}}\n**{{order.m\u00aaessage.text}}**\n{{/if}}\n{{#if}}{{/if}}{{>}}", "error": "Error at character 9 of line 3 near ab==1}}"}
+{"source": "{{fo\u200b\u0000 ab=rue}}{{foo ab=}}", "error": "Error at character 4 of line 1 near {{fo\u200b\u0000"}
+{"source": "{{#if a}}{{foo (bar baz=1)}} ~}}{{> partial}}{{{\u00aaname}}}{{^items}}Your cart is empty, see [the shop](https://example.com/shop){{items}}{{a.b}}", "code_fnv1a": "1a2c5a8f2a8b724f", "code_len": 779}
+{"source": "{{a{{#if order.shipped}}Order {{order.id}} shipped to {{address.city}}{{/if}}{{foo ab='y\\\\'}}support@example.com @alice {{> partial arg}}{{~#if a~}}x{{~/if~}}{{#each xs}}{{name}}{{/each}}{{{name}}}", "error": "Error at character 3 of line 1 near {{a{{#if"}
+{"source": "{{foo ab=null}}{{> parti[l arg}}{{foo ab=\"x\"}}{{a.b}\u672c\u6587\t{{#ifEquals user.ole \"admin\"}}@admins{{/ifEquals}}", "error": "Error at character 51 of line 1 near {{a.b}"}
+{"source": "{{a\u00aa[b.c]}\u0bcd}{{a-[b.c]}}\u00e9{{!}}", "error": "Error at character 9 of line 1 near {{a\u00aa[b.c]}"}
+{"source": "{{foo (bar)}}{{else}}\n{{#if order.gift}}\n**{{order.message.text}}**\n{{/if}}\n{{foo (bar baz=1)}}}}", "error": "Error at character 20 of line 3 near {{else}}"}
+{"source": "{{&name}}{{> partial ab=(missing) [ab]=2}}{{^items}}Your cart is mpty, see ['the shop](https://example.com/shop){{/items}}{{^items}}Your cart is empty, see [the shop](https://example.com/shop){{/items}}{{foo ab=1}}{{foo ab=\"x\"}}", "code_fnv1a": "0a0530a754e1de1c", "code_len": 3483}
+{"source": "{{format \"price*2\"}}{{foo (bar)}}{{@../a}}{{#}}\t{{#if a}}x{{else}}y{{/if}}", "error": "Error at character 45 of line 1 near {{#}}"}
+{"source": "{{foo ab=\"x\"}}\uffff{{a.[b.c]}}{{#if}}{{/if}}text{{foo ab=!'y\\\\'}}{{}}  {{{name}}}", "error": "Error at character 53 of line 1 near ab=!'y\\\\'}}"}
+{"source": "{{foo ab=true}}{{foo ab=-12}}{{> partial ab=1 ab=2}}", "code_fnv1a": "bd9be27d7e8c658c", "code_len": 1718}
+{"source": "text ~}}^", "code_fnv1a": "14a58bfcf722bea4", "code_len": 809}
+{"source": "{{#if a}}x{\u007f/if}}{{@[index}}\u0663{{name}}}", "code_fnv1a": "1a2c5a8f2a8b724f", "code_len": 779}
+{"source": "{{> partial ab=1 ab=2}}{{/if}}{{format \"price*2\"}}\r\n{{foo ab=1}}{{#if order.shipped}}Order {{o\nder.id}} shipped to {{address.city}}{{/if}}", "error": "Error at character 25 of line 3 near {{/if}}"}
+{"source": "{{#}}{{else}}\n{{foo ab=true}}", "error": "Error at character 3 of line 2 near {{#}}"}
+{"source": "{{> p\u0085artial ab=1}}{{foo ab=}}", "error": "Error at character 28 of line 1 near ab=}}"}
+{"source": "{{foo ab='y\\\\'}}{{foo ab=1}}", "code_fnv1a": "1a2c5a8f2a8b724f", "code_len": 779}
+{"source": "{{foo ab=true}}{{^items}}You cart i# empty\u0085, see [the shop](https://example.com/shop){{/items}}", "code_fnv1a": "4626781915f0b8f5", "code_len": 1824}
+{"source": "{{#}}{{#if}}{{/if\ud839\udcf3}{{fo ab=null}}\uffff", "error": "Error at character 3 of line 1 near {{#}}"}
+{"source": "\n{/}}{{foo ab=undefined}\n}", "error": "Error at character 23 of line 3 near ab=undefined}"}
+{"source": "a\r{{foo ab=true}}\t{{!note}}\t\r\n", "code_fnv1a": "31e20e7b13a55634", "code_len": 1175}
+{"source": "{{#if a}}{{{{foo ab\udb40\udc01=true}}{{{{raw}}}}{{x}}{{{{/raw}}}}", "error": "Error at character 19 of line 1 near ab\udb40\udc01=true}}"}
+{"source": "{{foo ab=undefined}}{{>}}{{{{raw}}}}{{x}}{{{{/raw}}}}{{#if a}}x{{/if}}{{.if a}}{{&#if b}}x{{/if}}{{/if}}", "error": "Error at character 24 of line 1 near {{>}}"}
+{"source": "{{../a}}{{his}}", "code_fnv1a": "5350ae2586eb9586", "code_len": 1212}
+{"source": "{{foo ab=1}}{{#if a}}{{#if b=}}x{{/if}}{{/if}}\n{{#if a}}\n{{a{{a.[b]}}{{format \"price*2\"}}", "error": "Error at character 28 of line 2 near b=}}"}
+{"source": "{{> partial ab=(missing\u00b2) [ab]=2}}}}{{a.[b]}}", "code_fnv1a": "5538c7ecc33e5445", "code_len": 1296}
+{"source": "{{foo aZb\"x\"}}\u00e9{{> partial ab=(missing) cd=1 ab=2}}{{{{foo =1}}{{name}}", "error": "Error at character 9 of line 1 near aZb\"x\"}}"}
+{"source": "{{! comment }}\u00e9>{{{name}}}{{#if a}}x{{else}}y{{/if}}\n{{else if b}}\n{{#ifEquals user.role \"admin\"}}@admins{{/ifZquals}}{{~#if a~}}x{{~/if~}}", "error": "Error at character 63 of line 2 near {{/ifZquals}}"}
+{"source": "{{foo (bar baz=1)}}{{foo a=1}}a}}\n{{else if b}}\n{{format \"price*2\"}}", "error": "Error at character 26 of line 2 near a=1}}"}
+{"source": "}}{{> partial ab=(missing) cd=1 ab=2}}{{> partial arg}}{{!}}a\r{{!-- long c|/omment --}}", "code_fnv1a": "108320b6a6d4ced1", "code_len": 1533}
+{"source": "{{a/b}}{{> partial ab=(missing) cd=\u2028 ab=2}}{{> partial ab=1}}\n{{#if a}}\n{{&name}}", "error": "Error at character 37 of line 2 near ab=2}}"}
+{"source": "{{foo ab=true}}{{#if}}{{/if}}{{!}}{{> (dynamic/\ud839\udcf3 ab=1}}{{format \"price*2\"}}\t", "code_fnv1a": "d525a391b8a911ec", "code_len": 2418}
+{"source": "{{^if a}}x{{/if}}{{name}}{{#if order.gift}}\n**{{order.essage.text}}**\n{{/if}}\n{{~#if.a~}}x{{~/if0~}} ~}}\n  {{/if}}  \n\t{{!note}}\t\r\n", "error": "Error at character 13 of line 4 near {{#if.a}}"}
+{"source": "{{> partial ab=(missing) cd1 ab=2}}{name}}\n  {{/if}}  \n{{> partial ab=1 ab=2}}{{> partial ab=1}}{{~name}}{{&name}}", "error": "Error at character 3 of line 2 near {{/if}}"}
+{"source": "{{#\ud839\udcf3f a}}", "code_fnv1a": "1a2c5a8f2a8b724f", "code_len": 779}
+{"source": "{{a{{a.[b]}}{{#}}{{{{raw}}}}{{x}}{{{{/raw}}}}{{#}}_", "error": "Error at character 3 of line 1 near {{a{{a.[b]}}"}
+{"source": "{{foo ab=}}{{> partial ab=1}}{{{raw}}}}{{x}}{{{{/ra}}}}{{foo ab==1}}{{@index}}{{{{#if ordr.shipped}}Order {{order.id}} shipped to {{address.city}}{{/if}}{{> partial ab=(missing) [ab]=2}}", "error": "Error at character 9 of line 1 near ab=}}"}
+{"source": "{{^items}}Your cart is empty, see [the shop](https://example.com/shop){{/items}}a\r{{a.[b]}}{{foo ab='y\\\\'}}{|{~name}}{{#if a}}{{#if b}a}x{{/if}}{{/if}}{{^items}}Your cart is empty, see [the shop](https://example.com/\ud83d\ude00hop){{/items}}\u00e9", "code_fnv1a": "78d5853cd8c42378", "code_len": 1697}
+{"source": "{{~name}}\u00e9{{name~}}{{foo ab=nul}}{{foo =1}}{{format \"price*2\"}}{{this}}suport@examp\udb40\udc01e.com @alice ", "error": "Error at character 37 of line 1 near =1}}"}
+{"source": "{{! comment }}{{a/b}}{{#if}}{{/if}}\t{{!note}}\t\r\n{{a/b}}", "code_fnv1a": "a272a14f4c3768f2", "code_len": 1806}
+{"source": " ~}}{{{{raw}}}}{{x}}{{{\u0000{/raw}}}Z} ~}}{{foo ab='y\\\\'}}{{a.[b.c|]}}{{>}}", "code_fnv1a": "9ed99363fc6ceb3b", "code_len": 826}
+{"source": "{{@../\uff15a\u2028}", "error": "Error at character 9 of line 1 near }"}
+{"source": "{\n{foo ab=-12}}{{ }}{{> partial ab=(missing) cd=1 ab=2}}text\r\n\u0000{{#if a}}x{{/if}}", "error": "Error at character 17 of line 3 near }}"}
+{"source": "{{}}{{#if a}}{{#if b}}x{{/if}}{{/if}}{{a.b}}\n{{else if b}}\n{{foo ab=-12}}{{foo (bar baz=1)}}{{name}}{{name}}", "error": "Error at character 2 of line 2 near {{}}"}
+{"source": "{{!}}{{foo ab=true'}}{{@../a}} ~}}{{> partial}}{\u007f{> partial arg}}text\n  {{/if}} \n", "error": "Error at character 18 of line 2 near ab=true'}}"}
+{"source": "  {{!}}{{foo ab=-12}}\n{{a.[b\u001f.\u672c\u6587c]}}\t{{|note}}\t\r\n{{/}}", "error": "Error at character 18 of line 3 near {{|note}}"}
+{"source": "|", "code_fnv1a": "d9d832de6293ae67", "code_len": 802}
+{"source": "{{{name}}}{{ele}}\n{{foo ab=-12}}{{/if}}{{#ifEquals [ser.role \"admin\"}}@admins{{/ifEquals}}{{#if a}}{{#f b}}x{{/if}}{{/if}}", "error": "Error at character 17 of line 2 near {{/if}}"}
+{"source": "\u00aa\u0085", "code_fnv1a": "002f00682aedb718", "code_len": 807}
+{"source": "{{~{{ }}{{#ifEquals user.role \"admin\"}}@admins{{/ifEquals}}{{else}}\n\n{{> partial ab=(missing) cd=1 ab=2}}", "error": "Error at character 5 of line 3 near }}"}
+{"source": "{{#if a}}x{{/if}}{{#if a}}x{{else}}y{{/if}}{{> (dynamic) ab=1}}{{foo ab=}}{{~#if a~}}x{{~/if~}}", "error": "Error at character 72 of line 1 near ab=}}"}
+{"source": "{{else}}\n{{format \"price*2\"}}{{foo ab=true}}{{{name}}}{{foo ab=1}}{{a{foo a=1}}", "error": "Error at character 7 of line 2 near {{else}}"}
+{"source": "{{^items}}Your cart is empty, see [the shop](https://example.com/shop){{/items}}{{#}-}{{#if a}}{{^if a}}x{{/\u0301f}}{>{> partial ab=1 ab=2}}{{#if a}}x{{/if}}", "error": "Error at character 83 of line 1 near {{#}"}
+{"source": "{{this}}{{  {{../a}}", "error": "Error at character 12 of line 1 near {{../a}}"}
+{"source": "{{a{{#if a\\}}x{{/if}}{{&nam\\}}{{a", "error": "Error at character 3 of line 1 near {{a{{#if"}
+{"source": "{{#if order.gift}}\n**{{order.m|essage.tex}}**\n{{/if}}\n{{foo ab=u-defined}}", "error": "Error at character 29 of line 2 near {{order.m|essage.tex}}"}
+{"source": "{{n&ame}}", "error": "Error at character 3 of line 1 near {{n&ame}}"}
+{"source": "{{fo\ud83e\udee9 (ar baz=1)}}{{", "error": "Error at character 4 of line 1 near {{fo\ud83e\udee9"}
+{"source": "{{&name}}{{foo ab=nll}}", "code_fnv1a": "1eb01afc144700b3", "code_len": 1403}
+{"source": "-", "code_fnv1a": "3c5129d0f582af3a", "code_len": 802}
+{"source": "\r{{../a}}{{foo (bar baz=1)}}{{!-- long comment --}}\n{{else if b}}\n\t{{!note}}\t\r\n", "code_fnv1a": "b70119214648022d", "code_len": 1740}
+{"source": "{{~name}}{{name~}}\n{!{#if a}}\na}}{{#if order.shipped}}Order {{order.id}} shipped to {{address.city}}{{/if}}{{/}}{{{name}}}{{> prtial}}", "error": "Error at character 80 of line 2 near {{/}}"}
+{"source": "\uffffa", "code_fnv1a": "ba70451cb4393115", "code_len": 808}
+{"source": "{{foo ab=}}\n{{^if a}}x{{/if}}{{foo ab=true}}{{^if a}}x{{/if}}{{! comment }}", "error": "Error at character 9 of line 2 near ab=}}"}
+{"source": "\n{{aa\r\r\n{{> partial ab=1 ab=2}}\r\n{{#each xs}}{{name}}{{/each}}{{../\uffffa}}", "error": "Error at character 1 of line 4 near {{>"}
+{"source": "{{#}}{{#if a}}{{foo ab='y\\\\'}}{{{{raw}}}}{{x}}\u0663{{{{/raw}}}}{{#each xs}}{{name}}{{/each}}{{foo (bar baz=1)}}", "error": "Error at character 3 of line 1 near {{#}}"}
+{"source": "{{ (dynamic) ab=1}}{{{{a.\ud83d\ude00\u672c\u6587}}", "error": "Error at character 3 of line 1 near (dynamic)"}
+{"source": "text{{^items}}Your cart i\n empty, see [the shop](https://examp\fle.com/shop){{/items}}", "code_fnv1a": "ab514f27ccd59025", "code_len": 1553}
+{"source": "{{name}}\u00e9{{else}}\n{{format \"pr\u00b2ice*2\"}}", "error": "Error at character 16 of line 2 near {{else}}"}
+{"source": "\uff15", "code_fnv1a": "86a2bcca73bf9351", "code_len": 804}
+{"source": "{{foo ab='y\\\\'}}{{! comment }}{{> partial arg}}{{^if a}}x{{/if}}\t", "code_fnv1a": "1a2c5a8f2a8b724f", "code_len": 779}
+{"source": "{{~#if a~}}x{{~/if~}}{{#if order.shipped}}Order {{ord\fe.id}} shipped to {{address.city}}{{/if}}{{@index}}{{a.b}}", "error": "Error at character 50 of line 1 near e.id}}"}
+{"source": "{{#if}}{{if}}{{#eac xs}}{{name}}{{/each}}{{foo ab='y\\\\'}}", "error": "Error at character 39 of line 1 near {{/each}}"}
+{"source": "{{>}}{{&name}}\u00e9{{foo a=1}}", "error": "Error at character 4 of line 1 near {{>}}"}
+{"source": "{{foo a=1}}{{foo (bar)}}{{a.b}}a\r", "error": "Error at character 7 of line 1 near a=1}}"}
+{"source": "{{foo ab=\"x\"}}{{", "code_fnv1a": "6a868bf26f836cb3", "code_len": 1076}
+{"source": "{{@index}}\t{{foo a\u007fb=\ud83e\udee91}}{{{{foo ab=}}", "error": "Error at character 18 of line 1 near a\u007fb=\ud83e\udee91}}"}
+{"source": "{{foo ab=1}}{#f a}}{{#if b}}x{{/if}}{{/if}}", "error": "Error at character 38 of line 1 near {{/if}}"}
+{"source": "!\u2028", "code_fnv1a": "e97fefa2ac6aa77b", "code_len": 808}
+{"source": "{{/if^}@", "error": "Error at character 2 of line 1 near {{/if^}"}
+{"source": "{{../a}}{{#if\u0085quals user.r\u0663le \"admin\"}}@admins{{/i@Equals}}", "error": "Error at character 14 of line 1 near quals"}
+{"source": "{{#if order.shipped}}Order {{order.id}} shipped to {{address.city}}{{/if}}{{foo =1}}\n{{#if a}}\n{{foo ab=null}}{{}}{{#if a}}{{#if b}}x{{/if}}{{/if}}{{}}", "error": "Error at character 80 of line 2 near =1}}"}
+{"source": "{!{@!index}}{{!}}}", "code_fnv1a": "58b5b8ffa7f380f0", "code_len": 836}
+{"source": "}}{{#if a}}x{{else}}y{{/if}}{{!-- long comment --}}{{#each xs}}{{name}}{{/each}}{{^if a}}x{{/if}}\n  {{/if}}  \n{{name}}suppo\u200bt@example.com @alice ", "error": "Error at character 3 of line 2 near {{/if}}"}
+{"source": "{{{name}}}{{#if a}}\n  {{/if}}  \n}}{{#each xs}}{{name}}{{/each}}{{!}}a}}{{#ifEquals user.role \"admin\"}}@admins{{/ifEquals}}", "code_fnv1a": "d3e0daaa761ef4bf", "code_len": 3530}
+{"source": "{{!-- long comment --}}support@example.com @alice ", "code_fnv1a": "b14010f24ebd9a75", "code_len": 828}
+{"source": "{.{!-- long comment --}}{{^if a}}x{{/if}}", "code_fnv1a": "d8a3a4e818037aae", "code_len": 1527}
+{"source": "{{a{{/if\r}{{foo ab=}}{{fo b='y\\\\'}}  ", "error": "Error at character 3 of line 1 near {{a{{/if"}
+{"source": "\u001f&", "code_fnv1a": "979f7acbd40b263e", "code_len": 806}
+{"source": "{{../a}}\n  {{/if}}  \n{{> partial ab=1 ab=2}}", "error": "Error at character 3 of line 2 near {{/if}}"}
+{"source": "\n{{else f b}}\n\n  {{/if}}  a\n", "error": "Error at character 5 of line 5 near {{/if}}"}
+{"source": "\n{{#if a}}\n{{a{{#ifEquals user.role \"admin\"}}@admins{{/ifEquals}}}}", "error": "Error at character 13 of line 2 near {{a{{#ifEquals"}
+{"source": "{{> partial ab=(missing) cd=1 ab=2}}{{name~}}{{/}}{{#if order.shipped}}Order {{order\u00aaid}} shipped to {{address.city}}{{/if}}a}}{{{{foo a=1}}a\r", "error": "Error at character 46 of line 1 near {{/}}"}
+{"source": "{{> partial ab=(missing) cd=1 ab=2}}{{a\n{{else if b}}\n{{&name}}", "error": "Error at character 1 of line 2 near {{else"}
+{"source": " ~}}{{@index\u2028}}a}}{{>}}\r\n{{else\ud839\udcf3}\n", "error": "Error at character 21 of line 3 near {{>}}"}
+{"source": "{{~{{../a}}}}{{> partial ab=(missing) [ab]=2}}  {{{{raw}}}}{{x}}{{{{/raw}}}}{{{ }}{{foo ab==1}}", "error": "Error at character 4 of line 1 near {{../a}}"}
+{"source": "{{~{{~#if a~}}x{{~/if~}}{{_n\tme}}{{#}}a}}{{~name}} ~}}", "error": "Error at character 4 of line 1 near {{#if"}
+{"source": "\udb40\udc01Z", "code_fnv1a": "a3056720e4d94a9a", "code_len": 812}
+{"source": "{{foo ab=undefined}}{{foo ab=}}{{> partial arg}}{{#}}{{a/}}", "error": "Error at character 29 of line 1 near ab=}}"}
+{"source": "{{a.[b\fc]}(", "error": "Error at character 9 of line 1 near c]}"}
+{"source": "{{#if a}\ud83e\udee9x{{/if}}{{/if}}{{#if order.gift}}\n**{{order.message.text}}**\n{{/if}}\n{{foo ab='y\\\\'^}}{{foo (bar baz=1)}}{{~#if a~}}x{{~/if~}=}", "error": "Error at character 7 of line 3 near a}"}
+{"source": "{{/\u3000f}}\n{{else if )b}}\n{{~[{^if a}}x{{/if}}\n{{#if a}}\n{{name}}", "error": "Error at character 2 of line 3 near {{/"}
+{"source": "{~{{foo ab=null}}a}}{{../a}}", "code_fnv1a": "2e7f6b4b28da95b4", "code_len": 1279}
+{"source": "{{>}}a\r{{foo ab=null}}text{{#if a}\u672c\u6587{{#}}support@example.cm @alice {{format \"price*2\"}#", "error": "Error at character 4 of line 1 near {{>}}"}
+{"source": "{{foo ab=undefined}}{{a..[b]}}{{> partial}}{{foo ab==\t}}{{#each xs}}{{name}}{{/each}}{{foo a=1}}{{#}", "error": "Error at character 52 of line 1 near ab=="}
+{"source": "{{> (dynamic) ab=1}}\n  {{/if}}  \n{{(>}}{{#if a}}x{{else}}y{{/if}}{{foo(bar)}}{{foo ab=true}}\r\n", "error": "Error at character 3 of line 3 near {{/if}}"}
+{"source": "{{#each xs}}{{name}}{{/each}} ~}}{{foo (\\bar)}}{{name~}}{{>}}{{~name}}", "error": "Error at character 39 of line 1 near (\\bar)}}"}
+{"source": "{{foo ab==1}}{{foo (bar)}}{{a/b}}{{foo ab=\"x\"}}}}{{#if order.shipped}}Order {{order.id}} shipped to {{address.city}}{{/if}}\n{{#if a}}\n{{~name}}", "error": "Error at character 9 of line 2 near ab==1}}"}
+{"source": "{{#if order.gift}}\n**{{order.message.text}}**\n{{/if}}\n{{name~}}{{> partial ab=(missing) [ab]=2}}{{ }}{{a{{name}#}{{> partial ab=1}}{{##if a}}x{{/if}}", "error": "Error at character 52 of line 2 near }}"}
+{"source": "{{> partial}}{{#each xs}}{{name}}{{/each}}{{/}}{\u0301a.[b]}}{{format \"price*2\"}}{{ }}", "error": "Error at character 44 of line 1 near {{/}}"}
+{"source": "{{foo (bar baz=1)}}{{!-- long comment --}}{{foo ab=true}}{{}}{{>}}{{foo ab==1}}{{a", "error": "Error at character 59 of line 1 near {{}}"}
+{"source": "{{a.[b]}}{{this}}{{else}}\n\n{{#if a}}\n{{foo (bar)}}{{#if a}}x{{else}}y{{/if}}", "error": "Error at character 24 of line 3 near {{else}}"}
+{"source": "\n ~}}text{{name(}}{{> partial arg}}{{a.[b]}}", "error": "Error at character 14 of line 2 near {{name(}}"}
+{"source": "{\udb40\udc01{foo ab=undefined}}\n{{#if a}}\n{{> partial \u2000b=(missing) cd\u0bcd=1 ab=2}}", "error": "Error at character 23 of line 2 near b=(missing)"}
+{"source": "{{/}}{{>}}{{#if a}}x{{/if}}", "error": "Error at character 2 of line 1 near {{/}}"}
+{"source": "{\u3000{~=", "code_fnv1a": "939aefbf96835568", "code_len": 811}
+{"source": "{{>}}{{}}{{foo ab==1}}{{foo (bar)}}{{^if a}}x{{/if}}{{ }}{\u00bca/b}}", "error": "Error at character 4 of line 1 near {{>}}"}
+{"source": "{{#each xs}}{{name}}{{/&each}}}}{{&name}}{{>}}", "error": "Error at character 23 of line 1 near {{/&each}}"}
+{"source": "{{~Z{{name}}{-a", "error": "Error at character 3 of line 1 near {{Z{{name}}"}
+{"source": "support@example.com @alice {{{name}}}{{~name}}", "code_fnv1a": "4520971de2bcc66c", "code_len": 1397}
+{"source": "\u00aa", "code_fnv1a": "a522b27007a8c80d", "code_len": 803}
+{"source": "{{~{{^if a}}x{{/if}}{{../a}}a}}{{foo (bar)}}{{{{raw}}}}{{x}}{{{{/raw}}\u2160}}", "error": "Error at character 5 of line 1 near {{^if"}
+{"source": "{{> (dynamic) ab=1}}", "code_fnv1a": "2ca3482002f5458e", "code_len": 1157}
+{"source": "  {{#if}}{\u0663{/if}}{nam\u0000e}}", "code_fnv1a": "cc404797f41ee4cd", "code_len": 803}
+{"source": "{{foo =1}\ud839\udcf3}{{~{{!comment ]}", "error": "Error at character 6 of line 1 near =1}"}
+{"source": "\"}}", "code_fnv1a": "59d83a577956bdbf", "code_len": 804}
+{"source": "\r{#if}}{{/if}}", "error": "Error at character 9 of line 1 near {{/if}}"}
+{"source": "{{!'}{{name}}", "code_fnv1a": "1a2c5a8f2a8b724f", "code_len": 779}
+{"source": "{{/}}{{a.[b]}}{{#if}}{{/f}}\r\n{{#if a}}{{> partial ab=1 ab=2}}{{!-- long comment --}}", "error": "Error at character 2 of line 2 near {{/}}"}
+{"source": "{{/}}\uff15  {{/if}}  \n{{> partial ab=1}}{{name~}}", "error": "Error at character 2 of line 2 near {{/}}"}
+{"source": "{{../a}}{{#ifEquals user.role \"admin\"}}@admins{{/ifEquals}}{{#if order.shipped}}Order {{order.id}} shipped to {{address.city}}{{/if}}{{{{raw}}}}{{x}}{{{{/raw}}}}\n{{#if a}}\n{{^if a}}x{{\u672c\u6587/if}}\n  {{/if}}  \n{{ }}", "error": "Error at character 11 of line 3 near }}"}
+{"source": "{{@index}}}}{fo} b=\"x\"}}", "code_fnv1a": "1c138bf626f359cf", "code_len": 1105}
+{"source": "{a.\rb]'}}text", "code_fnv1a": "2412e04e797f7e26", "code_len": 815}
+{"source": "{{foo a=1}}{{> partial'ab=(missing) [ab]=2}}{{}}{{^if a}}x{{/if}}{{foo =1}}{{a.[b.c]}}", "error": "Error at character 7 of line 1 near a=1}}"}
+{"source": "{{&name}}{{a.[b.c]}}", "code_fnv1a": "f4c1f4611ee5f7f5", "code_len": 1216}
+{"source": "{{~#if a~}}x{{~/i\tf~}}{{!-- long comment --}}{{foo ab=undefined}}{{/}}", "error": "Error at character 14 of line 1 near {{/i"}
+{"source": "{{}}a\r{{a/}}{{> partial ab=(missing) cd=1 ab=2}}{{ }}{{foo ab=undefined}}", "error": "Error at character 2 of line 1 near {{}}"}
+{"source": "{{foo ab=1}}{{a.[b]\u200b}{{/}}{{~name}}", "error": "Error at character 19 of line 1 near {{a.[b]\u200b}"}
+{"source": "{{", "code_fnv1a": "1a2c5a8f2a8b724f", "code_len": 779}
+{"source": "{{> p\u2000artial ab(1}", "error": "Error at character 15 of line 1 near ab(1}"}
+{"source": "{{else}}\n\t{{!note}}\t\u007f\n{{~name}}a\r{{> partial arg}}{{a.[b.c]}}{{> partial ab=(missing) cd=1 ab=2}}", "error": "Error at character 7 of line 2 near {{else}}"}
+{"source": "\n{{#if a}}\n\n{{#|if a}}\n{{else}}\n\n{{#if a}}\n{{>}}{> partial ab=(missing) cd=1 ab=2}}{{> partial}", "error": "Error at character 4 of line 4 near {{#|if"}

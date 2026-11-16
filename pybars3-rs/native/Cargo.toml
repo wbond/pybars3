@@ -1,0 +1,26 @@
+# The extension module of the pybars3-rs Python package (pybars_rs._native),
+# built by maturin. The compiler itself is the pybars3-compiler crate.
+[package]
+name = "pybars3-rs"
+description = "The Python extension module of pybars3-rs: pybars3's template compiler in Rust"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+homepage.workspace = true
+# Published to PyPI as the pybars3-rs wheel, not to crates.io.
+publish = false
+
+[lib]
+name = "_native"
+crate-type = ["cdylib"]
+# Built and tested from Python (maturin and tests.py).
+test = false
+doctest = false
+
+[dependencies]
+pybars3-compiler.workspace = true
+pyo3 = { workspace = true, features = ["abi3-py310"] }
+
+[lints]
+workspace = true
