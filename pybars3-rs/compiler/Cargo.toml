@@ -1,0 +1,28 @@
+[package]
+name = "pybars3-compiler"
+description = "pybars3's Handlebars template compiler in Rust: the same Python source, byte for byte, much faster"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+homepage.workspace = true
+readme = "readme.md"
+# Not on crates.io yet; the pybars3-rs wheel is how it is distributed.
+publish = false
+keywords = ["handlebars", "pybars", "template", "python", "compiler"]
+categories = ["template-engine", "parser-implementations", "compilers"]
+
+[dependencies]
+# None: the compiler is plain Rust, with no unsafe code.
+
+[dev-dependencies]
+criterion.workspace = true
+proptest.workspace = true
+serde_json.workspace = true
+
+[[bench]]
+name = "precompile"
+harness = false
+
+[lints]
+workspace = true

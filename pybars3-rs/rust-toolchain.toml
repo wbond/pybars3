@@ -1,0 +1,6 @@
+# The toolchain for development. The minimum supported version (rust-version
+# in Cargo.toml) is checked in CI.
+[toolchain]
+channel = "stable"
+components = ["rustfmt", "clippy"]
+profile = "minimal"

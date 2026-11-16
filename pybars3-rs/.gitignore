@@ -1,0 +1,19 @@
+# Rust
+/target/
+/fuzz/target/
+/fuzz/corpus/
+/fuzz/artifacts/
+/fuzz/coverage/
+
+# Python
+.venv*/
+__pycache__/
+*.py[cod]
+/dist/
+/pybars_rs/*.so
+/pybars_rs/*.pyd
+.hypothesis/
+
+# Coverage data
+*.profraw
+*.profdata

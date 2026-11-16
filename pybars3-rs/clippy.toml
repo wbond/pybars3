@@ -1,0 +1,5 @@
+# pybars and its parser library are proper names in this crate's docs.
+doc-valid-idents = ["CPython", "PyMeta", "PyO3", ".."]
+allow-unwrap-in-tests = true
+allow-expect-in-tests = true
+allow-print-in-tests = true

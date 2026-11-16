@@ -1,0 +1,48 @@
+[build-system]
+requires = ["maturin>=1.9.4,<2"]
+build-backend = "maturin"
+
+[project]
+name = "pybars3-rs"
+description = "pybars3's template compiler in Rust: a faster, thread-safe drop-in for pybars.Compiler"
+readme = "readme.md"
+requires-python = ">=3.10"
+keywords = ["handlebars", "pybars", "pybars3", "templates", "rust"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: 3.15",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Rust",
+  "Topic :: Text Processing :: Markup",
+]
+# pybars3-rs reproduces these releases, which it checks at import; the code it
+# generates imports pybars.
+dependencies = ["pybars3>=0.9.6,<0.9.8", "PyMeta3==0.5.1"]
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://github.com/wbond/pybars3/tree/master/pybars3-rs"
+Repository = "https://github.com/wbond/pybars3"
+Issues = "https://github.com/wbond/pybars3/issues"
+Changelog = "https://github.com/wbond/pybars3/blob/master/pybars3-rs/changelog.md"
+
+[tool.maturin]
+manifest-path = "native/Cargo.toml"
+module-name = "pybars_rs._native"
+profile = "release"
+# The tests ship in the source distribution, as pybars3's do.
+include = [
+  { path = "tests.py", format = "sdist" },
+  { path = "tests/*.py", format = "sdist" },
+]
+exclude = ["pybars_rs/**/__pycache__/**"]
