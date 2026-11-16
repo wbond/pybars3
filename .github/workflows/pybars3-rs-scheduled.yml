@@ -1,0 +1,110 @@
+name: pybars3-rs scheduled
+
+# Longer runs than CI can afford on every change: coverage-guided fuzzing of
+# the compiler, and a long parity campaign against pybars on every CPython.
+
+on:
+  schedule:
+    - cron: "17 4 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+env:
+  CARGO_TERM_COLOR: always
+
+defaults:
+  run:
+    working-directory: pybars3-rs
+
+jobs:
+  fuzz:
+    name: cargo-fuzz
+    runs-on: ubuntu-latest
+    env:
+      # cargo-fuzz needs nightly; rust-toolchain.toml says stable.
+      RUSTUP_TOOLCHAIN: nightly
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: dtolnay/rust-toolchain@683b588c487a69d01f6c6ddf40f036ff682cc2c8 # master
+        with:
+          toolchain: nightly
+      - uses: taiki-e/install-action@c509219cf42fba86913069efd0ade2458c59337b # v2.90.1
+        with:
+          tool: cargo-fuzz
+      - name: Fuzz for 20 minutes
+        working-directory: pybars3-rs/fuzz
+        run: |
+          mkdir -p corpus/precompile
+          # The prebuilt cargo-fuzz is a musl binary, and builds for its own
+          # target by default; the sanitizer needs glibc.
+          cargo fuzz run --target x86_64-unknown-linux-gnu precompile corpus/precompile seeds/precompile \
+            -- -max_total_time=1200 -max_len=4096
+      - if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: fuzz-artifacts
+          path: pybars3-rs/fuzz/artifacts
+
+  exhaustive:
+    name: Every template of up to 4 characters, part ${{ matrix.part }} of 8
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        part: [0, 1, 2, 3, 4, 5, 6, 7]
+    env:
+      EXHAUSTIVE_MAX_LENGTH: "4"
+      EXHAUSTIVE_PART: ${{ matrix.part }}
+      EXHAUSTIVE_PARTS: "8"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+      - uses: dtolnay/rust-toolchain@683b588c487a69d01f6c6ddf40f036ff682cc2c8 # master
+        with:
+          toolchain: stable
+      - name: Install dependencies
+        run: python -m pip install -r ./ci/requirements-01-maturin.txt -r ./ci/requirements-02-hypothesis.txt ..
+      - name: Build pybars3-rs
+        run: python -m pip install --no-build-isolation --no-deps -e .
+      - run: python tests.py TestBoundedExhaustive
+
+  parity:
+    name: Long parity run, Python ${{ matrix.python }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.10", "3.11", "3.12", "3.13", "3.14", "3.15"]
+    env:
+      FUZZ_ITERATIONS: "25000"
+      HYPOTHESIS_PROFILE: long
+      EXHAUSTIVE_MAX_LENGTH: "3"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: ${{ matrix.python }}
+      - uses: dtolnay/rust-toolchain@683b588c487a69d01f6c6ddf40f036ff682cc2c8 # master
+        with:
+          toolchain: stable
+      - name: Install dependencies
+        run: python -m pip install -r ./ci/requirements-01-maturin.txt -r ./ci/requirements-02-hypothesis.txt ..
+      - name: Build pybars3-rs
+        run: python -m pip install --no-build-isolation --no-deps -e .
+      - run: python tests.py
+      - name: One million more random templates
+        run: python -m tests.parity --fuzz 1000000 --seed 1000
